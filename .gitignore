@@ -1,9 +1,11 @@
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[Bb]uild/
-/[Bb]uilds/
-/Assets/AssetStoreTools*
+### Unity ###
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uild.app/
+[Bb]uilds/
+Assets/AssetStoreTools*
 
 # Visual Studio 2015 cache directory
 /.vs/
@@ -32,3 +34,14 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
