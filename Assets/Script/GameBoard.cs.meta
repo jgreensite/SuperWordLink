@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: c06ac34c83b404a0c90f238661ab264a
+timeCreated: 1514595958
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - redPfb: {instanceID: 0}
+  - bluePfb: {instanceID: 0}
+  - civilPfb: {instanceID: 0}
+  - deathPfb: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

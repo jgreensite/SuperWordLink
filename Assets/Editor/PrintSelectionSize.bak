@@ -1,0 +1,21 @@
+@CustomEditor(GameObject)
+class PrintSelectionSize extends Editor {
+    function OnInspectorGUI() {
+        var first = true;
+        var bounds : Bounds;
+        var renderers = Selection.GetFiltered(Renderer, SelectionMode.Deep);
+       
+        for (var r : Renderer in renderers) {
+            if (first) {
+                bounds = r.bounds;
+            } else {
+                bounds.Encapsulate(r.bounds);
+            }
+            first = false;
+        }
+       
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("World Dimensions", bounds.size.ToString());
+        EditorGUILayout.EndHorizontal();
+    }
+}
