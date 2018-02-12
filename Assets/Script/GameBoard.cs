@@ -126,11 +126,11 @@ public class GameBoard : MonoBehaviour
 				+ Input.inputString
 			);
 		}
-		else if (Input.GetKeyDown (KeyCode.C) || Input.GetKeyDown (KeyCode.P))
+		else if ((Input.GetKeyDown (KeyCode.C) || Input.GetKeyDown (KeyCode.P)) && (client.isHost == true || isGameover == true))
 		{
 			setCamera (Input.inputString.ToUpper());
 		}
-		else
+		else if(isGameover == false)
 		{
 			UpdateMouseOver ();
 			//Debug.Log (mouseOver);
