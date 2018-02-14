@@ -234,6 +234,12 @@ public class Server : MonoBehaviour
 				clients
 			);
 			break;
+		case "CBEG":
+			Broadcast (
+				"SBEG",
+				clients
+			);
+			break;
 		}
 	}
 }

@@ -136,6 +136,9 @@ public class Client : MonoBehaviour
 				}
 			}			
 			break;
+		case "SBEG":
+			GameManager.Instance.StartGame ();
+			break;
 		}
 	}
 		
@@ -150,13 +153,17 @@ public class Client : MonoBehaviour
 
 		players.Add (c);
 
-		//Once at least two players are connected start the game
+		//Once at least two players are connected allow the host to assign players
 		//note that all client's need to start the game but they need to share data regarding moves and cards
 
 		//TODO - Create teams for the players
 		if (players.Count >= 2)
 		{
-			GameManager.Instance.StartGame ();
+			//TODO - Update the panel message to say "waiting for host to choose teams"
+			{
+				if (c.isHost == true)
+					GameManager.Instance.OpenLobby();
+			}
 		}
 	}
 

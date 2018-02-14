@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour {
 	public GameObject mainMenu;
 	public GameObject serverMenu;
 	public GameObject connectMenu;
+	public GameObject lobbyMenu;
+
 
 	public GameObject serverPrefab;
 	public GameObject clientPrefab;
@@ -24,6 +26,7 @@ public class GameManager : MonoBehaviour {
 		mainMenu.SetActive(true);
 		serverMenu.SetActive(false);
 		connectMenu.SetActive(false);
+		lobbyMenu.SetActive(false);
 
 
 		DontDestroyOnLoad (gameObject);
@@ -35,6 +38,7 @@ public class GameManager : MonoBehaviour {
 		mainMenu.SetActive(false);
 		serverMenu.SetActive(false);
 		connectMenu.SetActive (true);
+		lobbyMenu.SetActive(false);
 	}
 
 	public void HostButton()
@@ -72,6 +76,7 @@ public class GameManager : MonoBehaviour {
 		mainMenu.SetActive(false);
 		serverMenu.SetActive (true);
 		connectMenu.SetActive(false);
+		lobbyMenu.SetActive(false);
 	}
 
 	public void ConnectToServerButton()
@@ -97,11 +102,32 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public void OpenLobby()
+	{
+		mainMenu.SetActive(true);
+		serverMenu.SetActive (false);
+		connectMenu.SetActive(false);
+		lobbyMenu.SetActive(false);
+
+	}
+
+	public void StartGameButton()
+	{
+		Client client = FindObjectOfType<Client> ();
+
+		//Host client needs to tell server that the teams have been chosen so the game can start
+		client.Send(
+			"CBEG" + '|'
+			+ client.clientName
+		);
+	}
+
 	public void BackButton()
 	{
 		mainMenu.SetActive(true);
 		serverMenu.SetActive (false);
 		connectMenu.SetActive(false);
+		lobbyMenu.SetActive(false);
 
 		Server s = FindObjectOfType<Server> ();
 		if (s != null)
