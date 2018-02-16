@@ -1035,7 +1035,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 500, y: 40}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 440, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &406240271
@@ -1180,6 +1180,8 @@ MonoBehaviour:
   serverMenu: {fileID: 713368744}
   connectMenu: {fileID: 1222309677}
   lobbyMenu: {fileID: 406240269}
+  lobbyLineItemPrefab: {fileID: 1327051731240518, guid: ffb0d99c2f49a4e64bf616a77ad55571,
+    type: 2}
   serverPrefab: {fileID: 1383401737153584, guid: e3c456ffa57b44752aee9d033fa4b371,
     type: 2}
   clientPrefab: {fileID: 1301399249718152, guid: e850bceb07bce4409bb57231738efa53,
@@ -2499,6 +2501,22 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1353301043}
+--- !u!1 &1371103004 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1327051731240518, guid: ffb0d99c2f49a4e64bf616a77ad55571,
+    type: 2}
+  m_PrefabInternal: {fileID: 305618165}
+--- !u!114 &1371103009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1371103004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0127c02310a5242ef9b5047c3f2337f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1388145426
 GameObject:
   m_ObjectHideFlags: 0
@@ -3411,7 +3429,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00001769666, y: 0.00005341841}
+  m_AnchoredPosition: {x: 0.000015626416, y: 0.00005341841}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1821190621

@@ -161,7 +161,8 @@ public class Client : MonoBehaviour
 		{
 			//TODO - Update the panel message to say "waiting for host to choose teams"
 			{
-				if (c.isHost == true)
+				//checks if this client is the host
+//				if (isHost == true)
 					GameManager.Instance.OpenLobby();
 			}
 		}

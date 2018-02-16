@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 114177094072748292}
   - component: {fileID: 114323274612499066}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: LobbyLineItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

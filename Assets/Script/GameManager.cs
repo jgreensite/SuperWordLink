@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour {
 	public GameObject connectMenu;
 	public GameObject lobbyMenu;
 
-
 	public GameObject serverPrefab;
 	public GameObject clientPrefab;
 
@@ -104,11 +103,10 @@ public class GameManager : MonoBehaviour {
 
 	public void OpenLobby()
 	{
-		mainMenu.SetActive(true);
+		mainMenu.SetActive(false);
 		serverMenu.SetActive (false);
 		connectMenu.SetActive(false);
-		lobbyMenu.SetActive(false);
-
+		lobbyMenu.SetActive(true);
 	}
 
 	public void StartGameButton()
