@@ -55,9 +55,6 @@ public class GameManager : MonoBehaviour {
 			if (c.clientName == "")
 			{
 				c.clientName = "Host";
-				c.isHost = true;
-				c.isPlayer = false;
-				c.isRedTeam = true;
 			}
 				
 			c.isHost = true;
@@ -92,6 +89,10 @@ public class GameManager : MonoBehaviour {
 			{
 				c.clientName = "Client";
 			}
+			c.isHost = false;
+			c.isPlayer = true;
+			c.isRedTeam = false;
+
 			c.ConnectToServer(HostAddress, 6321);
 			connectMenu.SetActive(false);
 		}

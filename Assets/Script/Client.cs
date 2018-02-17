@@ -18,7 +18,7 @@ public class Client : MonoBehaviour
 	private StreamWriter writer;
 	private StreamReader reader;
 
-	private List<GameClient> players = new List<GameClient>();
+	public List<GameClient> players = new List<GameClient>();
 
 	private void Start()
 	{
@@ -81,11 +81,11 @@ public class Client : MonoBehaviour
 		switch (aData [0])
 		{
 		case "SWHO":
-			for (int i = 1; i < aData.Length - 1; i++)
-			{
-				//TODO - this was originally UserConnected (aData [i], false);, it's been hacked to get it to compile
-				UserConnected (aData [i], false, true, true);		
-			}
+//			for (int i = 1; i < aData.Length - 1; i++)
+//			{
+//				//TODO - this was originally UserConnected (aData [i], false);, it's been hacked to get it to compile
+//				UserConnected (aData [i], false, true, false);		
+//			}
 			Send (
 				"CWHO" + '|'
 				+ clientName + '|'
@@ -157,7 +157,7 @@ public class Client : MonoBehaviour
 		//note that all client's need to start the game but they need to share data regarding moves and cards
 
 		//TODO - Create teams for the players
-		if (players.Count >= 2)
+		if (players.Count >= 3)
 		{
 			//TODO - Update the panel message to say "waiting for host to choose teams"
 			{
@@ -199,3 +199,4 @@ public class GameClient
 	public bool isPlayer;
 	public bool isRedTeam;
 }
+

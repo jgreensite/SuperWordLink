@@ -118,7 +118,7 @@ public class Server : MonoBehaviour
 
 		Debug.Log ("Somebody has connected. Starting to listen for any other clients");
 
-		//Tell whoever has connected who else is connected
+		//Ask everyone that is connected to state who they are
 		Broadcast ("SWHO" + "|" + Allusers, clients [clients.Count - 1]);
 
 	}

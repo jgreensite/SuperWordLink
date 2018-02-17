@@ -904,7 +904,6 @@ GameObject:
   - component: {fileID: 406240270}
   - component: {fileID: 406240272}
   - component: {fileID: 406240271}
-  - component: {fileID: 406240273}
   m_Layer: 5
   m_Name: Lobby
   m_TagString: Untagged
@@ -967,19 +966,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 406240269}
---- !u!114 &406240273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 406240269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ac52e4f04b5f4942b89988af54d8fea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lobbyLineItemPrefab: {fileID: 1327051731240518, guid: ffb0d99c2f49a4e64bf616a77ad55571,
-    type: 2}
 --- !u!1 &507967242
 GameObject:
   m_ObjectHideFlags: 0
@@ -3248,8 +3234,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 861040410}
   m_HandleRect: {fileID: 861040409}
   m_Direction: 2
-  m_Value: 0.9999995
-  m_Size: 0.7766665
+  m_Value: 0
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3297,6 +3283,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1784652770}
+  - component: {fileID: 1784652773}
+  - component: {fileID: 1784652772}
+  - component: {fileID: 1784652771}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -3319,9 +3308,58 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000012295976, y: 0}
-  m_SizeDelta: {x: 0, y: 300}
+  m_AnchoredPosition: {x: 0.000012295976, y: -0.000017071852}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &1784652771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1784652769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ac52e4f04b5f4942b89988af54d8fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lobbyLineItemPrefab: {fileID: 1459329128931132, guid: ffb0d99c2f49a4e64bf616a77ad55571,
+    type: 2}
+--- !u!114 &1784652772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1784652769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
+--- !u!114 &1784652773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1784652769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2095666955, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 0, y: 40}
+  m_Spacing: {x: 0, y: 5}
+  m_Constraint: 1
+  m_ConstraintCount: 1
 --- !u!1 &1821190621
 GameObject:
   m_ObjectHideFlags: 0
@@ -3529,6 +3567,7 @@ GameObject:
   - component: {fileID: 1950766120}
   - component: {fileID: 1950766119}
   - component: {fileID: 1950766118}
+  - component: {fileID: 1950766121}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -3602,7 +3641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 1784652770}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -3621,3 +3660,15 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1950766121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1950766116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1

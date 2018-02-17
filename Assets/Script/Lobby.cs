@@ -9,13 +9,16 @@ public class Lobby : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+
+		Client client = FindObjectOfType<Client> ();
 		//Create the LineItems
-		LobbyLineItem line = Instantiate(lobbyLineItemPrefab).GetComponent<LobbyLineItem>();
-		//TODO - Remove PORT hardcoding
-		//GameObject.Find ("PlayerName").GetComponent<Text>().text ="bob";
-		line.transform.SetParent(transform,false);
-		line.SetLobbyLineItemText();
+		foreach (GameClient gc in client.players)
+		{
+			LobbyLineItem line = Instantiate(lobbyLineItemPrefab).GetComponent<LobbyLineItem>();
+			//GameObject.Find ("PlayerName").GetComponent<Text>().text ="bob";
+			line.transform.SetParent(transform,false);
+			line.SetLobbyLineItem(gc);
+		}
 	}
 
 	// Update is called once per frame
