@@ -66,6 +66,7 @@ public class Client : MonoBehaviour
 		{
 			return;
 		}
+		Debug.Log ("Client Sending:" + data);
 		writer.WriteLine(data);
 		writer.Flush();
 
@@ -74,18 +75,25 @@ public class Client : MonoBehaviour
 	//Reading messages from the Server
 	private void OnIncomingData(string data)
 	{
-		Debug.Log ("Client: " + data);
+		Debug.Log ("Client Receiving: " + data);
 
 		string[] aData = data.Split('|');
 
 		switch (aData [0])
 		{
 		case "SWHO":
-//			for (int i = 1; i < aData.Length - 1; i++)
-//			{
-//				//TODO - this was originally UserConnected (aData [i], false);, it's been hacked to get it to compile
-//				UserConnected (aData [i], false, true, false);		
-//			}
+			players.Clear();
+			for (int i = 1; i < aData.Length; i++)
+			{
+				//TODO - this was originally UserConnected (aData [i], false);, it's been hacked to get it to compile
+				string[] bData = aData[i].Split(',');
+				UserConnected (
+				bData [0],
+				(bData [1] == "0") ? false : true,
+				(bData [2] == "0") ? false : true,
+				(bData [3] == "0") ? false : true
+				);		
+			}
 			Send (
 				"CWHO" + '|'
 				+ clientName + '|'
@@ -96,12 +104,24 @@ public class Client : MonoBehaviour
 			break;
 
 		case "SCNN":
-			UserConnected (
-				aData [1],
-				(aData [2] == "0") ? false : true,
-				(aData [3] == "0") ? false : true,
-				(aData [4] == "0") ? false : true
-			);
+//			UserConnected (
+//				aData [1],
+//				(aData [2] == "0") ? false : true,
+//				(aData [3] == "0") ? false : true,
+//				(aData [4] == "0") ? false : true
+//			);
+			players.Clear();
+			for (int i = 1; i < aData.Length; i++)
+			{
+				//TODO - this was originally UserConnected (aData [i], false);, it's been hacked to get it to compile
+				string[] bData = aData[i].Split(',');
+				UserConnected (
+					bData [0],
+					(bData [1] == "0") ? false : true,
+					(bData [2] == "0") ? false : true,
+					(bData [3] == "0") ? false : true
+				);		
+			}	
 			break;
 		case "SMOV":
 			int x = int.Parse(aData [2]);

@@ -23,7 +23,8 @@ public static class MultiplayersBuildAndRun {
 
 	static void PerformWin64Build (int playerCount)
 	{
-		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneWindows);
+		//EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneWindows);
+		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows);
 		for (int i = 1; i <= playerCount; i++) {
 			BuildPipeline.BuildPlayer (GetScenePaths (), "Builds/Win64/" + GetProjectName () + i.ToString() + ".exe", BuildTarget.StandaloneWindows64, BuildOptions.AutoRunPlayer);
 		}
@@ -46,7 +47,8 @@ public static class MultiplayersBuildAndRun {
 
 	static void PerformOSXBuild (int playerCount)
 	{
-		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneOSX);
+		//EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneOSX);
+		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneOSX);
 		for (int i = 1; i <= playerCount; i++) {
 			BuildPipeline.BuildPlayer (GetScenePaths (), "Builds/OSX/" + GetProjectName () + i.ToString() + ".app", BuildTarget.StandaloneOSX, BuildOptions.AutoRunPlayer);
 		}

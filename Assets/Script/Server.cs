@@ -66,7 +66,7 @@ public class Server : MonoBehaviour
 			else
 			//assume if not disconnected then are connected
 			{
-				//check the tcp stram of each client to see if they have placed something on it
+				//check the tcp stream of each client to see if they have placed something on it
 				NetworkStream s = c.tcp.GetStream();
 				if (s.DataAvailable)
 				{
@@ -106,7 +106,12 @@ public class Server : MonoBehaviour
 		string Allusers = "";
 		foreach (ServerClient i in clients)
 		{
-			Allusers += i.clientName + "|";	
+			Allusers +=
+			"|"
+			+ i.clientName + ","
+			+ ((i.isHost)?1:0).ToString() + ","
+			+ ((i.isPlayer)?1:0).ToString() + ","
+			+ ((i.isRedTeam)?1:0).ToString();
 		}
 
 		//If a client connection occurs add it to the list of clients
@@ -119,7 +124,7 @@ public class Server : MonoBehaviour
 		Debug.Log ("Somebody has connected. Starting to listen for any other clients");
 
 		//Ask everyone that is connected to state who they are
-		Broadcast ("SWHO" + "|" + Allusers, clients [clients.Count - 1]);
+		Broadcast ("SWHO" + Allusers, clients);
 
 	}
 		
@@ -151,6 +156,7 @@ public class Server : MonoBehaviour
 		{
 			try
 			{
+				Debug.Log ("Server Sending To:" + sc.clientName + " => " + data);
 				StreamWriter writer = new StreamWriter(sc.tcp.GetStream());
 				writer.WriteLine(data);
 				writer.Flush();
@@ -162,7 +168,7 @@ public class Server : MonoBehaviour
 		}
 	}
 
-	//Used to create a list of clients that only has one item in it, so that can broadcast to that one client
+	//Used to create a list of clients that only has one item in it, so that can broadcast when only one client connected
 	private void Broadcast(string data, ServerClient c)
 	{
 		List<ServerClient> sc = new List<ServerClient>{ c };
@@ -172,7 +178,7 @@ public class Server : MonoBehaviour
 	//Server read
 	private void OnIncomingData(ServerClient c, string data)
 	{
-		Debug.Log ("Server: " + data);
+		Debug.Log ("Server Receiving: " + data);
 
 		//parse the incoming data stream
 		string[] aData = data.Split('|');
@@ -184,14 +190,26 @@ public class Server : MonoBehaviour
 			c.isHost = (aData [2] == "0") ? false : true;
 			c.isPlayer = (aData [3] == "0") ? false : true;
 			c.isRedTeam = (aData [4] == "0") ? false : true;
-			Broadcast (
-				"SCNN" + '|'
-				+ aData [1] + '|'
-				+ aData [2] + '|'
-				+ aData [3] + '|'
-				+ aData [4],
-				clients
-			);
+//			Broadcast (
+//				"SCNN" + '|'
+//				+ aData [1] + '|'
+//				+ aData [2] + '|'
+//				+ aData [3] + '|'
+//				+ aData [4],
+//				clients
+//			);
+			string Allusers = "";
+			foreach (ServerClient i in clients)
+			{
+				Allusers +=
+				"|"
+				+ i.clientName + ","
+				+ ((i.isHost)?1:0).ToString() + ","
+				+ ((i.isPlayer)?1:0).ToString() + ","
+				+ ((i.isRedTeam)?1:0).ToString();
+			}
+			//Update everyone with the latest client list
+			Broadcast ("SCNN" + Allusers, clients);
 			break;
 		case "CMOV":
 			Broadcast (
