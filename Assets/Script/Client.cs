@@ -104,24 +104,25 @@ public class Client : MonoBehaviour
 			break;
 
 		case "SCNN":
-//			UserConnected (
-//				aData [1],
-//				(aData [2] == "0") ? false : true,
-//				(aData [3] == "0") ? false : true,
-//				(aData [4] == "0") ? false : true
-//			);
-			players.Clear();
-			for (int i = 1; i < aData.Length; i++)
-			{
-				//TODO - this was originally UserConnected (aData [i], false);, it's been hacked to get it to compile
-				string[] bData = aData[i].Split(',');
-				UserConnected (
-					bData [0],
-					(bData [1] == "0") ? false : true,
-					(bData [2] == "0") ? false : true,
-					(bData [3] == "0") ? false : true
-				);		
-			}	
+			UserConnected (
+				aData [1],
+				(aData [2] == "0") ? false : true,
+				(aData [3] == "0") ? false : true,
+				(aData [4] == "0") ? false : true
+			);
+
+//			players.Clear();
+//			for (int i = 1; i < aData.Length; i++)
+//			{
+//				//TODO - this was originally UserConnected (aData [i], false);, it's been hacked to get it to compile
+//				string[] bData = aData[i].Split(',');
+//				UserConnected (
+//					bData [0],
+//					(bData [1] == "0") ? false : true,
+//					(bData [2] == "0") ? false : true,
+//					(bData [3] == "0") ? false : true
+//				);		
+//			}	
 			break;
 		case "SMOV":
 			int x = int.Parse(aData [2]);

@@ -124,7 +124,7 @@ public class Server : MonoBehaviour
 		Debug.Log ("Somebody has connected. Starting to listen for any other clients");
 
 		//Ask everyone that is connected to state who they are
-		Broadcast ("SWHO" + Allusers, clients);
+		Broadcast ("SWHO" + Allusers, clients[clients.Count-1]);
 
 	}
 		
@@ -190,26 +190,27 @@ public class Server : MonoBehaviour
 			c.isHost = (aData [2] == "0") ? false : true;
 			c.isPlayer = (aData [3] == "0") ? false : true;
 			c.isRedTeam = (aData [4] == "0") ? false : true;
-//			Broadcast (
-//				"SCNN" + '|'
-//				+ aData [1] + '|'
-//				+ aData [2] + '|'
-//				+ aData [3] + '|'
-//				+ aData [4],
-//				clients
-//			);
-			string Allusers = "";
-			foreach (ServerClient i in clients)
-			{
-				Allusers +=
-				"|"
-				+ i.clientName + ","
-				+ ((i.isHost)?1:0).ToString() + ","
-				+ ((i.isPlayer)?1:0).ToString() + ","
-				+ ((i.isRedTeam)?1:0).ToString();
-			}
-			//Update everyone with the latest client list
-			Broadcast ("SCNN" + Allusers, clients);
+			Broadcast (
+				"SCNN" + '|'
+				+ aData [1] + '|'
+				+ aData [2] + '|'
+				+ aData [3] + '|'
+				+ aData [4],
+				clients
+			);
+
+//			string Allusers = "";
+//			foreach (ServerClient i in clients)
+//			{
+//				Allusers +=
+//				"|"
+//				+ i.clientName + ","
+//				+ ((i.isHost)?1:0).ToString() + ","
+//				+ ((i.isPlayer)?1:0).ToString() + ","
+//				+ ((i.isRedTeam)?1:0).ToString();
+//			}
+//			//Update everyone with the latest client list
+//			Broadcast ("SCNN" + Allusers, clients);
 			break;
 		case "CMOV":
 			Broadcast (
