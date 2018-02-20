@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class LobbyLineItem : MonoBehaviour {
 
@@ -10,11 +11,11 @@ public class LobbyLineItem : MonoBehaviour {
 	public Toggle isRedTeam;
 	public Toggle isBlueTeam;
 
-	Client client;
+//	Client client;
 
 	// Use this for initialization
 	void Start () {
-		client = FindObjectOfType<Client> ();
+//		client = FindObjectOfType<Client> ();
 	}
 	
 	// Update is called once per frame
@@ -33,14 +34,16 @@ public class LobbyLineItem : MonoBehaviour {
 
 	public void SelectCaller()
 	{
+		Client client = FindObjectOfType<Client> ();
+
 		int redCallerCnt = 0;
 		int blueCallerCnt = 0;
 
 		if ((isRedTeam.isOn == true) && (isBlueTeam.isOn == false))
 		{
-			foreach (GameClient gc in client.players)
+			for (int cnt = 0;cnt < client.players.Count; cnt ++)
 			{
-				if (gc.isPlayer == false)
+				if ((client.players[cnt].isPlayer == false) && (client.players[cnt].isRedTeam == true))
 				{
 					redCallerCnt += 1;
 				}
@@ -48,21 +51,24 @@ public class LobbyLineItem : MonoBehaviour {
 		}
 		else if ((isRedTeam.isOn == false) && (isBlueTeam.isOn == true))
 		{
-			foreach (GameClient gc in client.players)
+			for (int cnt = 0;cnt < client.players.Count; cnt ++)
 			{
-				if (gc.isPlayer == false)
+				if ((client.players[cnt].isPlayer == false) && (client.players[cnt].isRedTeam == false))
 				{
 					blueCallerCnt += 1;
 				}
 			}
 		}
-		if ((blueCallerCnt > 1) || (redCallerCnt > 1))
-		{
-			isCaller.isOn = false;
-		}
-		else
-		{
-			isCaller.isOn = true;
+		for (int cnt = 0; cnt < client.players.Count; cnt++) {
+			if (String.Equals(client.players[cnt].name,lineItemText)){
+				if ((blueCallerCnt > 1) || (redCallerCnt > 1)) {
+					isCaller.isOn = false;
+					client.players [cnt].isPlayer = true;	
+				} else if ((blueCallerCnt < 1) && (redCallerCnt < 1)) {
+					isCaller.isOn = true;
+					client.players [cnt].isPlayer = false;
+				}
+			}
 		}
 	}
 }
