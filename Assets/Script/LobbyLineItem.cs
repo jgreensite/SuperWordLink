@@ -30,7 +30,23 @@ public class LobbyLineItem : MonoBehaviour {
 		isRedTeam.isOn = gc.isRedTeam;
 		isBlueTeam.isOn = !(gc.isRedTeam);
 	}
-		
+
+
+	public void SetGameClient()
+	{
+		Client client = FindObjectOfType<Client> ();
+
+		for (int cnt = 0; cnt < client.players.Count; cnt++)
+		{
+			if (String.Equals (client.players [cnt].name, lineItemText.text))
+			{
+				client.players [cnt].name = lineItemText.text;
+				client.players [cnt].isPlayer = !isCaller.isOn;
+				client.players [cnt].isRedTeam = isRedTeam.isOn;
+				client.players [cnt].isRedTeam = !isBlueTeam.isOn;
+			}
+		}
+	}
 
 	public void SelectCaller()
 	{
@@ -60,7 +76,7 @@ public class LobbyLineItem : MonoBehaviour {
 			}
 		}
 		for (int cnt = 0; cnt < client.players.Count; cnt++) {
-			if (String.Equals(client.players[cnt].name,lineItemText)){
+			if (String.Equals(client.players[cnt].name,lineItemText.text)){
 				if ((blueCallerCnt > 1) || (redCallerCnt > 1)) {
 					isCaller.isOn = false;
 					client.players [cnt].isPlayer = true;	
