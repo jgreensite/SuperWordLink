@@ -48,17 +48,17 @@ public class LobbyLineItem : MonoBehaviour {
 
 	public void SelectCaller()
 	{
-		Client client = FindObjectOfType<Client> ();
+//		Client client = FindObjectOfType<Client> ();
 		Lobby MyLobbyGroup = FindObjectOfType<Lobby> ();
 
 		int redCallerCnt = 0;
 		int blueCallerCnt = 0;
 
-		if ((isRedTeam.isOn == true) && (isBlueTeam.isOn == false))
-		{
+//		if ((isRedTeam.isOn == true) && (isBlueTeam.isOn == false))
+//		{
 			for (int cnt = 0;cnt < MyLobbyGroup.LobbyLineItems.Count; cnt ++)
 			{
-				if ((MyLobbyGroup.LobbyLineItems[cnt].isCaller == true) && (MyLobbyGroup.LobbyLineItems[cnt].isRedTeam == true))
+				if ((MyLobbyGroup.LobbyLineItems[cnt].isCaller.isOn == true) && (MyLobbyGroup.LobbyLineItems[cnt].isRedTeam.isOn == true))
 				{
 					redCallerCnt += 1;
 				}
@@ -67,13 +67,13 @@ public class LobbyLineItem : MonoBehaviour {
 					MyLobbyGroup.LobbyLineItems [cnt].isCaller.isOn = false;
 					redCallerCnt --;
 				}
-			}
-		}
-		else if ((isRedTeam.isOn == false) && (isBlueTeam.isOn == true))
-		{
-			for (int cnt = 0;cnt < MyLobbyGroup.LobbyLineItems.Count; cnt ++)
-			{
-				if ((MyLobbyGroup.LobbyLineItems[cnt].isCaller == true) && (MyLobbyGroup.LobbyLineItems[cnt].isRedTeam == false))
+//			}
+//		}
+//		else if ((isRedTeam.isOn == false) && (isBlueTeam.isOn == true))
+//		{
+//			for (int cnt = 0;cnt < MyLobbyGroup.LobbyLineItems.Count; cnt ++)
+//			{
+			if ((MyLobbyGroup.LobbyLineItems[cnt].isCaller.isOn == true) && (MyLobbyGroup.LobbyLineItems[cnt].isRedTeam.isOn == false))
 				{
 					blueCallerCnt += 1;
 				}
@@ -83,7 +83,7 @@ public class LobbyLineItem : MonoBehaviour {
 					blueCallerCnt --;
 				}
 			}
-		}
+//		}
 		SetGameClient ();
 	}
 }
