@@ -46,7 +46,7 @@ public class LobbyLineItem : MonoBehaviour {
 		}
 	}
 
-	public void SelectCaller()
+	public void SelectUIComponent()
 	{
 //		Client client = FindObjectOfType<Client> ();
 		Lobby MyLobbyGroup = FindObjectOfType<Lobby> ();
