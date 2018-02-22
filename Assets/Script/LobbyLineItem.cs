@@ -31,8 +31,7 @@ public class LobbyLineItem : MonoBehaviour {
 		isBlueTeam.isOn = !(gc.isRedTeam);
 	}
 
-
-	public void SetGameClient()
+	private void SetGameClient()
 	{
 		Client client = FindObjectOfType<Client> ();
 
@@ -43,7 +42,6 @@ public class LobbyLineItem : MonoBehaviour {
 				client.players [cnt].name = lineItemText.text;
 				client.players [cnt].isPlayer = !isCaller.isOn;
 				client.players [cnt].isRedTeam = isRedTeam.isOn;
-				client.players [cnt].isRedTeam = !isBlueTeam.isOn;
 			}
 		}
 	}
@@ -51,40 +49,41 @@ public class LobbyLineItem : MonoBehaviour {
 	public void SelectCaller()
 	{
 		Client client = FindObjectOfType<Client> ();
+		Lobby MyLobbyGroup = FindObjectOfType<Lobby> ();
 
 		int redCallerCnt = 0;
 		int blueCallerCnt = 0;
 
 		if ((isRedTeam.isOn == true) && (isBlueTeam.isOn == false))
 		{
-			for (int cnt = 0;cnt < client.players.Count; cnt ++)
+			for (int cnt = 0;cnt < MyLobbyGroup.LobbyLineItems.Count; cnt ++)
 			{
-				if ((client.players[cnt].isPlayer == false) && (client.players[cnt].isRedTeam == true))
+				if ((MyLobbyGroup.LobbyLineItems[cnt].isCaller == true) && (MyLobbyGroup.LobbyLineItems[cnt].isRedTeam == true))
 				{
 					redCallerCnt += 1;
+				}
+				if (redCallerCnt > 1)
+				{
+					MyLobbyGroup.LobbyLineItems [cnt].isCaller.isOn = false;
+					redCallerCnt --;
 				}
 			}
 		}
 		else if ((isRedTeam.isOn == false) && (isBlueTeam.isOn == true))
 		{
-			for (int cnt = 0;cnt < client.players.Count; cnt ++)
+			for (int cnt = 0;cnt < MyLobbyGroup.LobbyLineItems.Count; cnt ++)
 			{
-				if ((client.players[cnt].isPlayer == false) && (client.players[cnt].isRedTeam == false))
+				if ((MyLobbyGroup.LobbyLineItems[cnt].isCaller == true) && (MyLobbyGroup.LobbyLineItems[cnt].isRedTeam == false))
 				{
 					blueCallerCnt += 1;
 				}
-			}
-		}
-		for (int cnt = 0; cnt < client.players.Count; cnt++) {
-			if (String.Equals(client.players[cnt].name,lineItemText.text)){
-				if ((blueCallerCnt > 1) || (redCallerCnt > 1)) {
-					isCaller.isOn = false;
-					client.players [cnt].isPlayer = true;	
-				} else if ((blueCallerCnt < 1) && (redCallerCnt < 1)) {
-					isCaller.isOn = true;
-					client.players [cnt].isPlayer = false;
+				if (blueCallerCnt > 1)
+				{
+					MyLobbyGroup.LobbyLineItems [cnt].isCaller.isOn = false;
+					blueCallerCnt --;
 				}
 			}
 		}
+		SetGameClient ();
 	}
 }
