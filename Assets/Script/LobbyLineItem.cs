@@ -37,6 +37,7 @@ public class LobbyLineItem : MonoBehaviour {
 
 		for (int cnt = 0; cnt < client.players.Count; cnt++)
 		{
+			//TODO - Should be matching on an ID not on name
 			if (String.Equals (client.players [cnt].name, lineItemText.text))
 			{
 				client.players [cnt].name = lineItemText.text;

@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour {
 
 	public InputField nameInput;
 
+	//TODO - Put this on the Server, it really should not be in the GameManager as the only thing tht can set it is the server
+	public InputField minPlayers;
+
 	private void Start()
 	{
 		Instance = this;
@@ -49,13 +52,17 @@ public class GameManager : MonoBehaviour {
 			//TODO - Remove PORT hardcoding
 			s.Init();
 
+			int rnd = UnityEngine.Random.Range(0,99999);
+
 			//The Host has a client as well as a server
 			Client c = Instantiate(clientPrefab).GetComponent<Client>();
 			c.clientName = nameInput.text;
 			if (c.clientName == "")
 			{
-				c.clientName = "Host";
+				c.clientName = "Host_" + rnd.ToString();
 			}
+
+
 				
 			c.isHost = true;
 			c.isPlayer = false;
@@ -85,9 +92,10 @@ public class GameManager : MonoBehaviour {
 			Client c = Instantiate(clientPrefab).GetComponent<Client>();
 			//TODO - Remove PORT hardcoding
 			c.clientName = nameInput.text;
+			int rnd = UnityEngine.Random.Range(0,99999);
 			if (c.clientName == "")
 			{
-				c.clientName = "Client";
+				c.clientName = "Client_" + rnd.ToString();
 			}
 			c.isHost = false;
 			c.isPlayer = true;

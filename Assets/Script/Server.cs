@@ -21,6 +21,7 @@ public class Server : MonoBehaviour
 
 	string[] words = new string[25];
 	string[] populate = new string[25];
+	public int numParticipants;
 
 	public void Init(){
 		//needed to preserve game objects
@@ -51,7 +52,7 @@ public class Server : MonoBehaviour
 		{
 			return;
 		}
-
+			
 		foreach (ServerClient c in clients)
 		{
 			//is the client still connected?
@@ -123,7 +124,7 @@ public class Server : MonoBehaviour
 
 		Debug.Log ("Somebody has connected. Starting to listen for any other clients");
 
-		//Ask everyone that is connected to state who they are
+		//Ask last person that connected to state who they are
 		Broadcast ("SWHO" + Allusers, clients[clients.Count-1]);
 
 	}
@@ -186,6 +187,17 @@ public class Server : MonoBehaviour
 		switch (aData [0])
 		{
 		case "CWHO":
+			//See if the number of participants is greater than zero, if it is then it must have been sent
+			int howManyPlaying;
+			if (Int32.TryParse (aData [5], out howManyPlaying))
+			{
+
+			}
+			else
+			{
+				howManyPlaying = 0;
+			}
+
 			c.clientName = aData [1];
 			c.isHost = (aData [2] == "0") ? false : true;
 			c.isPlayer = (aData [3] == "0") ? false : true;
@@ -195,22 +207,11 @@ public class Server : MonoBehaviour
 				+ aData [1] + '|'
 				+ aData [2] + '|'
 				+ aData [3] + '|'
-				+ aData [4],
+				+ aData [4] + '|'
+				+ howManyPlaying.ToString(),
 				clients
 			);
-
-//			string Allusers = "";
-//			foreach (ServerClient i in clients)
-//			{
-//				Allusers +=
-//				"|"
-//				+ i.clientName + ","
-//				+ ((i.isHost)?1:0).ToString() + ","
-//				+ ((i.isPlayer)?1:0).ToString() + ","
-//				+ ((i.isRedTeam)?1:0).ToString();
-//			}
-//			//Update everyone with the latest client list
-//			Broadcast ("SCNN" + Allusers, clients);
+					
 			break;
 		case "CMOV":
 			Broadcast (

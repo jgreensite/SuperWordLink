@@ -17,6 +17,7 @@ public class Client : MonoBehaviour
 	private NetworkStream stream;
 	private StreamWriter writer;
 	private StreamReader reader;
+	private int numParticipants;
 
 	public List<GameClient> players = new List<GameClient>();
 
@@ -76,53 +77,71 @@ public class Client : MonoBehaviour
 	private void OnIncomingData(string data)
 	{
 		Debug.Log ("Client Receiving: " + data);
-
+		int howManyPlaying;
 		string[] aData = data.Split('|');
 
 		switch (aData [0])
 		{
 		case "SWHO":
-			players.Clear();
+			players.Clear ();
 			for (int i = 1; i < aData.Length; i++)
 			{
-				//TODO - this was originally UserConnected (aData [i], false);, it's been hacked to get it to compile
-				string[] bData = aData[i].Split(',');
+				string[] bData = aData [i].Split (',');
 				UserConnected (
-				bData [0],
-				(bData [1] == "0") ? false : true,
-				(bData [2] == "0") ? false : true,
-				(bData [3] == "0") ? false : true
+					bData [0],
+					(bData [1] == "0") ? false : true,
+					(bData [2] == "0") ? false : true,
+					(bData [3] == "0") ? false : true
 				);		
 			}
-			Send (
-				"CWHO" + '|'
-				+ clientName + '|'
-				+ ((isHost)?1:0).ToString() + '|'
-				+ ((isPlayer)?1:0).ToString() +'|'
-				+ ((isRedTeam)?1:0).ToString()
-			);
+//			if (isHost)
+//			{
+				//Get the number of participants from the GameManager and convet to an integer
+				//Note that cannot write the number of participants that is used to decide to start the game
+				//this must be initiated from the server sending a message to the client
+				if (Int32.TryParse (GameManager.Instance.minPlayers.text, out howManyPlaying))
+				{
+
+				}
+				else
+				{
+					howManyPlaying = 0;
+				}
+				Send (
+					"CWHO" + '|'
+					+ clientName + '|'
+					+ ((isHost)?1:0).ToString() + '|'
+					+ ((isPlayer)?1:0).ToString() +'|'
+					+ ((isRedTeam)?1:0).ToString() +'|'
+					+ howManyPlaying.ToString()
+
+				);
+//			}
 			break;
 
 		case "SCNN":
+
+			//sets the number of participants based on if the server has communicated greater than 0
+			if (Int32.TryParse (aData [5], out howManyPlaying))
+			{
+
+			}
+			else
+			{
+				howManyPlaying = 0;
+			}
+
+			if (howManyPlaying > 0)
+			{
+				numParticipants = howManyPlaying;
+			} 
+
 			UserConnected (
 				aData [1],
 				(aData [2] == "0") ? false : true,
 				(aData [3] == "0") ? false : true,
 				(aData [4] == "0") ? false : true
 			);
-
-//			players.Clear();
-//			for (int i = 1; i < aData.Length; i++)
-//			{
-//				//TODO - this was originally UserConnected (aData [i], false);, it's been hacked to get it to compile
-//				string[] bData = aData[i].Split(',');
-//				UserConnected (
-//					bData [0],
-//					(bData [1] == "0") ? false : true,
-//					(bData [2] == "0") ? false : true,
-//					(bData [3] == "0") ? false : true
-//				);		
-//			}	
 			break;
 		case "SMOV":
 			int x = int.Parse(aData [2]);
@@ -174,18 +193,10 @@ public class Client : MonoBehaviour
 
 		players.Add (c);
 
-		//Once at least two players are connected allow the host to assign players
-		//note that all client's need to start the game but they need to share data regarding moves and cards
-
-		//TODO - Create teams for the players
-		if (players.Count >= 3)
+		if ((players.Count >= numParticipants) && (numParticipants >= 1))
 		{
 			//TODO - Update the panel message to say "waiting for host to choose teams"
-			{
-				//checks if this client is the host
-//				if (isHost == true)
-					GameManager.Instance.OpenLobby();
-			}
+			GameManager.Instance.OpenLobby ();
 		}
 	}
 

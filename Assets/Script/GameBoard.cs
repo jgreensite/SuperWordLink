@@ -126,7 +126,7 @@ public class GameBoard : MonoBehaviour
 				+ Input.inputString
 			);
 		}
-		else if ((Input.GetKeyDown (KeyCode.C) || Input.GetKeyDown (KeyCode.P)) && (client.isHost == true || isGameover == true))
+		else if ((Input.GetKeyDown (KeyCode.C) || Input.GetKeyDown (KeyCode.P)) && (client.isPlayer == false || isGameover == true))
 		{
 			setCamera (Input.inputString.ToUpper());
 		}
@@ -361,12 +361,12 @@ public class GameBoard : MonoBehaviour
 		
 	public void GenerateGameboard()
 	{
-		if (client.isHost == true)
-		{
-			setCamera ("C");
-		} else
+		if (client.isPlayer == true)
 		{
 			setCamera ("P");
+		} else
+		{
+			setCamera ("C");
 		}
 		//reset counters for each of the card types
 		int rndChoose = 0;
