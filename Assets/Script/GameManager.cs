@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
 
 	public InputField nameInput;
 
-	//TODO - Put this on the Server, it really should not be in the GameManager as the only thing tht can set it is the server
+	// Keep this on the GameManager so the server can be run on a seperate machine
 	public InputField minPlayers;
 
 	private void Start()

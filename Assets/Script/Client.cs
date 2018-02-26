@@ -94,29 +94,30 @@ public class Client : MonoBehaviour
 					(bData [3] == "0") ? false : true
 				);		
 			}
-//			if (isHost)
-//			{
-				//Get the number of participants from the GameManager and convet to an integer
-				//Note that cannot write the number of participants that is used to decide to start the game
-				//this must be initiated from the server sending a message to the client
-				if (Int32.TryParse (GameManager.Instance.minPlayers.text, out howManyPlaying))
-				{
+			//Get the number of participants from the GameManager and convet to an integer
+			//Note that cannot write the number of participants that is used to decide to start the game
+			//this must be initiated from the server sending a message to the client
+			if (Int32.TryParse (GameManager.Instance.minPlayers.text, out howManyPlaying))
+			{
 
-				}
-				else
-				{
-					howManyPlaying = 0;
-				}
-				Send (
-					"CWHO" + '|'
-					+ clientName + '|'
-					+ ((isHost)?1:0).ToString() + '|'
-					+ ((isPlayer)?1:0).ToString() +'|'
-					+ ((isRedTeam)?1:0).ToString() +'|'
-					+ howManyPlaying.ToString()
+			}
+			else if ((isHost) && (GameManager.Instance.minPlayers.text == ""))
+			{
+				howManyPlaying = 1;
+			}
+			else
+			{
+				howManyPlaying = 0;
+			}
+			Send (
+				"CWHO" + '|'
+				+ clientName + '|'
+				+ ((isHost)?1:0).ToString() + '|'
+				+ ((isPlayer)?1:0).ToString() +'|'
+				+ ((isRedTeam)?1:0).ToString() +'|'
+				+ howManyPlaying.ToString()
 
-				);
-//			}
+			);
 			break;
 
 		case "SCNN":
