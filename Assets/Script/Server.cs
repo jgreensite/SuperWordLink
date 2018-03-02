@@ -21,7 +21,7 @@ public class Server : MonoBehaviour
 
 	string[] words = new string[25];
 	string[] populate = new string[25];
-	public int numParticipants;
+	public int numParticipants = 0;
 
 	public void Init(){
 		//needed to preserve game objects
@@ -188,31 +188,77 @@ public class Server : MonoBehaviour
 		{
 		case "CWHO":
 			//See if the number of participants is greater than zero, if it is then it must have been sent
-			int howManyPlaying;
-			if (Int32.TryParse (aData [5], out howManyPlaying))
-			{
 
-			}
-			else
+			// add the new client details, remember that it will always be the last client in the list of clients that we do not have the details for
+			clients[clients.Count-1].clientName = aData[1];
+			clients[clients.Count-1].isHost = ((aData[2] == "1")? true : false);
+			clients[clients.Count-1].isPlayer = ((aData[3] == "1")? true : false);
+			clients[clients.Count-1].isRedTeam = ((aData[4] == "1")? true : false);
+
+			// if the new client that is added is a host then it will determine the number of players
+			if (clients[clients.Count-1].isHost == true) 
 			{
-				howManyPlaying = 0;
+				Int32.TryParse (aData[5], out numParticipants);
 			}
 
-			c.clientName = aData [1];
-			c.isHost = (aData [2] == "0") ? false : true;
-			c.isPlayer = (aData [3] == "0") ? false : true;
-			c.isRedTeam = (aData [4] == "0") ? false : true;
-			Broadcast (
-				"SCNN" + '|'
-				+ aData [1] + '|'
-				+ aData [2] + '|'
-				+ aData [3] + '|'
-				+ aData [4] + '|'
-				+ howManyPlaying.ToString(),
-				clients
-			);
-					
+			//get a list of all the users that are connected, do this after adding the new client's details to this list
+			string Allusers = "";
+			//foreach (ServerClient i in clients)
+			for (int i = 0; i < clients.Count;i ++)
+			{
+				Allusers += "|"
+				+ clients[i].clientName + ","
+				+ ((clients[i].isHost) ? 1 : 0).ToString () + ","
+				+ ((clients[i].isPlayer) ? 1 : 0).ToString () + ","
+				+ ((clients[i].isRedTeam) ? 1 : 0).ToString () + ",";
+
+				// TODO - Change this it is not the easiest to understand code
+				// this is a "magic field" that tells the client it should add the participant and start the lobby
+				// it is placed on the last entry of the message sent to the client
+				// Really this should be another message embedded in this message
+				if ((numParticipants != 0) && (clients.Count == numParticipants) && (i == clients.Count-1))
+				{
+					Allusers += numParticipants.ToString ();
+				}
+				else
+				{
+					Allusers += 0;
+				}
+			}
+
+			//broadcast this updated list to all the connected clients
+			Broadcast ("SCNN" + Allusers, clients);
+
+//			c.clientName = aData [1];
+//			c.isHost = (aData [2] == "0") ? false : true;
+//			c.isPlayer = (aData [3] == "0") ? false : true;
+//			c.isRedTeam = (aData [4] == "0") ? false : true;
+//			Broadcast (
+//				"SCNN" + '|'
+//				+ aData [1] + '|'
+//				+ aData [2] + '|'
+//				+ aData [3] + '|'
+//				+ aData [4] + '|'
+//				+ howManyPlaying.ToString(),
+//				clients
+//			);								
 			break;
+//		case "CLOB":
+//			//establish if the total number of connected clients for the game to start has been reached and if it has open the lobby
+//			if (numParticipants == clients.Count)
+//			{
+//				Broadcast (
+//					"SLOB",
+//					clients
+//				);
+//			}
+//			else
+//			{
+//				//do nothing
+//			}
+//
+//			break;
+		
 		case "CMOV":
 			Broadcast (
 				"SMOV" + '|'

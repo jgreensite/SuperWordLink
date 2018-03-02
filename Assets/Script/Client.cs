@@ -121,28 +121,46 @@ public class Client : MonoBehaviour
 			break;
 
 		case "SCNN":
-
-			//sets the number of participants based on if the server has communicated greater than 0
-			if (Int32.TryParse (aData [5], out howManyPlaying))
+			players.Clear ();
+			for (int i = 1; i < aData.Length; i++)
 			{
+				string[] bData = aData [i].Split (',');
+//				//sets the number of participants based on if the server has communicated greater than 0
+//				if (Int32.TryParse (bData [5], out howManyPlaying))
+//				{
+//
+//				}
+//				else
+//				{
+//					howManyPlaying = 0;
+//				}
+//
+//				if (howManyPlaying > 0)
+//				{
+//					numParticipants = howManyPlaying;
+//				} 
 
+				UserConnected (
+					bData [0],
+					(bData [1] == "0") ? false : true,
+					(bData [2] == "0") ? false : true,
+					(bData [3] == "0") ? false : true
+				);
+
+				//if we get the signal to start the lobby, start it 
+				if (bData [4] != "0")
+				{
+					GameManager.Instance.OpenLobby ();
+				}
 			}
-			else
-			{
-				howManyPlaying = 0;
-			}
 
-			if (howManyPlaying > 0)
-			{
-				numParticipants = howManyPlaying;
-			} 
 
-			UserConnected (
-				aData [1],
-				(aData [2] == "0") ? false : true,
-				(aData [3] == "0") ? false : true,
-				(aData [4] == "0") ? false : true
-			);
+//			UserConnected (
+//				aData [1],
+//				(aData [2] == "0") ? false : true,
+//				(aData [3] == "0") ? false : true,
+//				(aData [4] == "0") ? false : true
+//			);
 			break;
 		case "SMOV":
 			int x = int.Parse(aData [2]);
@@ -180,6 +198,9 @@ public class Client : MonoBehaviour
 		case "SBEG":
 			GameManager.Instance.StartGame ();
 			break;
+//		case "SLOB":
+//			GameManager.Instance.OpenLobby ();
+//			break;
 		}
 	}
 		
@@ -193,12 +214,12 @@ public class Client : MonoBehaviour
 		c.isRedTeam = isRedTeam;
 
 		players.Add (c);
+		//TODO - Update the panel message to say "waiting for host to choose teams"
+//		if ((players.Count >= numParticipants) && (numParticipants >= 1))
+//		{
 
-		if ((players.Count >= numParticipants) && (numParticipants >= 1))
-		{
-			//TODO - Update the panel message to say "waiting for host to choose teams"
-			GameManager.Instance.OpenLobby ();
-		}
+//			GameManager.Instance.OpenLobby ();
+//		}
 	}
 
 	//Called when the application quits, from Monobehaviour
