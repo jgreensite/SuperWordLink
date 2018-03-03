@@ -153,14 +153,7 @@ public class Client : MonoBehaviour
 					GameManager.Instance.OpenLobby ();
 				}
 			}
-
-
-//			UserConnected (
-//				aData [1],
-//				(aData [2] == "0") ? false : true,
-//				(aData [3] == "0") ? false : true,
-//				(aData [4] == "0") ? false : true
-//			);
+				
 			break;
 		case "SMOV":
 			int x = int.Parse(aData [2]);
@@ -196,11 +189,28 @@ public class Client : MonoBehaviour
 			}			
 			break;
 		case "SBEG":
+
+			for (int i = 1; i < aData.Length; i++)
+			{
+				string[] bData = aData [i].Split (',');
+				UserConnected (
+					bData [0],
+					(bData [1] == "0") ? false : true,
+					(bData [2] == "0") ? false : true,
+					(bData [3] == "0") ? false : true
+				);
+
+				//TODO - improve matching, should not be matching on client name it's brittle
+				//Populate the client attributes
+				if (String.Equals (bData [0], clientName))
+				{
+					isHost = (bData [1] == "0") ? false : true;
+					isPlayer = (bData [2] == "0") ? false : true;
+					isRedTeam = (bData [3] == "0") ? false : true;
+				}
+			}
 			GameManager.Instance.StartGame ();
 			break;
-//		case "SLOB":
-//			GameManager.Instance.OpenLobby ();
-//			break;
 		}
 	}
 		
@@ -220,6 +230,25 @@ public class Client : MonoBehaviour
 
 //			GameManager.Instance.OpenLobby ();
 //		}
+	}
+
+	public void StartGame()
+	{
+		string concatPlayers = "";
+
+		for (int cnt = 0; cnt < players.Count; cnt++)
+		{
+			concatPlayers += "|"
+			+ players [cnt].name + ","
+			+ ((players [cnt].isPlayer) ? 1 : 0).ToString () + ","
+			+ ((players [cnt].isRedTeam) ? 1 : 0).ToString () ;
+		}
+			
+		Send(
+			"CBEG" + "|"
+			+ clientName
+			+ concatPlayers
+		);
 	}
 
 	//Called when the application quits, from Monobehaviour

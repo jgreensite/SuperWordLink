@@ -61,9 +61,7 @@ public class GameManager : MonoBehaviour {
 			{
 				c.clientName = "Host_" + rnd.ToString();
 			}
-
-
-				
+	
 			c.isHost = true;
 			c.isPlayer = false;
 			c.isRedTeam = true;
@@ -121,12 +119,7 @@ public class GameManager : MonoBehaviour {
 	public void StartGameButton()
 	{
 		Client client = FindObjectOfType<Client> ();
-
-		//Host client needs to tell server that the teams have been chosen so the game can start
-		client.Send(
-			"CBEG" + '|'
-			+ client.clientName
-		);
+		client.StartGame ();
 	}
 
 	public void BackButton()

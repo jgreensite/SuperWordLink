@@ -202,32 +202,8 @@ public class Server : MonoBehaviour
 			}
 
 			//get a list of all the users that are connected, do this after adding the new client's details to this list
-			string Allusers = "";
-			//foreach (ServerClient i in clients)
-			for (int i = 0; i < clients.Count;i ++)
-			{
-				Allusers += "|"
-				+ clients[i].clientName + ","
-				+ ((clients[i].isHost) ? 1 : 0).ToString () + ","
-				+ ((clients[i].isPlayer) ? 1 : 0).ToString () + ","
-				+ ((clients[i].isRedTeam) ? 1 : 0).ToString () + ",";
-
-				// TODO - Change this it is not the easiest to understand code
-				// this is a "magic field" that tells the client it should add the participant and start the lobby
-				// it is placed on the last entry of the message sent to the client
-				// Really this should be another message embedded in this message
-				if ((numParticipants != 0) && (clients.Count == numParticipants) && (i == clients.Count-1))
-				{
-					Allusers += numParticipants.ToString ();
-				}
-				else
-				{
-					Allusers += 0;
-				}
-			}
-
 			//broadcast this updated list to all the connected clients
-			Broadcast ("SCNN" + Allusers, clients);
+			Broadcast ("SCNN" + GetStringOfAllClients(), clients);
 
 //			c.clientName = aData [1];
 //			c.isHost = (aData [2] == "0") ? false : true;
@@ -301,12 +277,56 @@ public class Server : MonoBehaviour
 			);
 			break;
 		case "CBEG":
+			//Note that start at 2 not 1 becuase the name of the client is transmitted at position 1
+			for (int i = 2; i < aData.Length; i++)
+			{
+				string[] bData = aData [i].Split (',');
+				foreach (ServerClient sc in clients)
+				{
+					//TODO - improve matching, should not be matching on client name it's brittle
+					//Populate the client attributes
+					if (String.Equals (bData [0], sc.clientName))
+					{
+						sc.isPlayer = (bData [1] == "0") ? false : true;
+						sc.isRedTeam = (bData [2] == "0") ? false : true;
+					}
+				}
+	
+			}
+
 			Broadcast (
-				"SBEG",
+				"SBEG" + GetStringOfAllClients(),
 				clients
 			);
 			break;
 		}
+	}
+
+	private string GetStringOfAllClients()
+	{
+		string concatClients = "";
+		for (int i = 0; i < clients.Count;i ++)
+		{
+			concatClients += "|"
+				+ clients[i].clientName + ","
+				+ ((clients[i].isHost) ? 1 : 0).ToString () + ","
+				+ ((clients[i].isPlayer) ? 1 : 0).ToString () + ","
+				+ ((clients[i].isRedTeam) ? 1 : 0).ToString () + ",";
+
+			// TODO - Change this it is not the easiest to understand code
+			// this is a "magic field" that tells the client it should add the participant and start the lobby
+			// it is placed on the last entry of the message sent to the client
+			// Really this should be another message embedded in this message
+			if ((numParticipants != 0) && (clients.Count == numParticipants) && (i == clients.Count-1))
+			{
+				concatClients += numParticipants.ToString ();
+			}
+			else
+			{
+				concatClients += 0;
+			}
+		}
+		return concatClients;
 	}
 }
 
