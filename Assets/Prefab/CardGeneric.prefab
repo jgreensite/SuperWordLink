@@ -263,7 +263,7 @@ TextMesh:
   m_Anchor: 4
   m_Alignment: 1
   m_TabSize: 4
-  m_FontSize: 15
+  m_FontSize: 20
   m_FontStyle: 1
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 87c316b602156405d92e616621658222, type: 3}
@@ -284,7 +284,7 @@ TextMesh:
   m_Anchor: 4
   m_Alignment: 1
   m_TabSize: 4
-  m_FontSize: 15
+  m_FontSize: 20
   m_FontStyle: 1
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 87c316b602156405d92e616621658222, type: 3}
@@ -334,6 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab34cab2473d14c4685f1e2f7c4cc87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateFaceUp: -1
   m_maximumTilt: 45
   m_tiltSpeed: 50
   cardType: 

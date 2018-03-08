@@ -11,11 +11,9 @@ public class LobbyLineItem : MonoBehaviour {
 	public Toggle isRedTeam;
 	public Toggle isBlueTeam;
 
-//	Client client;
-
 	// Use this for initialization
 	void Start () {
-//		client = FindObjectOfType<Client> ();
+		
 	}
 	
 	// Update is called once per frame
@@ -39,7 +37,6 @@ public class LobbyLineItem : MonoBehaviour {
 		{
 			//TODO - Should be matching on an ID not on name
 			if (String.Equals (client.players [cnt].name, lineItemText.text))
-			//if(client.players [cnt].name == lineItemText.text)
 			{
 				client.players [cnt].name = lineItemText.text;
 				client.players [cnt].isPlayer = !isCaller.isOn;
@@ -50,42 +47,31 @@ public class LobbyLineItem : MonoBehaviour {
 
 	public void SelectUIComponent()
 	{
-//		Client client = FindObjectOfType<Client> ();
 		Lobby MyLobbyGroup = FindObjectOfType<Lobby> ();
 
 		int redCallerCnt = 0;
 		int blueCallerCnt = 0;
-
-//		if ((isRedTeam.isOn == true) && (isBlueTeam.isOn == false))
-//		{
-			for (int cnt = 0;cnt < MyLobbyGroup.LobbyLineItems.Count; cnt ++)
+		for (int cnt = 0;cnt < MyLobbyGroup.LobbyLineItems.Count; cnt ++)
+		{
+			if ((MyLobbyGroup.LobbyLineItems[cnt].isCaller.isOn == true) && (MyLobbyGroup.LobbyLineItems[cnt].isRedTeam.isOn == true))
 			{
-				if ((MyLobbyGroup.LobbyLineItems[cnt].isCaller.isOn == true) && (MyLobbyGroup.LobbyLineItems[cnt].isRedTeam.isOn == true))
-				{
-					redCallerCnt += 1;
-				}
-				if (redCallerCnt > 1)
-				{
-					MyLobbyGroup.LobbyLineItems [cnt].isCaller.isOn = false;
-					redCallerCnt --;
-				}
-//			}
-//		}
-//		else if ((isRedTeam.isOn == false) && (isBlueTeam.isOn == true))
-//		{
-//			for (int cnt = 0;cnt < MyLobbyGroup.LobbyLineItems.Count; cnt ++)
-//			{
-			if ((MyLobbyGroup.LobbyLineItems[cnt].isCaller.isOn == true) && (MyLobbyGroup.LobbyLineItems[cnt].isRedTeam.isOn == false))
-				{
-					blueCallerCnt += 1;
-				}
-				if (blueCallerCnt > 1)
-				{
-					MyLobbyGroup.LobbyLineItems [cnt].isCaller.isOn = false;
-					blueCallerCnt --;
-				}
+				redCallerCnt += 1;
 			}
-//		}
+			if (redCallerCnt > 1)
+			{
+				MyLobbyGroup.LobbyLineItems [cnt].isCaller.isOn = false;
+				redCallerCnt --;
+			}
+			if ((MyLobbyGroup.LobbyLineItems[cnt].isCaller.isOn == true) && (MyLobbyGroup.LobbyLineItems[cnt].isRedTeam.isOn == false))
+			{
+				blueCallerCnt += 1;
+			}
+			if (blueCallerCnt > 1)
+			{
+				MyLobbyGroup.LobbyLineItems [cnt].isCaller.isOn = false;
+				blueCallerCnt --;
+			}
+		}
 		SetGameClient ();
 	}
 }

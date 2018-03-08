@@ -12,7 +12,7 @@ public class GameBoard : MonoBehaviour
 	public GameObject playerCamera;
 	public GameObject callerCamera;
 
-	private GameObject currentCamera;
+	public GameObject currentCamera;
 
 	public static int gridXDim = 5;
 	public static int gridYDim = 5;
@@ -61,49 +61,17 @@ public class GameBoard : MonoBehaviour
 		Instance = this;
 		client = FindObjectOfType<Client> ();
 
-//		//decide at random who goes first and how many of each card is needed
-//		int rndExtraRed = Random.Range(0,2);
-//		cntRedCards = cntBlueCards = cntCivilCards = Mathf.Abs (gridXDim * gridYDim/3);
-//
 		turnIndicator = GameObject.Find ("Turn Indicator");
 		turnIndicatorScript = turnIndicator.GetComponent <TurnIndicator> ();
-//
+
 		gameBoardCaller = GameObject.Find ("Game Board Caller");
 		gameBoardPlayer = GameObject.Find ("Game Board Player");
-//
-//		//otherScript = turnIndicator.GetComponent(TurnIndicator);
-//		//Blue goes first
-//		if (rndExtraRed == 0)
-//		{
-//			cntBlueCards = cntRedCards + 1;
-//			cntCivilCards = cntRedCards - 1;
-//			isRedStart = false;
-//			isRedTurn = false;
-//			turnIndicatorScript.setColour ("blue");
-//
-//		} else
-//		//Red goes first
-//		{
-//			cntRedCards = cntBlueCards + 1;
-//			cntCivilCards = cntBlueCards - 1;
-//			isRedStart = true;
-//			isRedTurn = true;
-//			turnIndicatorScript.setColour ("red");
-//		}
-//		cntDeathCards = gridXDim * gridYDim - (cntRedCards + cntBlueCards + cntCivilCards);
-//
-//		//countTextRed = 0;
-//		countTextRed.text = "Red Remaining " + cntRedCards;
-//		//countTextBlue = 0;
-//		countTextBlue.text = "Blue Remaining " + cntBlueCards;
 
 		isRestart = false;
 		isGameover = false; 	
-//		//Send message so can start the process of getting cards;
 
-		//TODO - Get Dictionary from the server, as opposed to getting it locally
-		//Should we delegate all communication to the clients / servers?
-		//Note that only one of these requests should be made otherwise we'll generate too many cards as each client will request
+		//Get Dictionary from the server, as opposed to getting it locally
+		//Only the host should make this request otherwise we'll generate too many cards as each client will request dictionary
 		if (client.isHost==true){
 			client.Send(
 				"CDIC" + '|'
@@ -114,9 +82,8 @@ public class GameBoard : MonoBehaviour
 
 	private void Update()
 	{
-		//TODO - need a UI button too for this
+		//TODO - also need a UI button for restarting
 		// If the game is over of a restart situation has occured then don't accept anymore input
-
 
 		if (Input.GetKeyDown (KeyCode.R))
 		{
@@ -169,7 +136,7 @@ public class GameBoard : MonoBehaviour
 		RaycastHit hit;
 		if (Physics.Raycast (currentCamera.GetComponent<UnityEngine.Camera>().ScreenPointToRay (Input.mousePosition), out hit, 25.0f, LayerMask.GetMask ("Board")))
 		{
-			//TODO - the offset of 1.2 used here is hard coded based on the size of the box collider "real-world" numbers, it should be calculated
+			//TODO - the offset of 1.2 used here are hard coded based on the size of the box collider "real-world" numbers, it should be calculated
 			float gameboardDimx = transform.Find ("Game Board Player").localScale.x;
 			float gameboardDimz = transform.Find ("Game Board Player").localScale.z;
 			mouseOver.x = (int)((hit.point.x + gameboardDimx/2)/(2.45/gridXDim));
@@ -231,7 +198,7 @@ public class GameBoard : MonoBehaviour
 				case CS.GOOD:
 					//Flip the Card and keep on picking
 					selectedCard = cardsPlayer [x, z];
-					//TODO - isCardUp should occur as a result of startrotating
+					//TODO - isCardUp should occur as a result of startrotating, should not set it directly
 					selectedCard.isCardUp = true;
 					selectedCard.makeFaceUp (x,z, cardsCaller[x,z]);
 					//TODO - simplify this switch statement there is a lot of repeated elements in each case
