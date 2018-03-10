@@ -204,37 +204,7 @@ public class Server : MonoBehaviour
 			//get a list of all the users that are connected, do this after adding the new client's details to this list
 			//broadcast this updated list to all the connected clients
 			Broadcast ("SCNN" + GetStringOfAllClients(), clients);
-
-//			c.clientName = aData [1];
-//			c.isHost = (aData [2] == "0") ? false : true;
-//			c.isPlayer = (aData [3] == "0") ? false : true;
-//			c.isRedTeam = (aData [4] == "0") ? false : true;
-//			Broadcast (
-//				"SCNN" + '|'
-//				+ aData [1] + '|'
-//				+ aData [2] + '|'
-//				+ aData [3] + '|'
-//				+ aData [4] + '|'
-//				+ howManyPlaying.ToString(),
-//				clients
-//			);								
 			break;
-//		case "CLOB":
-//			//establish if the total number of connected clients for the game to start has been reached and if it has open the lobby
-//			if (numParticipants == clients.Count)
-//			{
-//				Broadcast (
-//					"SLOB",
-//					clients
-//				);
-//			}
-//			else
-//			{
-//				//do nothing
-//			}
-//
-//			break;
-		
 		case "CMOV":
 			Broadcast (
 				"SMOV" + '|'

@@ -61,8 +61,6 @@ public class WordDictionary : MonoBehaviour {
 				rndWordLength = Random.Range(smallWordLength,largeWordLength);
 				rndWordPosition = Random.Range(1,words[rndWordLength].Count);
 				newWord = words[rndWordLength][rndWordPosition];
-//				keepSearching = ArrayUtility.Contains (wordList, newWord);
-
 				if (!string.IsNullOrEmpty (wordList [0]))
 				{
 					keepSearching = wordList.Contains(newWord);

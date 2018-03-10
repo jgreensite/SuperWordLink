@@ -125,21 +125,6 @@ public class Client : MonoBehaviour
 			for (int i = 1; i < aData.Length; i++)
 			{
 				string[] bData = aData [i].Split (',');
-//				//sets the number of participants based on if the server has communicated greater than 0
-//				if (Int32.TryParse (bData [5], out howManyPlaying))
-//				{
-//
-//				}
-//				else
-//				{
-//					howManyPlaying = 0;
-//				}
-//
-//				if (howManyPlaying > 0)
-//				{
-//					numParticipants = howManyPlaying;
-//				} 
-
 				UserConnected (
 					bData [0],
 					(bData [1] == "0") ? false : true,
@@ -225,11 +210,6 @@ public class Client : MonoBehaviour
 
 		players.Add (c);
 		//TODO - Update the panel message to say "waiting for host to choose teams"
-//		if ((players.Count >= numParticipants) && (numParticipants >= 1))
-//		{
-
-//			GameManager.Instance.OpenLobby ();
-//		}
 	}
 
 	public void StartGame()
