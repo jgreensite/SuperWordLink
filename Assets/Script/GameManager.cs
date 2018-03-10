@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour {
 	// Keep this on the GameManager so the server can be run on a seperate machine
 	public InputField minPlayers;
 
+	private bool isHostLocal;
+
 	private void Start()
 	{
 		Instance = this;
@@ -43,14 +45,27 @@ public class GameManager : MonoBehaviour {
 		lobbyMenu.SetActive(false);
 	}
 
+	public void setHostingToLocal()
+	{
+		isHostLocal=true;
+	}
+
+	public void setHostingToRemote()
+	{
+		isHostLocal=false;
+	}
+
 	public void HostButton()
 	{
 		try
 		{
-			//Create the Host's server first
-			Server s = Instantiate(serverPrefab).GetComponent<Server>();
-			//TODO - Remove PORT hardcoding
-			s.Init();
+			if (isHostLocal == true)
+			{
+				//Create the Host's server first
+				Server s = Instantiate(serverPrefab).GetComponent<Server>();
+				//TODO - Remove PORT hardcoding
+				s.Init();
+			}
 
 			int rnd = UnityEngine.Random.Range(0,99999);
 

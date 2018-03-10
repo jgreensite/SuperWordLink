@@ -46,6 +46,11 @@ public static class MultiplayersBuildAndRun {
 		PerformOSXBuild (4);
 	}
 
+	[MenuItem("File/Run Multiplayer/Mac OSX Server")]
+	static void PerformOSXServerBuild1 (){
+		PerformOSXServerBuild ();
+	}
+
 	static void PerformOSXBuild (int playerCount)
 	{
 		//EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneOSX);
@@ -54,6 +59,14 @@ public static class MultiplayersBuildAndRun {
 			BuildPipeline.BuildPlayer (GetScenePaths (), "Builds/OSX/" + GetProjectName () + i.ToString() + ".app", BuildTarget.StandaloneOSX, BuildOptions.AutoRunPlayer);
 		}
 
+	}
+
+	public static void PerformOSXServerBuild() {
+		var sceneArray = new EditorBuildSettingsScene[1];
+		sceneArray[0] = new EditorBuildSettingsScene("Assets/Scene/Server.unity", true);
+		EditorBuildSettings.scenes = sceneArray;
+		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneOSX);
+		BuildPipeline.BuildPlayer (GetScenePaths (), "Builds/OSX/" + GetProjectName () + "Server" + ".app", BuildTarget.StandaloneOSX, BuildOptions.AutoRunPlayer|BuildOptions.EnableHeadlessMode);
 	}
 
 
