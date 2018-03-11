@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -27,7 +28,7 @@ public static class MultiplayersBuildAndRun {
 		//EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneWindows);
 		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows);
 		for (int i = 1; i <= playerCount; i++) {
-			BuildPipeline.BuildPlayer (GetScenePaths (), "Builds/Win64/" + GetProjectName () + i.ToString() + ".exe", BuildTarget.StandaloneWindows64, BuildOptions.AutoRunPlayer);
+			BuildPipeline.BuildPlayer (GetScenePaths (), "Builds/Win64/" + GetProjectName () + i.ToString() + ".exe", BuildTarget.StandaloneWindows, BuildOptions.AutoRunPlayer);
 		}
 	}
 
@@ -51,6 +52,11 @@ public static class MultiplayersBuildAndRun {
 		PerformOSXServerBuild ();
 	}
 
+	[MenuItem("File/Run Multiplayer/Unix Server")]
+	static void PerformUnixServerBuild1 (){
+		PerformUnixServerBuild ();
+	}
+
 	static void PerformOSXBuild (int playerCount)
 	{
 		//EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneOSX);
@@ -62,11 +68,41 @@ public static class MultiplayersBuildAndRun {
 	}
 
 	public static void PerformOSXServerBuild() {
-		var sceneArray = new EditorBuildSettingsScene[1];
-		sceneArray[0] = new EditorBuildSettingsScene("Assets/Scene/Server.unity", true);
-		EditorBuildSettings.scenes = sceneArray;
+
+		//Store old list of scenes
+		int oldSceneCount = UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings;     
+		EditorBuildSettingsScene[] oldScenes = new EditorBuildSettingsScene[oldSceneCount];
+		oldScenes = EditorBuildSettings.scenes;
+
+		//Now switch for the server scene
+		EditorBuildSettingsScene[] newScenes = new EditorBuildSettingsScene[1];
+		newScenes[0] = new EditorBuildSettingsScene("Assets/Scene/Server.unity", true);
+		EditorBuildSettings.scenes = newScenes;
 		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneOSX);
-		BuildPipeline.BuildPlayer (GetScenePaths (), "Builds/OSX/" + GetProjectName () + "Server" + ".app", BuildTarget.StandaloneOSX, BuildOptions.AutoRunPlayer|BuildOptions.EnableHeadlessMode);
+		BuildPipeline.BuildPlayer (GetScenePaths (), "Builds/OSX/" + GetProjectName () + "Server" + ".app",BuildTarget.StandaloneOSX,
+			BuildOptions.AutoRunPlayer|BuildOptions.EnableHeadlessMode|BuildOptions.AllowDebugging);
+
+		//Now switch the list of scenes back
+		EditorBuildSettings.scenes = oldScenes;
+	}
+
+	public static void PerformUnixServerBuild() {
+
+		//Store old list of scenes
+		int oldSceneCount = UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings;     
+		EditorBuildSettingsScene[] oldScenes = new EditorBuildSettingsScene[oldSceneCount];
+		oldScenes = EditorBuildSettings.scenes;
+
+		//Now switch for the server scene
+		EditorBuildSettingsScene[] newScenes = new EditorBuildSettingsScene[1];
+		newScenes[0] = new EditorBuildSettingsScene("Assets/Scene/Server.unity", true);
+		EditorBuildSettings.scenes = newScenes;
+		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneLinuxUniversal);
+		BuildPipeline.BuildPlayer (GetScenePaths (), "Builds/Unix/" + GetProjectName () + "Server",BuildTarget.StandaloneLinuxUniversal,
+			BuildOptions.AutoRunPlayer|BuildOptions.EnableHeadlessMode|BuildOptions.AllowDebugging);
+
+		//Now switch the list of scenes back
+		EditorBuildSettings.scenes = oldScenes;
 	}
 
 

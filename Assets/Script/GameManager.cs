@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using AssemblyCSharp;
 
 public class GameManager : MonoBehaviour {
 
@@ -81,8 +82,17 @@ public class GameManager : MonoBehaviour {
 			c.isPlayer = false;
 			c.isRedTeam = true;
 
-			//TODO - Remove PORT hardcoding
-			c.ConnectToServer("127.0.0.1", 6321);
+
+			if (isHostLocal == true)
+			{
+				//TODO - Remove PORT hardcoding
+				c.ConnectToServer(CS.GAMESERVERLOCALADDRESS, CS.GAMESERVERPORT);
+			}
+			else
+			{
+				//TODO - Remove PORT hardcoding
+				c.ConnectToServer(CS.GAMESERVERREMOTEADDRESS, CS.GAMESERVERPORT);				
+			}
 		}
 		catch (Exception e)
 		{
