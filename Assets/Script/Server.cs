@@ -189,17 +189,37 @@ public class Server : MonoBehaviour
 		case "CWHO":
 			//See if the number of participants is greater than zero, if it is then it must have been sent
 
+			// if the new client that is added is a host then it will determine the number of players
+			if ((aData[2] == "1")? true : false) 
+			{
+				Int32.TryParse (aData[5], out numParticipants);
+			
+				//if a client intitiates a host call then clear all other client's connections
+				int i = 0;
+				if (clients.Count > 1)
+				{
+					do
+					{
+						ServerClient sc = clients [i];
+
+						//is the client still connected?
+						if (IsConnected (sc.tcp))
+
+						//TODO - upgrade the server to be able to manage multiple games and present the list of games that are currently running to the players
+						{
+							sc.tcp.Close ();
+							clients.Remove (sc);
+						}
+						i++;
+					} while (i < clients.Count - 2);
+				}
+			}
+
 			// add the new client details, remember that it will always be the last client in the list of clients that we do not have the details for
 			clients[clients.Count-1].clientName = aData[1];
 			clients[clients.Count-1].isHost = ((aData[2] == "1")? true : false);
 			clients[clients.Count-1].isPlayer = ((aData[3] == "1")? true : false);
 			clients[clients.Count-1].isRedTeam = ((aData[4] == "1")? true : false);
-
-			// if the new client that is added is a host then it will determine the number of players
-			if (clients[clients.Count-1].isHost == true) 
-			{
-				Int32.TryParse (aData[5], out numParticipants);
-			}
 
 			//get a list of all the users that are connected, do this after adding the new client's details to this list
 			//broadcast this updated list to all the connected clients

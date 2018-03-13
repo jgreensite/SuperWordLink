@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour {
 	{
 		string HostAddress = GameObject.Find ("HostInput").GetComponent<InputField> ().text;
 		if (HostAddress == "")
-			HostAddress = "127.0.0.1";
+			HostAddress = CS.GAMESERVERREMOTEADDRESS;
 		try
 		{
 			Client c = Instantiate(clientPrefab).GetComponent<Client>();
