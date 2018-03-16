@@ -4,107 +4,123 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-//https://www.appsfresh.com/blog/multiplayer/
+using AssemblyCSharp;
+
+//Originally inspired by https://www.appsfresh.com/blog/multiplayer/
 
 public static class MultiplayersBuildAndRun {
 
+	//Store old list of scenes
+//	static int oldSceneCount = UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings;     
+//	static EditorBuildSettingsScene[] oldScenes = new EditorBuildSettingsScene[oldSceneCount];
+
+	static BuildPlayerOptions newBuildPlayerOptions = new BuildPlayerOptions();
+
+	//Client Builds
+	[MenuItem("File/Run Multiplayer/Windows/1 Player")]
+	static void PerformWin64ClientBuild1 (){
+		PerformBuild (1, CS.WINBUILDPLATFORM, CS.CLIENTSCENECOLLECTION);
+	}
+
 	[MenuItem("File/Run Multiplayer/Windows/2 Players")]
-	static void PerformWin64Build2 (){
-		PerformWin64Build (2);
+	static void PerformWin64ClientBuild2 (){
+		PerformBuild (2, CS.WINBUILDPLATFORM, CS.CLIENTSCENECOLLECTION);
 	}
 
 	[MenuItem("File/Run Multiplayer/Windows/3 Players")]
-	static void PerformWin64Build3 (){
-		PerformWin64Build (3);
+	static void PerformWin64ClientBuild3 (){
+		PerformBuild (3, CS.WINBUILDPLATFORM, CS.CLIENTSCENECOLLECTION);
 	}
 
 	[MenuItem("File/Run Multiplayer/Windows/4 Players")]
-	static void PerformWin64Build4 (){
-		PerformWin64Build (4);
+	static void PerformWin64ClientBuild4 (){
+		PerformBuild (4, CS.WINBUILDPLATFORM, CS.CLIENTSCENECOLLECTION);
 	}
-
-	static void PerformWin64Build (int playerCount)
-	{
-		//EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneWindows);
-		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows);
-		for (int i = 1; i <= playerCount; i++) {
-			BuildPipeline.BuildPlayer (GetScenePaths (), "Builds/Win64/" + GetProjectName () + i.ToString() + ".exe", BuildTarget.StandaloneWindows, BuildOptions.AutoRunPlayer);
-		}
+		
+	[MenuItem("File/Run Multiplayer/Mac OSX/1 Player")]
+	static void PerformOSXClientBuild1 (){
+		PerformBuild (1, CS.OSXBUILDPLATFORM, CS.CLIENTSCENECOLLECTION);
 	}
 
 	[MenuItem("File/Run Multiplayer/Mac OSX/2 Players")]
-	static void PerformOSXBuild2 (){
-		PerformOSXBuild (2);
+	static void PerformOSXClientBuild2 (){
+		PerformBuild (2, CS.OSXBUILDPLATFORM, CS.CLIENTSCENECOLLECTION);
 	}
 
 	[MenuItem("File/Run Multiplayer/Mac OSX/3 Players")]
-	static void PerformOSXBuild3 (){
-		PerformOSXBuild (3);
+	static void PerformOSXClientBuild3 (){
+		PerformBuild (3, CS.OSXBUILDPLATFORM, CS.CLIENTSCENECOLLECTION);
 	}
 
 	[MenuItem("File/Run Multiplayer/Mac OSX/4 Players")]
-	static void PerformOSXBuild4 (){
-		PerformOSXBuild (4);
+	static void PerformOSXClientBuild4 (){
+		PerformBuild (4, CS.OSXBUILDPLATFORM, CS.CLIENTSCENECOLLECTION);
+	}
+
+	[MenuItem("File/Run Multiplayer/iOS/1 Player")]
+	static void PerformiOSClientBuild1 (){
+		PerformBuild (1, CS.IOSBUILDPLATFORM, CS.CLIENTSCENECOLLECTION);
+	}
+
+	//Server Builds	
+	[MenuItem("File/Run Multiplayer/Windows Server")]
+	static void PerformWin64ServerBuild1 (){
+		PerformBuild (1, CS.WINBUILDPLATFORM, CS.SERVERSCENECOLLECTION);
 	}
 
 	[MenuItem("File/Run Multiplayer/Mac OSX Server")]
 	static void PerformOSXServerBuild1 (){
-		PerformOSXServerBuild ();
+		PerformBuild (1, CS.OSXBUILDPLATFORM, CS.SERVERSCENECOLLECTION);
 	}
 
 	[MenuItem("File/Run Multiplayer/Unix Server")]
 	static void PerformUnixServerBuild1 (){
-		PerformUnixServerBuild ();
+		PerformBuild (1, CS.UNXBUILDPLATFORM, CS.SERVERSCENECOLLECTION);
 	}
 
-	static void PerformOSXBuild (int playerCount)
+	static void PerformBuild(int playerCount, string buildPlatform, string buildScenes)
 	{
-		//EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneOSX);
-		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneOSX);
 		for (int i = 1; i <= playerCount; i++) {
-			BuildPipeline.BuildPlayer (GetScenePaths (), "Builds/OSX/" + GetProjectName () + i.ToString() + ".app", BuildTarget.StandaloneOSX, BuildOptions.AutoRunPlayer);
+			switch (buildPlatform)
+			{
+			case CS.OSXBUILDPLATFORM:
+				newBuildPlayerOptions.target = BuildTarget.StandaloneOSX;
+				newBuildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
+				newBuildPlayerOptions.locationPathName = "Builds/OSX/" + GetProjectName () + buildScenes + i.ToString() + ".app";
+				break;
+			
+			case CS.WINBUILDPLATFORM:
+				newBuildPlayerOptions.target = BuildTarget.StandaloneWindows;
+				newBuildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
+				newBuildPlayerOptions.locationPathName = "Builds/Win64/" + GetProjectName () + buildScenes + i.ToString() + ".exe";
+
+				break;
+			
+			case CS.UNXBUILDPLATFORM:
+				newBuildPlayerOptions.target = BuildTarget.StandaloneLinuxUniversal;
+				newBuildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
+				newBuildPlayerOptions.locationPathName = "Builds/Linux/" + GetProjectName () + buildScenes + i.ToString();
+				break;
+			
+			case CS.IOSBUILDPLATFORM:
+				newBuildPlayerOptions.target = BuildTarget.iOS;
+				newBuildPlayerOptions.targetGroup = BuildTargetGroup.iOS;
+				newBuildPlayerOptions.locationPathName = "Builds/iOS/" + GetProjectName () + buildScenes + i.ToString();
+				break;
+			
+			case CS.ANDBUILDPLATFORM:
+				newBuildPlayerOptions.target = BuildTarget.Android;
+				newBuildPlayerOptions.targetGroup = BuildTargetGroup.Android;
+				newBuildPlayerOptions.locationPathName = "Builds/Android/" + GetProjectName () + buildScenes + i.ToString() + ".apk";
+				break;
+			
+			}
+			
+			newBuildPlayerOptions.scenes = ChooseScenes(buildScenes);
+			//newBuildPlayerOptions.options = BuildOptions.AutoRunPlayer;
+			BuildPipeline.BuildPlayer(newBuildPlayerOptions);
 		}
-
 	}
-
-	public static void PerformOSXServerBuild() {
-
-		//Store old list of scenes
-		int oldSceneCount = UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings;     
-		EditorBuildSettingsScene[] oldScenes = new EditorBuildSettingsScene[oldSceneCount];
-		oldScenes = EditorBuildSettings.scenes;
-
-		//Now switch for the server scene
-		EditorBuildSettingsScene[] newScenes = new EditorBuildSettingsScene[1];
-		newScenes[0] = new EditorBuildSettingsScene("Assets/Scene/Server.unity", true);
-		EditorBuildSettings.scenes = newScenes;
-		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneOSX);
-		BuildPipeline.BuildPlayer (GetScenePaths (), "Builds/OSX/" + GetProjectName () + "Server" + ".app",BuildTarget.StandaloneOSX,
-			BuildOptions.AutoRunPlayer|BuildOptions.EnableHeadlessMode|BuildOptions.AllowDebugging);
-
-		//Now switch the list of scenes back
-		EditorBuildSettings.scenes = oldScenes;
-	}
-
-	public static void PerformUnixServerBuild() {
-
-		//Store old list of scenes
-		int oldSceneCount = UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings;     
-		EditorBuildSettingsScene[] oldScenes = new EditorBuildSettingsScene[oldSceneCount];
-		oldScenes = EditorBuildSettings.scenes;
-
-		//Now switch for the server scene
-		EditorBuildSettingsScene[] newScenes = new EditorBuildSettingsScene[1];
-		newScenes[0] = new EditorBuildSettingsScene("Assets/Scene/Server.unity", true);
-		EditorBuildSettings.scenes = newScenes;
-		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneLinuxUniversal);
-		BuildPipeline.BuildPlayer (GetScenePaths (), "Builds/Unix/" + GetProjectName () + "Server",BuildTarget.StandaloneLinuxUniversal,
-			BuildOptions.AutoRunPlayer|BuildOptions.EnableHeadlessMode|BuildOptions.AllowDebugging);
-
-		//Now switch the list of scenes back
-		EditorBuildSettings.scenes = oldScenes;
-	}
-
 
 	static string GetProjectName()
 	{
@@ -124,4 +140,45 @@ public static class MultiplayersBuildAndRun {
 		return scenes;
 	}
 
+//	static void SwitchScenes(string sceneCollection)
+//	{
+//		//Now switch for the server scene
+//		EditorBuildSettingsScene[] newScenes = new EditorBuildSettingsScene[1];
+//		switch(sceneCollection)
+//		{
+//		case (CS.SERVERSCENECOLLECTION):
+//			newScenes[0] = new EditorBuildSettingsScene("Assets/Scene/Server.unity", true);
+//			break;
+//		case (CS.CLIENTSCENECOLLECTION):
+//			newScenes[0] = new EditorBuildSettingsScene("Assets/Scene/Menu.unity", true);
+//			newScenes[1] = new EditorBuildSettingsScene("Assets/Scene/Main.unity", true);
+//			break;
+//		}
+//	}
+
+	static string[] ChooseScenes(string sceneCollection)
+	{
+		string[] newScenes;
+
+		//Now switch for the server scene;
+		if (sceneCollection == CS.SERVERSCENECOLLECTION)
+		{
+			newScenes = new string[1];	
+		} else
+		{
+			newScenes = new string[2];
+		}
+
+		switch(sceneCollection)
+		{
+		case (CS.SERVERSCENECOLLECTION):
+			newScenes[0] = "Assets/Scene/Server.unity";
+			break;
+		case (CS.CLIENTSCENECOLLECTION):
+			newScenes[0] = "Assets/Scene/Menu.unity";
+			newScenes[1] = "Assets/Scene/Main.unity";
+			break;
+		}
+		return (newScenes);
+	}
 }
