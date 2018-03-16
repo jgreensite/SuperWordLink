@@ -117,6 +117,10 @@ public static class MultiplayersBuildAndRun {
 			}
 			
 			newBuildPlayerOptions.scenes = ChooseScenes(buildScenes);
+			if (buildScenes == CS.SERVERSCENECOLLECTION)
+			{
+				newBuildPlayerOptions.options = BuildOptions.EnableHeadlessMode;
+			}
 			//newBuildPlayerOptions.options = BuildOptions.AutoRunPlayer;
 			BuildPipeline.BuildPlayer(newBuildPlayerOptions);
 		}
