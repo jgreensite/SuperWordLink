@@ -160,7 +160,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.newboyoldboy.superwordlink
     Standalone: com.newboyoldboy.superwordlink
-    iOS: com.newboyoldboy.superwordlinktest
+    iOS: com.newboyoldboy.superwordlink
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
@@ -238,9 +238,9 @@ PlayerSettings:
   metalAPIValidation: 1
   iOSRenderExtraFrameOnPause: 0
   appleDeveloperTeamID: 62852M2ZHN
-  iOSManualSigningProvisioningProfileID: 
+  iOSManualSigningProvisioningProfileID: a05ef73d-e411-42e3-9f6b-4468e1e5cdad
   tvOSManualSigningProvisioningProfileID: 
-  appleEnableAutomaticSigning: 0
+  appleEnableAutomaticSigning: 2
   clonedFromGUID: 00000000000000000000000000000000
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
