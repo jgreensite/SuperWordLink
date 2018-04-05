@@ -6,6 +6,7 @@ using AssemblyCSharp;
 
 public class WordDictionary : MonoBehaviour {
 
+	//makes class a singleon
 	public static WordDictionary Instance { set; get; }
 
 	//Set in the editor
@@ -15,10 +16,13 @@ public class WordDictionary : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		//needed to make this a singleton
+		Instance = this;
+
 		//needed to preserve game objects between scenes
 		DontDestroyOnLoad(gameObject);
-
-		Instance = this;
+		GameManager.Instance.goDontDestroyList.Add (gameObject);
+		Debug.Log ("Added WordDictionary at position:" + GameManager.Instance.goDontDestroyList.Count + " to donotdestroylist");
 	}
 
 

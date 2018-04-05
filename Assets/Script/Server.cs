@@ -8,6 +8,8 @@ using System.IO;
 
 public class Server : MonoBehaviour
 {
+	//makes class a singleon
+	public static Server Instance { set; get; }
 
 	public int port = 6321;
 	private List<ServerClient> clients;
@@ -24,8 +26,14 @@ public class Server : MonoBehaviour
 	public int numParticipants = 0;
 
 	public void Init(){
+
+		//needed to make this a singleton
+		Instance = this;
+
 		//needed to preserve game objects
 		DontDestroyOnLoad(gameObject);
+		GameManager.Instance.goDontDestroyList.Add (gameObject);
+		Debug.Log ("Added Server at position:" + GameManager.Instance.goDontDestroyList.Count + " to donotdestroylist");
 
 		//create lists of clients that need to be connected / disconnected
 		clients = new List<ServerClient>();
@@ -41,7 +49,7 @@ public class Server : MonoBehaviour
 		}
 		catch (Exception e)
 		{
-			Debug.Log("Socket Error - " + e.Message);
+			Debug.Log("Socket Error Server: " + e.Message);
 		}
 	}
 
@@ -53,7 +61,7 @@ public class Server : MonoBehaviour
 			return;
 		}
 			
-		foreach (ServerClient c in clients)
+			foreach (ServerClient c in clients)
 		{
 			//is the client still connected?
 
@@ -317,6 +325,31 @@ public class Server : MonoBehaviour
 			}
 		}
 		return concatClients;
+	}
+
+	public void Shutdown()
+	{
+		foreach (ServerClient c in clients)
+		{
+			//is the client still connected?
+
+			if(IsConnected(c.tcp))
+				//if not disconnect the tcp client
+			{
+				c.tcp.Close();
+				disconnectList.Add (c);
+				continue;
+			}
+		}
+
+		for (int i = 0; i < disconnectList.Count - 1; i++)
+		{
+			//Tell the player running the server that someone has disconnected
+
+			clients.Remove (disconnectList [i]);
+			disconnectList.RemoveAt (i);
+		}
+		server.Stop();
 	}
 }
 

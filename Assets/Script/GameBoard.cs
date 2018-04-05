@@ -7,6 +7,7 @@ using AssemblyCSharp;
 
 public class GameBoard : MonoBehaviour
 {
+	//makes class a singleon
 	public static GameBoard Instance{ set; get; }
 
 	public GameObject playerCamera;
@@ -58,7 +59,9 @@ public class GameBoard : MonoBehaviour
 
 	private void Start()
 	{
+		//needed to make this a singleton
 		Instance = this;
+
 		client = FindObjectOfType<Client> ();
 
 		turnIndicator = GameObject.Find ("Turn Indicator");

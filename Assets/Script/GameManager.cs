@@ -8,12 +8,15 @@ using AssemblyCSharp;
 
 public class GameManager : MonoBehaviour {
 
+	//makes class a singleon
 	public static GameManager Instance { set; get; }
 
 	public GameObject mainMenu;
 	public GameObject serverMenu;
 	public GameObject connectMenu;
 	public GameObject lobbyMenu;
+	public GameObject gameMenu;
+	public List<GameObject> goDontDestroyList = new List<GameObject>();
 
 	public GameObject serverPrefab;
 	public GameObject clientPrefab;
@@ -27,7 +30,9 @@ public class GameManager : MonoBehaviour {
 
 	private void Start()
 	{
+		//needed to make this a singleton
 		Instance = this;
+
 		mainMenu.SetActive(true);
 		serverMenu.SetActive(false);
 		connectMenu.SetActive(false);
@@ -35,7 +40,8 @@ public class GameManager : MonoBehaviour {
 
 
 		DontDestroyOnLoad (gameObject);
-
+		GameManager.Instance.goDontDestroyList.Add (gameObject);
+		Debug.Log ("Added GameManager at position:" + GameManager.Instance.goDontDestroyList.Count + " to donotdestroylist");
 	}
 
 	public void ConnectButton()

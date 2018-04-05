@@ -25,6 +25,8 @@ public class Client : MonoBehaviour
 	{
 
 		DontDestroyOnLoad(gameObject);
+		GameManager.Instance.goDontDestroyList.Add (gameObject);
+		Debug.Log ("Added Client at position:" + GameManager.Instance.goDontDestroyList.Count + " to donotdestroylist");
 	}
 
 	public bool ConnectToServer (string host, int port)
@@ -42,7 +44,7 @@ public class Client : MonoBehaviour
 		}
 		catch (Exception e)
 		{
-			Debug.Log ("Socket Error : " + e.Message);
+			Debug.Log ("Socket Error Client: " + e.Message);
 		}
 		return socketReady;
 	}
