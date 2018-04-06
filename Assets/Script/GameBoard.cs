@@ -7,7 +7,7 @@ using AssemblyCSharp;
 
 public class GameBoard : MonoBehaviour
 {
-	//makes class a singleon
+	//makes class a singleton
 	public static GameBoard Instance{ set; get; }
 
 	public GameObject playerCamera;

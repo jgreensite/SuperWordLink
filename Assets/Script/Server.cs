@@ -8,7 +8,7 @@ using System.IO;
 
 public class Server : MonoBehaviour
 {
-	//makes class a singleon
+	//makes class a singleton
 	public static Server Instance { set; get; }
 
 	public int port = 6321;

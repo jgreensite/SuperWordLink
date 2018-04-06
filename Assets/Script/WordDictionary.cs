@@ -6,7 +6,7 @@ using AssemblyCSharp;
 
 public class WordDictionary : MonoBehaviour {
 
-	//makes class a singleon
+	//makes class a singleton
 	public static WordDictionary Instance { set; get; }
 
 	//Set in the editor

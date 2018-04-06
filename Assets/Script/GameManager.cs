@@ -8,7 +8,7 @@ using AssemblyCSharp;
 
 public class GameManager : MonoBehaviour {
 
-	//makes class a singleon
+	//makes class a singleton
 	public static GameManager Instance { set; get; }
 
 	public GameObject mainMenu;
@@ -25,6 +25,10 @@ public class GameManager : MonoBehaviour {
 
 	// Keep this on the GameManager so the server can be run on a seperate machine
 	public InputField minPlayers;
+
+	//Server UI
+	public Toggle toggleHostLocal;
+	public InputField HostAddress;
 
 	private bool isHostLocal;
 
@@ -111,11 +115,24 @@ public class GameManager : MonoBehaviour {
 		lobbyMenu.SetActive(false);
 	}
 
+	public void HostLocalConnectToggle()
+	{
+		if (toggleHostLocal.isOn == true)
+		{
+			HostAddress.text = CS.GAMESERVERLOCALADDRESS;
+			HostAddress.readOnly = true;
+		} else
+		{
+			HostAddress.text = CS.GAMESERVERREMOTEADDRESS;
+			HostAddress.readOnly = false;
+		}
+	}
+
 	public void ConnectToServerButton()
 	{
-		string HostAddress = GameObject.Find ("HostInput").GetComponent<InputField> ().text;
-		if (HostAddress == "")
-			HostAddress = CS.GAMESERVERREMOTEADDRESS;
+		//string HostAddress = GameObject.Find ("HostInput").GetComponent<InputField> ().text;
+		if (HostAddress.text == "")
+			HostAddress.text = CS.GAMESERVERREMOTEADDRESS;
 		try
 		{
 			Client c = Instantiate(clientPrefab).GetComponent<Client>();
@@ -130,7 +147,7 @@ public class GameManager : MonoBehaviour {
 			c.isPlayer = true;
 			c.isRedTeam = false;
 
-			c.ConnectToServer(HostAddress, 6321);
+			c.ConnectToServer(HostAddress.text, 6321);
 			connectMenu.SetActive(false);
 		}
 		catch (Exception e)
@@ -155,22 +172,44 @@ public class GameManager : MonoBehaviour {
 
 	public void BackButton()
 	{
+		Debug.Log ("Game Options UI Back button pressed");
 		mainMenu.SetActive(true);
 		serverMenu.SetActive (false);
 		connectMenu.SetActive(false);
 		lobbyMenu.SetActive(false);
 
-		Server s = FindObjectOfType<Server> ();
-		if (s != null)
-			DestroyObject (s.gameObject);
+		RestartAll ();
 
-		Client c = FindObjectOfType<Client> ();
-		if (c != null)
-			DestroyObject (c.gameObject);
+//		Server s = FindObjectOfType<Server> ();
+//		if (s != null)
+//			DestroyObject (s.gameObject);
+//
+//		Client c = FindObjectOfType<Client> ();
+//		if (c != null)
+//			DestroyObject (c.gameObject);
 	}
 
 	public void StartGame()
 	{
 		SceneManager.LoadScene ("Main");
+	}
+
+	public void RestartAll()
+	{
+		// Call the shutdown script on the server
+		Server s = FindObjectOfType<Server> ();
+		if (s != null)
+			Server.Instance.Shutdown ();
+
+		//destroy the objects that were labelled as donotdestroy when we are restarting
+		for (var i = GameManager.Instance.goDontDestroyList.Count - 1; i > -1; i--)
+		{
+			if (GameManager.Instance.goDontDestroyList [i] != null)
+			{
+				Destroy (GameManager.Instance.goDontDestroyList [i]);
+				GameManager.Instance.goDontDestroyList.RemoveAt (i);
+			}
+		}
+		SceneManager.LoadScene ("Menu");
 	}
 }

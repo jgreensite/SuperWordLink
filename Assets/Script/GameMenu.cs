@@ -17,21 +17,7 @@ public class GameMenu : MonoBehaviour {
 	}
 
 	public void BackButton() {
-		Debug.Log ("Back button pressed");
-
-		//Call the shutdown script on the server
-		Server.Instance.Shutdown ();
-
-		//destroy the objects that were labelled as donotdestroy when we are restarting
-		for (var i = GameManager.Instance.goDontDestroyList.Count - 1; i > -1; i--)
-		{
-			if (GameManager.Instance.goDontDestroyList [i] != null)
-			{
-				Destroy (GameManager.Instance.goDontDestroyList [i]);
-				GameManager.Instance.goDontDestroyList.RemoveAt (i);
-			}
-		}
-			
-		SceneManager.LoadScene ("Menu");
+		Debug.Log ("Game HUD Back button pressed");
+		GameManager.Instance.RestartAll ();			
 	}
 }
