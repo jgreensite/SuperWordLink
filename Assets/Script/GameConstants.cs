@@ -14,7 +14,6 @@ namespace AssemblyCSharp
 		public const string ERROR = "error";
 		public const string GAMESERVERLOCALADDRESS = "127.0.0.1";
 		public const string GAMESERVERREMOTEADDRESS = "35.177.228.70";
-		//public const string GAMESERVERREMOTEADDRESS = "127.0.0.1";
 		public const int GAMESERVERPORT = 6321;
 
 		//Build script constants

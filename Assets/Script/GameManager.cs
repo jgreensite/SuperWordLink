@@ -53,6 +53,9 @@ public class GameManager : MonoBehaviour {
 		mainMenu.SetActive(false);
 		serverMenu.SetActive(false);
 		connectMenu.SetActive (true);
+		//sets the default server that is going to be connected to
+		toggleHostLocal.isOn = false;
+		toggleHostLocal.isOn = true;
 		lobbyMenu.SetActive(false);
 	}
 
@@ -147,7 +150,8 @@ public class GameManager : MonoBehaviour {
 			c.isPlayer = true;
 			c.isRedTeam = false;
 
-			c.ConnectToServer(HostAddress.text, 6321);
+			c.ConnectToServer(HostAddress.text, CS.GAMESERVERPORT);
+			Debug.Log("Connecting to " + HostAddress.text + ":" + CS.GAMESERVERPORT);
 			connectMenu.SetActive(false);
 		}
 		catch (Exception e)

@@ -61,7 +61,7 @@ public class Server : MonoBehaviour
 			return;
 		}
 			
-			foreach (ServerClient c in clients)
+		foreach (ServerClient c in clients)
 		{
 			//is the client still connected?
 
