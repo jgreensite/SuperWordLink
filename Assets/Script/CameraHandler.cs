@@ -8,13 +8,15 @@ public class CameraHandler : MonoBehaviour {
 
 	//TODO - When zooming you need to make the UI non-clickable, possible by putting a toggle on the UI that determines if it is clickable
 
-	private static readonly float PanSpeed = 20f;
+	private static readonly float PanSpeed = 5f;
 	private static readonly float ZoomSpeedTouch = 0.1f;
 	private static readonly float ZoomSpeedMouse = 0.5f;
 
 	public float[] BoundsX = new float[2];
 	public float[] BoundsZ = new float[2];
 	public float[] ZoomBounds = new float[2];
+
+	public bool isPanZoom = false;
 
 //	public float[] BoundsX = new float[]{-0.5f, 0.5f};
 //	public float[] BoundsZ = new float[]{-2.5f, -1.5f};
@@ -29,16 +31,19 @@ public class CameraHandler : MonoBehaviour {
 	private Vector2[] lastZoomPositions; // Touch mode only
 
 	void Awake() {
-	//TODO - For some reason the caller camera does not work properly, the image "oscilllates". It is not because there are two cameras in the scene
 		cam = GetComponent<Camera>();
 	}
 
 	void Update() {
-
-		if (Input.touchSupported && Application.platform != RuntimePlatform.WebGLPlayer) {
-			HandleTouch();
-		} else {
-			HandleMouse();
+		if (isPanZoom == true)
+		{
+			if (Input.touchSupported && Application.platform != RuntimePlatform.WebGLPlayer)
+			{
+				HandleTouch ();
+			} else
+			{
+				HandleMouse ();
+			}
 		}
 	}
 

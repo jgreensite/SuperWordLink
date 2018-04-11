@@ -193,6 +193,24 @@ public class GameManager : MonoBehaviour {
 //			DestroyObject (c.gameObject);
 	}
 
+	public void PanZoomButton(Button buttonPanZoom)
+	{
+		bool isClicked;
+		GameObject cam;
+		cam = GameBoard.Instance.currentCamera;
+		//Toggle the camera's Pan & Zoom capability
+		isClicked = cam.GetComponent<CameraHandler> ().isPanZoom;
+		cam.GetComponent<CameraHandler> ().isPanZoom = !isClicked;
+		if (isClicked)
+		{
+			buttonPanZoom.GetComponentInChildren<Text>().text = CS.UILABELPANZOOM;
+		}
+		else
+		{
+			buttonPanZoom.GetComponentInChildren<Text>().text = CS.UILABELSELECT;
+		}
+	}
+
 	public void StartGame()
 	{
 		SceneManager.LoadScene ("Main");

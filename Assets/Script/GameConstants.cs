@@ -4,14 +4,30 @@ namespace AssemblyCSharp
 {
 	public class CS
 	{
+		//Card Class and Team constants
 		public const string BLUE_TEAM = "blue";
 		public const string RED_TEAM = "red";
 		public const string DEATH_TEAM = "death";
 		public const string CIVIL_TEAM = "civil";
+
+		//Flow Control constants
 		public const string GOOD = "good";
 		public const string BAD = "bad";
 		public const string EMPTY = "empty";
 		public const string ERROR = "error";
+
+		//UI Label constants
+		public const string UILABELPANZOOM = "Pan/Zoom";
+		public const string UILABELSELECT = "Select";
+		public const string UILABELBACK = "<-Back";
+		public const string UILABELCANCEL = "Cancel";
+		public const string UILABELSTART = "Start";
+		public const string UILABELHOSTLOCAL = "Host Local";
+		public const string UILABELHOSTREMOTE = "Host Remote";
+		public const string UILABELCONNECT = "Connect";
+
+
+		//Networking constants
 		public const string GAMESERVERLOCALADDRESS = "127.0.0.1";
 		public const string GAMESERVERREMOTEADDRESS = "35.177.228.70";
 		public const int GAMESERVERPORT = 6321;
