@@ -17,7 +17,6 @@ public class Lobby : MonoBehaviour {
 		{
 			LobbyLineItem line = Instantiate(lobbyLineItemPrefab).GetComponent<LobbyLineItem>();
 			LobbyLineItems.Add(line);
-			//GameObject.Find ("PlayerName").GetComponent<Text>().text ="bob";
 			line.transform.SetParent(transform,false);
 			line.SetLobbyLineItem(gc);
 		}

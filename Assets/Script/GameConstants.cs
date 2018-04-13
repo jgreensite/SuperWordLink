@@ -32,6 +32,7 @@ namespace AssemblyCSharp
 
 		//Networking constants
 		public const string GAMESERVERLOCALADDRESS = "127.0.0.1";
+		//TODO - Make Server and port selectable
 		public const string GAMESERVERREMOTEADDRESS = "35.177.228.70";
 		public const int GAMESERVERPORT = 6321;
 

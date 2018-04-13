@@ -11,6 +11,7 @@ public class Client : MonoBehaviour
 	public bool isHost;
 	public bool isRedTeam;
 	public bool isPlayer;
+	public string clientID;
 
 	private bool socketReady;
 	private TcpClient socket;
@@ -23,7 +24,7 @@ public class Client : MonoBehaviour
 
 	private void Start()
 	{
-
+		clientID = UnityEngine.Random.Range (1, 999999).ToString();
 		DontDestroyOnLoad(gameObject);
 		GameManager.Instance.goDontDestroyList.Add (gameObject);
 		Debug.Log ("Added Client at position:" + GameManager.Instance.goDontDestroyList.Count + " to donotdestroylist");
@@ -93,7 +94,8 @@ public class Client : MonoBehaviour
 					bData [0],
 					(bData [1] == "0") ? false : true,
 					(bData [2] == "0") ? false : true,
-					(bData [3] == "0") ? false : true
+					(bData [3] == "0") ? false : true,
+					bData [4]
 				);		
 			}
 			//Get the number of participants from the GameManager and convet to an integer
@@ -117,6 +119,7 @@ public class Client : MonoBehaviour
 				+ ((isHost)?1:0).ToString() + '|'
 				+ ((isPlayer)?1:0).ToString() +'|'
 				+ ((isRedTeam)?1:0).ToString() +'|'
+				+ clientID +'|'
 				+ howManyPlaying.ToString()
 
 			);
@@ -131,7 +134,8 @@ public class Client : MonoBehaviour
 					bData [0],
 					(bData [1] == "0") ? false : true,
 					(bData [2] == "0") ? false : true,
-					(bData [3] == "0") ? false : true
+					(bData [3] == "0") ? false : true,
+					bData [4]
 				);
 
 				//if we get the signal to start the lobby, start it 
@@ -184,7 +188,8 @@ public class Client : MonoBehaviour
 					bData [0],
 					(bData [1] == "0") ? false : true,
 					(bData [2] == "0") ? false : true,
-					(bData [3] == "0") ? false : true
+					(bData [3] == "0") ? false : true,
+					bData [4]
 				);
 
 				//TODO - improve matching, should not be matching on client name it's brittle
@@ -202,13 +207,14 @@ public class Client : MonoBehaviour
 	}
 		
 	//Called when a message is received that a user has connected
-	private void UserConnected(string name, bool isHost, bool isPlayer, bool isRedTeam)
+	private void UserConnected(string name, bool isHost, bool isPlayer, bool isRedTeam, string clientID)
 	{
 		GameClient c = new GameClient ();
 		c.name = name;
 		c.isHost = isHost;
 		c.isPlayer = isPlayer;
 		c.isRedTeam = isRedTeam;
+		c.clientID = clientID;
 
 		players.Add (c);
 		//TODO - Update the panel message to say "waiting for host to choose teams"
@@ -223,7 +229,8 @@ public class Client : MonoBehaviour
 			concatPlayers += "|"
 			+ players [cnt].name + ","
 			+ ((players [cnt].isPlayer) ? 1 : 0).ToString () + ","
-			+ ((players [cnt].isRedTeam) ? 1 : 0).ToString () ;
+			+ ((players [cnt].isRedTeam) ? 1 : 0).ToString () + ","
+			+ players[cnt].clientID;
 		}
 			
 		Send(
@@ -263,5 +270,6 @@ public class GameClient
 	public bool isHost;
 	public bool isPlayer;
 	public bool isRedTeam;
+	public string clientID;
 }
 

@@ -120,7 +120,8 @@ public class Server : MonoBehaviour
 			+ i.clientName + ","
 			+ ((i.isHost)?1:0).ToString() + ","
 			+ ((i.isPlayer)?1:0).ToString() + ","
-			+ ((i.isRedTeam)?1:0).ToString();
+			+ ((i.isRedTeam)?1:0).ToString() + ","
+			+ (i.clientID);
 		}
 
 		//If a client connection occurs add it to the list of clients
@@ -228,6 +229,7 @@ public class Server : MonoBehaviour
 			clients[clients.Count-1].isHost = ((aData[2] == "1")? true : false);
 			clients[clients.Count-1].isPlayer = ((aData[3] == "1")? true : false);
 			clients[clients.Count-1].isRedTeam = ((aData[4] == "1")? true : false);
+			clients[clients.Count-1].clientID = (aData[5]);
 
 			//get a list of all the users that are connected, do this after adding the new client's details to this list
 			//broadcast this updated list to all the connected clients
@@ -309,7 +311,8 @@ public class Server : MonoBehaviour
 				+ clients[i].clientName + ","
 				+ ((clients[i].isHost) ? 1 : 0).ToString () + ","
 				+ ((clients[i].isPlayer) ? 1 : 0).ToString () + ","
-				+ ((clients[i].isRedTeam) ? 1 : 0).ToString () + ",";
+				+ ((clients[i].isRedTeam) ? 1 : 0).ToString () + ","
+				+ clients[i].clientID;
 
 			// TODO - Change this it is not the easiest to understand code
 			// this is a "magic field" that tells the client it should add the participant and start the lobby
@@ -360,6 +363,7 @@ public class ServerClient
 	public bool isHost;
 	public bool isPlayer;
 	public bool isRedTeam;
+	public string clientID;
 
 	public ServerClient(TcpClient tcp)
 	{

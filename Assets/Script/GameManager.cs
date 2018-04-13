@@ -77,7 +77,6 @@ public class GameManager : MonoBehaviour {
 			{
 				//Create the Host's server first
 				Server s = Instantiate(serverPrefab).GetComponent<Server>();
-				//TODO - Remove PORT hardcoding
 				s.Init();
 			}
 
@@ -98,12 +97,10 @@ public class GameManager : MonoBehaviour {
 
 			if (isHostLocal == true)
 			{
-				//TODO - Remove PORT hardcoding
 				c.ConnectToServer(CS.GAMESERVERLOCALADDRESS, CS.GAMESERVERPORT);
 			}
 			else
 			{
-				//TODO - Remove PORT hardcoding
 				c.ConnectToServer(CS.GAMESERVERREMOTEADDRESS, CS.GAMESERVERPORT);				
 			}
 		}
