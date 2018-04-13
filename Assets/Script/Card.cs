@@ -27,7 +27,7 @@ public class Card : MonoBehaviour {
 	public bool isCardUp;
 	int cnt = 0;
 
-	public Material[] mats = new Material[3];
+	public Material[] mats = new Material[CS.NUMCARDMATERIALS];
 	public Material redMaterial;
 	public Material blueMaterial;
 	public Material civilMaterial;
@@ -130,27 +130,25 @@ public class Card : MonoBehaviour {
 		
 	public void ChangeMaterial(string newCardType)
 	{
-		// TODO - Remove hardcoding of number of materials and names
 		mats = gameObject.transform.Find("Card").GetComponent<Renderer> ().materials;
 		cardType = newCardType;
-		//TODO use "tags" rather than a number to find the face
-		//Card face is element 1
+
 		switch (cardType)
 		{
 		case CS.RED_TEAM:
-			mats [1] = redMaterial;
+			mats [CS.IDCARDFRONTMATERIAL] = redMaterial;
 			break;
 
 		case CS.BLUE_TEAM:
-			mats [1] = blueMaterial;
+			mats [CS.IDCARDFRONTMATERIAL] = blueMaterial;
 			break;
 
 		case CS.DEATH_TEAM:
-			mats [1] = deathMaterial;
+			mats [CS.IDCARDFRONTMATERIAL] = deathMaterial;
 			break;
 
 		case CS.CIVIL_TEAM:
-			mats [1] = civilMaterial;
+			mats [CS.IDCARDFRONTMATERIAL] = civilMaterial;
 			break;
 		}
 		gameObject.transform.Find ("Card").GetComponent<Renderer>().materials = mats;

@@ -9,6 +9,9 @@ namespace AssemblyCSharp
 		public const string RED_TEAM = "red";
 		public const string DEATH_TEAM = "death";
 		public const string CIVIL_TEAM = "civil";
+		public const int IDCARDFRONTMATERIAL = 1;
+		public const int IDCARDBACKMATERIAL = 0;
+		public const int NUMCARDMATERIALS = 4;
 
 		//Flow Control constants
 		public const string GOOD = "good";
