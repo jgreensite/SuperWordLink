@@ -119,7 +119,8 @@ public class GameBoard : MonoBehaviour
 					"CMOV" + '|'
 					+ client.clientName + '|'
 					+ (x.ToString()) + '|'
-					+ (z.ToString())
+					+ (z.ToString()) + '|'
+					+ client.clientID
 				);
 				//TryMove (x, z);
 		}

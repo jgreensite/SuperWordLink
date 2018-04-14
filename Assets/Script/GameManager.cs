@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour {
 			c.isHost = true;
 			c.isPlayer = false;
 			c.isRedTeam = true;
+			c.clientID = rnd.ToString();
 
 
 			if (isHostLocal == true)
@@ -146,6 +147,7 @@ public class GameManager : MonoBehaviour {
 			c.isHost = false;
 			c.isPlayer = true;
 			c.isRedTeam = false;
+			c.clientID = rnd.ToString();
 
 			c.ConnectToServer(HostAddress.text, CS.GAMESERVERPORT);
 			Debug.Log("Connecting to " + HostAddress.text + ":" + CS.GAMESERVERPORT);

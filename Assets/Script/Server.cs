@@ -201,7 +201,7 @@ public class Server : MonoBehaviour
 			// if the new client that is added is a host then it will determine the number of players
 			if ((aData[2] == "1")? true : false) 
 			{
-				Int32.TryParse (aData[5], out numParticipants);
+				Int32.TryParse (aData[6], out numParticipants);
 			
 				//if a client intitiates a host call then clear all other client's connections
 				int i = 0;
@@ -240,7 +240,8 @@ public class Server : MonoBehaviour
 				"SMOV" + '|'
 				+ aData [1] + '|'
 				+ aData [2] + '|'
-				+ aData [3],
+				+ aData [3] + '|'
+				+ aData [4],
 				clients
 			);
 			break;
@@ -285,7 +286,7 @@ public class Server : MonoBehaviour
 				{
 					//TODO - improve matching, should not be matching on client name it's brittle
 					//Populate the client attributes
-					if (String.Equals (bData [0], sc.clientName))
+					if (String.Equals (bData [3], sc.clientID))
 					{
 						sc.isPlayer = (bData [1] == "0") ? false : true;
 						sc.isRedTeam = (bData [2] == "0") ? false : true;
@@ -312,7 +313,7 @@ public class Server : MonoBehaviour
 				+ ((clients[i].isHost) ? 1 : 0).ToString () + ","
 				+ ((clients[i].isPlayer) ? 1 : 0).ToString () + ","
 				+ ((clients[i].isRedTeam) ? 1 : 0).ToString () + ","
-				+ clients[i].clientID;
+				+ clients[i].clientID + ",";
 
 			// TODO - Change this it is not the easiest to understand code
 			// this is a "magic field" that tells the client it should add the participant and start the lobby

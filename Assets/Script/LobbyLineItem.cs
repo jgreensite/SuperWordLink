@@ -10,6 +10,7 @@ public class LobbyLineItem : MonoBehaviour {
 	public Toggle isCaller;
 	public Toggle isRedTeam;
 	public Toggle isBlueTeam;
+	public string clientID;
 
 	// Use this for initialization
 	void Start () {
@@ -27,6 +28,7 @@ public class LobbyLineItem : MonoBehaviour {
 		isCaller.isOn = !(gc.isPlayer);
 		isRedTeam.isOn = gc.isRedTeam;
 		isBlueTeam.isOn = !(gc.isRedTeam);
+		clientID = gc.clientID;
 	}
 
 	private void SetGameClient()
@@ -36,11 +38,12 @@ public class LobbyLineItem : MonoBehaviour {
 		for (int cnt = 0; cnt < client.players.Count; cnt++)
 		{
 			//TODO - Should be matching on an ID not on name
-			if (String.Equals (client.players [cnt].name, lineItemText.text))
+			if (String.Equals (client.players [cnt].clientID, clientID))
 			{
 				client.players [cnt].name = lineItemText.text;
 				client.players [cnt].isPlayer = !isCaller.isOn;
 				client.players [cnt].isRedTeam = isRedTeam.isOn;
+				client.players [cnt].clientID = clientID;
 			}
 		}
 	}

@@ -24,7 +24,6 @@ public class Client : MonoBehaviour
 
 	private void Start()
 	{
-		clientID = UnityEngine.Random.Range (1, 999999).ToString();
 		DontDestroyOnLoad(gameObject);
 		GameManager.Instance.goDontDestroyList.Add (gameObject);
 		Debug.Log ("Added Client at position:" + GameManager.Instance.goDontDestroyList.Count + " to donotdestroylist");
@@ -139,7 +138,7 @@ public class Client : MonoBehaviour
 				);
 
 				//if we get the signal to start the lobby, start it 
-				if (bData [4] != "0")
+				if (bData [5] != "0")
 				{
 					GameManager.Instance.OpenLobby ();
 				}
@@ -194,7 +193,7 @@ public class Client : MonoBehaviour
 
 				//TODO - improve matching, should not be matching on client name it's brittle
 				//Populate the client attributes
-				if (String.Equals (bData [0], clientName))
+				if (String.Equals (bData [4], clientID))
 				{
 					isHost = (bData [1] == "0") ? false : true;
 					isPlayer = (bData [2] == "0") ? false : true;
