@@ -4,6 +4,15 @@ namespace AssemblyCSharp
 {
 	public class CS
 	{
+		//Gameboard dimensions
+		public const int CSGRIDXDIM = 5;
+		public const int CSGRIDZDIM = 5;
+
+		//Game Winstates
+		public const string NONEWIN = "nonewin";
+		public const string BLUEWIN = "bluewin";
+		public const string REDWIN = "redwin";
+
 		//Card Class and Team constants
 		public const string BLUE_TEAM = "blue";
 		public const string RED_TEAM = "red";

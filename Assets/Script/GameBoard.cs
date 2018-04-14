@@ -15,11 +15,11 @@ public class GameBoard : MonoBehaviour
 
 	public GameObject currentCamera;
 
-	public static int gridXDim = 5;
-	public static int gridYDim = 5;
+	public static int gridXDim = CS.CSGRIDXDIM;
+	public static int gridZDim = CS.CSGRIDZDIM;
 
-	public Card[,] cardsPlayer = new Card[gridXDim,gridYDim];
-	public Card[,] cardsCaller = new Card[gridXDim,gridYDim];
+	public Card[,] cardsPlayer = new Card[gridXDim,gridZDim];
+	public Card[,] cardsCaller = new Card[gridXDim,gridZDim];
 
 	public GameObject redPfb;
 	public GameObject bluePfb;
@@ -54,8 +54,6 @@ public class GameBoard : MonoBehaviour
 	private Vector2 mouseOver;
 
 	private Client client;
-
-	//TODO - Add in a constants file for things like "bad" and "good"
 
 	private void Start()
 	{
@@ -122,7 +120,6 @@ public class GameBoard : MonoBehaviour
 					+ (z.ToString()) + '|'
 					+ client.clientID
 				);
-				//TryMove (x, z);
 		}
 	}
 
@@ -144,7 +141,7 @@ public class GameBoard : MonoBehaviour
 			float gameboardDimx = transform.Find ("Game Board Player").localScale.x;
 			float gameboardDimz = transform.Find ("Game Board Player").localScale.z;
 			mouseOver.x = (int)((hit.point.x + gameboardDimx/2)/(2.45/gridXDim));
-			mouseOver.y = (int)((hit.point.z + gameboardDimz/2)/(2.35/gridYDim));
+			mouseOver.y = (int)((hit.point.z + gameboardDimz/2)/(2.35/gridZDim));
 		}
 		else
 		{
@@ -154,17 +151,17 @@ public class GameBoard : MonoBehaviour
 			
 	}
 
-	private void SelectCard(int x, int y)
+	private void SelectCard(int x, int z)
 	{
-		//TODO - remove hardcoding of array dimension
 		//Out of Bounds check
-		if((x < 0) || (x > 4) || (y<0) || (y>4))
+		if((x < 0) || (x > (gridXDim-1)) || (z<0) || (z>(gridZDim-1)))
 		{
-			Debug.Log("Item does not exist in array at " + x + ", " + y);
+			Debug.Log("Item does not exist in array at " + x + ", " + z);
+			selectedCard = null;
 			return;
 		}
 
-		Card c = cardsPlayer[x,y];
+		Card c = cardsPlayer[x,z];
 		//cannot flip a card that has been flipped
 		if ((c != null) && (!c.isCardUp))
 		{
@@ -183,16 +180,16 @@ public class GameBoard : MonoBehaviour
 		//Multiplayer support
 		//Note that we need to create local variables as if it is not your turn you may not have a selected card defined
 
-		//TODO - The logic here is a little bit hacky, really we should not have to call SelectCard before and within this method
+		//Select the card, note that it may not be this client that selected the card
 		SelectCard (x, z);
 
-		//Check if we are out of bounds
-		if ((x < 0) || (x > 4) || (z < 0) || (z > 4))
-		{
-			selectedCard = null;
-		}
-		else
-		{
+//		//Check if we are out of bounds
+//		if ((x < 0) || (x > (gridXDim-1)) || (z < 0) || (z > (gridZDim-1)))
+//		{
+//			selectedCard = null;
+//		}
+//		else
+//		{
 			if (selectedCard != null)
 			{				
 				moveResult = selectedCard.ValidMove (isRedTurn);
@@ -208,9 +205,9 @@ public class GameBoard : MonoBehaviour
 					//TODO - simplify this switch statement there is a lot of repeated elements in each case
 					//TODO - simplify EndTurn, checkVictory() and endGame(), think these could be one function
 					string winState = checkVictory ();
-					if ((winState == "bluewin") || (winState == "redwin"))
+					if ((winState == CS.BLUEWIN) || (winState == CS.REDWIN))
 					{
-							endGame ();
+						endGame ();
 					}
 					break;
 
@@ -239,7 +236,7 @@ public class GameBoard : MonoBehaviour
 					break;
 				}
 			}
-		}
+//		}
 	}
 
 	private void EndTurn(string moveResult)
@@ -247,13 +244,13 @@ public class GameBoard : MonoBehaviour
 		string winState = checkVictory ();
 		Debug.Log (winState);
 		// If Death card is drawn end the game
-		if (moveResult == "death")
+		if (moveResult == CS.DEATH_TEAM)
 		{
 			endGame ();
 		// Otherwise continue to see if a victory has occured
 		} else
 		{
-			if (winState == "nonewin")
+			if (winState == CS.NONEWIN)
 			{
 				//switch which team is picking
 				isRedTurn = !isRedTurn;
@@ -271,7 +268,7 @@ public class GameBoard : MonoBehaviour
 				selectedCard = null;
 			}
 			// Victory may have occured
-			else if ((winState == "bluewin") || (winState == "redwin"))
+			else if ((winState == CS.BLUEWIN) || (winState == CS.REDWIN))
 			{
 				endGame ();
 			} else
@@ -287,17 +284,17 @@ public class GameBoard : MonoBehaviour
 		string retVal = "";
 		int cntRed = 9;
 		int cntBlue = 8;
-		for (int y = 0; y < 5; y++)
+		for (int z = 0; z < 5; z++)
 		{
 			for (int x = 0; x < 5; x++)
 			{
-				if (cardsPlayer [x, y].isCardUp)
+				if (cardsPlayer [x, z].isCardUp)
 				{
-					if (cardsPlayer [x, y].cardType == CS.BLUE_TEAM)
+					if (cardsPlayer [x, z].cardType == CS.BLUE_TEAM)
 					{
 						cntBlue = cntBlue -1;
 					}
-					if (cardsPlayer [x, y].cardType == CS.RED_TEAM)
+					if (cardsPlayer [x, z].cardType == CS.RED_TEAM)
 					{
 						cntRed = cntRed - 1;
 					}
@@ -312,13 +309,13 @@ public class GameBoard : MonoBehaviour
 		//See if anyone has won
 		if (cntRed == 0)
 		{
-			retVal = "redwin";
+			retVal = CS.REDWIN;
 		} else if (cntBlue == 0)
 		{
-			retVal = "bluewin";
+			retVal = CS.BLUEWIN;
 		} else
 		{
-			retVal = "nonewin";
+			retVal = CS.NONEWIN;
 		}
 		return(retVal);
 	}

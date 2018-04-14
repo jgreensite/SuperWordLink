@@ -191,7 +191,6 @@ public class Client : MonoBehaviour
 					bData [4]
 				);
 
-				//TODO - improve matching, should not be matching on client name it's brittle
 				//Populate the client attributes
 				if (String.Equals (bData [4], clientID))
 				{

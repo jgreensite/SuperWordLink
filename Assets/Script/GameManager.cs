@@ -137,7 +137,6 @@ public class GameManager : MonoBehaviour {
 		try
 		{
 			Client c = Instantiate(clientPrefab).GetComponent<Client>();
-			//TODO - Remove PORT hardcoding
 			c.clientName = nameInput.text;
 			int rnd = UnityEngine.Random.Range(0,99999);
 			if (c.clientName == "")
