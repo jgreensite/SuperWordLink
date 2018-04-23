@@ -5,6 +5,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using AssemblyCSharp;
 
 public class Server : MonoBehaviour
 {
@@ -51,6 +52,8 @@ public class Server : MonoBehaviour
 		{
 			Debug.Log("Socket Error Server: " + e.Message);
 		}
+
+		BuildDeck ();
 	}
 
 	private void Update()
@@ -354,6 +357,23 @@ public class Server : MonoBehaviour
 			disconnectList.RemoveAt (i);
 		}
 		server.Stop();
+	}
+
+	private void BuildDeck()
+	{
+		GameCardDeck gcd = new GameCardDeck ();
+
+		//Demo saving data
+		GameCard gc = new GameCard();
+		gc.cardSuit = CS.RED_TEAM;
+		gc.cardLocation = "REDDECK";
+		gc.cardRevealed = "HIDDEN";
+		gcd.gameCards.Add (gc);
+		gcd.Save ("/tmp/gamecarddeck1.xml");
+
+		//Demo loading data
+		gcd = GameCardDeck.Load ("/tmp/gamecarddeck2.xml");
+		gcd.Save ("/tmp/gamecarddeck3.xml");
 	}
 }
 
