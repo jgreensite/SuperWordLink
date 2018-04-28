@@ -4,6 +4,33 @@ namespace AssemblyCSharp
 {
 	public class CS
 	{
+		//Card Location
+		public const string CAR_LOCATION_GAMEBOARD = "card is on the Gameboard";
+		public const string CAR_LOCATION_RED_DECK = "card is in the Red Deck";
+		public const string CAR_LOCATION_BLUE_DECK = "card is in the Blue Deck";
+		public const string CAR_LOCATION_RED_HAND = "card is in the Red Hand";
+		public const string CAR_LOCATION_BLUE_HAND = "card is in the Blue Hand";
+
+		//Card Status
+		public const string CAR_REVEAL_HIDDEN = "card face is hidden";
+		public const string CAR_REVEAL_SHOWN = "card face is shown";
+
+		//Card when playable
+		public const string CWP_PLAY_PLAYER_TURN = "on the players turn";
+		public const string CWP_PLAY_ANY_TURN = "on any players turn";
+
+		//Card effect playable
+			//Effects
+			public const string CEP_EFFECT_REVEAL_CARD = "reveals a card";
+			public const string CEP_EFFECT_CHANGE_CARD = "changes a card";
+
+			//Affects
+			public const string CEP_AFFECT_GAMEBOARD = "affects the game board";
+			public const string CEP_AFFECT_OWN_DECK = "affects your deck";
+			public const string CEP_AFFECT_OPPONENT_DECK = "affects your opponent's deck";
+			public const string CEP_AFFECT_OWN_HAND = "affects your hand";
+			public const string CEP_AFFECT_OPPONENT_HAND = "affects opponent's hand";
+
 		//Gameboard dimensions
 		public const int CSGRIDXDIM = 5;
 		public const int CSGRIDZDIM = 5;

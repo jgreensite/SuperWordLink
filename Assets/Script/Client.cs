@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Net.Sockets;
 using System.IO;
+using AssemblyCSharp;
 
 public class Client : MonoBehaviour
 {
@@ -21,6 +22,11 @@ public class Client : MonoBehaviour
 	private int numParticipants;
 
 	public List<GameClient> players = new List<GameClient>();
+
+	//the decks that will be used in the game
+	private GameCardDeck gcd = new GameCardDeck ();
+	private GameCardDeck gcdRed = new GameCardDeck ();
+	private GameCardDeck gcdBlue = new GameCardDeck ();
 
 	private void Start()
 	{
@@ -80,127 +86,160 @@ public class Client : MonoBehaviour
 	{
 		Debug.Log ("Client Receiving: " + data);
 		int howManyPlaying;
-		string[] aData = data.Split('|');
 
-		switch (aData [0])
+
+		//TODO - remove this when all messaging is done via XML
+		if (!(data[0].Equals('<')))
 		{
-		case "SWHO":
-			players.Clear ();
-			for (int i = 1; i < aData.Length; i++)
+			string[] aData = data.Split('|');
+			switch (aData [0])
 			{
-				string[] bData = aData [i].Split (',');
-				UserConnected (
-					bData [0],
-					(bData [1] == "0") ? false : true,
-					(bData [2] == "0") ? false : true,
-					(bData [3] == "0") ? false : true,
-					bData [4]
-				);		
-			}
+			case "SWHO":
+				players.Clear ();
+				for (int i = 1; i < aData.Length; i++)
+				{
+					string[] bData = aData [i].Split (',');
+					UserConnected (
+						bData [0],
+						(bData [1] == "0") ? false : true,
+						(bData [2] == "0") ? false : true,
+						(bData [3] == "0") ? false : true,
+						bData [4]
+					);		
+				}
 			//Get the number of participants from the GameManager and convet to an integer
 			//Note that cannot write the number of participants that is used to decide to start the game
 			//this must be initiated from the server sending a message to the client
-			if (Int32.TryParse (GameManager.Instance.minPlayers.text, out howManyPlaying))
-			{
+				if (Int32.TryParse (GameManager.Instance.minPlayers.text, out howManyPlaying))
+				{
 
-			}
-			else if ((isHost) && (GameManager.Instance.minPlayers.text == ""))
-			{
-				howManyPlaying = 1;
-			}
-			else
-			{
-				howManyPlaying = 0;
-			}
-			Send (
-				"CWHO" + '|'
-				+ clientName + '|'
-				+ ((isHost)?1:0).ToString() + '|'
-				+ ((isPlayer)?1:0).ToString() +'|'
-				+ ((isRedTeam)?1:0).ToString() +'|'
-				+ clientID +'|'
-				+ howManyPlaying.ToString()
+				} else if ((isHost) && (GameManager.Instance.minPlayers.text == ""))
+				{
+					howManyPlaying = 1;
+				} else
+				{
+					howManyPlaying = 0;
+				}
+				Send (
+					"CWHO" + '|'
+					+ clientName + '|'
+					+ ((isHost) ? 1 : 0).ToString () + '|'
+					+ ((isPlayer) ? 1 : 0).ToString () + '|'
+					+ ((isRedTeam) ? 1 : 0).ToString () + '|'
+					+ clientID + '|'
+					+ howManyPlaying.ToString ()
 
-			);
-			break;
-
-		case "SCNN":
-			players.Clear ();
-			for (int i = 1; i < aData.Length; i++)
-			{
-				string[] bData = aData [i].Split (',');
-				UserConnected (
-					bData [0],
-					(bData [1] == "0") ? false : true,
-					(bData [2] == "0") ? false : true,
-					(bData [3] == "0") ? false : true,
-					bData [4]
 				);
+				break;
 
-				//if we get the signal to start the lobby, start it 
-				if (bData [5] != "0")
+			case "SCNN":
+				players.Clear ();
+				for (int i = 1; i < aData.Length; i++)
 				{
-					GameManager.Instance.OpenLobby ();
+					string[] bData = aData [i].Split (',');
+					UserConnected (
+						bData [0],
+						(bData [1] == "0") ? false : true,
+						(bData [2] == "0") ? false : true,
+						(bData [3] == "0") ? false : true,
+						bData [4]
+					);
+
+					//if we get the signal to start the lobby, start it 
+					if (bData [5] != "0")
+					{
+//					//Commented out this line and instead sent the CPCI
+//					GameManager.Instance.OpenLobby ();
+						Send (
+							"CPCI" + "|"
+							+ clientName + '|'
+							+ ((isHost) ? 1 : 0).ToString () + '|'
+							+ ((isPlayer) ? 1 : 0).ToString () + '|'
+							+ ((isRedTeam) ? 1 : 0).ToString () + '|'
+							+ clientID + '|'
+						);
+					}
+				}
+				
+				break;
+			case "SMOV":
+				int x = int.Parse (aData [2]);
+				int z = int.Parse (aData [3]);
+				GameBoard.Instance.TryMove (x, z);
+				break;
+
+			case "SDIC":
+				string[] wData = aData [1].Split (',');
+				GameBoard.Instance.words = wData;
+
+				string[] pData = aData [2].Split (',');
+				GameBoard.Instance.populate = pData;
+
+				GameBoard.Instance.GenerateGameboard ();
+				break;
+			case "SKEY":
+				{
+					switch (aData [1])
+					{
+					case "R":
+						GameBoard.Instance.resartGame ();
+						break;
+				
+					case "P":
+						GameBoard.Instance.setCamera (aData [1]);
+						break;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+				
+					case "C":
+						GameBoard.Instance.setCamera (aData [1]);
+						break;
+					}
+				}			
+				break;
+			case "SBEG":
+
+				for (int i = 1; i < aData.Length; i++)
+				{
+					string[] bData = aData [i].Split (',');
+					UserConnected (
+						bData [0],
+						(bData [1] == "0") ? false : true,
+						(bData [2] == "0") ? false : true,
+						(bData [3] == "0") ? false : true,
+						bData [4]
+					);
+
+					//Populate the client attributes
+					if (String.Equals (bData [4], clientID))
+					{
+						isHost = (bData [1] == "0") ? false : true;
+						isPlayer = (bData [2] == "0") ? false : true;
+						isRedTeam = (bData [3] == "0") ? false : true;
+					}
+				}
+				GameManager.Instance.StartGame ();
+				break;
+			}
+		}
+		//Must be XML
+		else 
+		{
+			gcd = GameCardDeck.LoadFromText(data);
+			for(int cnt = gcd.gameCards.Count-1; cnt > -1 ;cnt--)
+			{
+				GameCard gc = gcd.gameCards[cnt]; 
+				if (gc.cardSuit == CS.RED_TEAM)
+				{
+					gcd.gameCards.Remove (gc);
+					gcdRed.gameCards.Add (gc);
+				}
+				else if (gc.cardSuit == CS.BLUE_TEAM)
+				{
+					gcd.gameCards.Remove (gc);
+					gcdBlue.gameCards.Add (gc);
 				}
 			}
-				
-			break;
-		case "SMOV":
-			int x = int.Parse(aData [2]);
-			int z = int.Parse(aData [3]);
-			GameBoard.Instance.TryMove(x,z);
-			break;
-
-		case "SDIC":
-			string[] wData = aData[1].Split(',');
-			GameBoard.Instance.words = wData;
-
-			string[] pData = aData[2].Split(',');
-			GameBoard.Instance.populate = pData;
-
-			GameBoard.Instance.GenerateGameboard();
-			break;
-		case "SKEY":
-			{
-				switch (aData [1])
-				{
-				case "R":
-					GameBoard.Instance.resartGame ();
-					break;
-				
-				case "P":
-					GameBoard.Instance.setCamera (aData [1]);
-					break;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-				
-				case "C":
-					GameBoard.Instance.setCamera (aData [1]);
-					break;
-				}
-			}			
-			break;
-		case "SBEG":
-
-			for (int i = 1; i < aData.Length; i++)
-			{
-				string[] bData = aData [i].Split (',');
-				UserConnected (
-					bData [0],
-					(bData [1] == "0") ? false : true,
-					(bData [2] == "0") ? false : true,
-					(bData [3] == "0") ? false : true,
-					bData [4]
-				);
-
-				//Populate the client attributes
-				if (String.Equals (bData [4], clientID))
-				{
-					isHost = (bData [1] == "0") ? false : true;
-					isPlayer = (bData [2] == "0") ? false : true;
-					isRedTeam = (bData [3] == "0") ? false : true;
-				}
-			}
-			GameManager.Instance.StartGame ();
-			break;
+			//TODO - GameManager.Instance.OpenLobby (); needs to be moved, at the moment can only receive an XML message for the initial gamedeck sent by the server
+			GameManager.Instance.OpenLobby ();
 		}
 	}
 		

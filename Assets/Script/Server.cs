@@ -26,6 +26,11 @@ public class Server : MonoBehaviour
 	string[] populate = new string[25];
 	public int numParticipants = 0;
 
+	//the decks that will be used in the game
+	private GameCardDeck gcd = new GameCardDeck ();
+	private GameCardDeck gcdRed = new GameCardDeck ();
+	private GameCardDeck gcdBlue = new GameCardDeck ();
+
 	public void Init(){
 
 		//needed to make this a singleton
@@ -137,8 +142,7 @@ public class Server : MonoBehaviour
 		Debug.Log ("Somebody has connected. Starting to listen for any other clients");
 
 		//Ask last person that connected to state who they are
-		Broadcast ("SWHO" + Allusers, clients[clients.Count-1]);
-
+		Broadcast ("SWHO" + Allusers ,clients[clients.Count-1]);
 	}
 		
 	private bool IsConnected(TcpClient c)
@@ -171,6 +175,7 @@ public class Server : MonoBehaviour
 			{
 				Debug.Log ("Server Sending To:" + sc.clientName + " => " + data);
 				StreamWriter writer = new StreamWriter(sc.tcp.GetStream());
+				//this has been replace from data to xml
 				writer.WriteLine(data);
 				writer.Flush();
 			}
@@ -303,6 +308,9 @@ public class Server : MonoBehaviour
 				clients
 			);
 			break;
+		case "CPCI":
+			Broadcast (gcd.SaveToText ().Replace (System.Environment.NewLine, ""), clients);
+			break;
 		}
 	}
 
@@ -361,19 +369,53 @@ public class Server : MonoBehaviour
 
 	private void BuildDeck()
 	{
-		GameCardDeck gcd = new GameCardDeck ();
 
-		//Demo saving data
-		GameCard gc = new GameCard();
-		gc.cardSuit = CS.RED_TEAM;
-		gc.cardLocation = "REDDECK";
-		gc.cardRevealed = "HIDDEN";
-		gcd.gameCards.Add (gc);
-		gcd.Save ("/tmp/gamecarddeck1.xml");
+//		//Demo saving data
+//		//create a card
+//		GameCard gc = new GameCard();
+//		gc.cardSuit = CS.RED_TEAM;
+//		gc.cardLocation = CS.CAR_LOCATION_RED_DECK;
+//		gc.cardRevealed = CS.CAR_REVEAL_HIDDEN;
+//
+//		//add CardWhenPlayable element to card 
+//		CardWhenPlayable cwp = new CardWhenPlayable ();
+//		cwp.turnStage = CS.CWP_PLAY_PLAYER_TURN;
+//		cwp.numTimes = 1;	
+//		gc.cardWhenPlayable.Add(cwp);
+//
+//		//add CardEffectPlayable element to card 
+//		CardEffectPlayable cep = new CardEffectPlayable ();
+//		cep.effectName = CS.CEP_EFFECT_REVEAL_CARD;
+//		cep.affectWhat = CS.CEP_AFFECT_GAMEBOARD;
+//		cep.numTimes = 1;
+//		gc.cardEffectPlayable.Add(cep);
+//
+//		//add Card to deck
+//		gcd.gameCards.Add (gc);
+//
+//		gcd.Save ("/tmp/gamecarddeck1.xml");
 
 		//Demo loading data
 		gcd = GameCardDeck.Load ("/tmp/gamecarddeck2.xml");
-		gcd.Save ("/tmp/gamecarddeck3.xml");
+
+		//Populate the Red and Blue Decks
+		int lastItem  = gcd.gameCards.Count;
+		GameCard drawnCard = new GameCard ();
+
+		for (int cnt = 0; cnt <= (lastItem - 1); cnt++)
+		{
+			drawnCard = gcd.gameCards [cnt];
+			if (drawnCard.cardLocation == CS.CAR_LOCATION_RED_DECK)
+			{
+				gcdRed.gameCards.Add (drawnCard);
+			}
+			else if (drawnCard.cardLocation == CS.CAR_LOCATION_BLUE_DECK)
+			{
+				gcdBlue.gameCards.Add (drawnCard);
+			}
+		}
+		gcdBlue.Save ("/tmp/gamecarddeckblue.xml");
+		gcdRed.Save ("/tmp/gamecarddeckred.xml");
 	}
 }
 

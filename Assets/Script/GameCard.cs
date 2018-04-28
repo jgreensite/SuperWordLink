@@ -23,13 +23,14 @@ using System.Xml.Serialization;
 	//Defines when the card is playable e.g. anytime, only on your tunr
 	{
 		public string turnStage{ get; set; }
-		public string numTimes { get; set; }
+		public int numTimes { get; set; }
 	}
 
 	public class CardEffectPlayable
 	//Defines the affects the card has e.g. pick up two
 	{
 		public string effectName { get; set; }
-		public string numTimes { get; set; }
+		public string affectWhat { get; set; }
+		public int numTimes { get; set; }
 	}
 //}

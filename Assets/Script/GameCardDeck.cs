@@ -37,6 +37,19 @@ public class GameCardDeck
 			serializer.Serialize(stream, this);
 		}
 	}
+		
+
+	public string SaveToText()
+	{
+		XmlSerializer xmlSerializer = new XmlSerializer(typeof(GameCardDeck));
+
+		using(StringWriter textWriter = new StringWriter())
+		{
+			xmlSerializer.Serialize(textWriter, this);
+			return textWriter.ToString();
+		}
+	}
+
 
 	public static GameCardDeck Load(string path)
 	{
