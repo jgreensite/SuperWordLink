@@ -6,10 +6,13 @@ using AssemblyCSharp;
 
 public class Card : MonoBehaviour {
 
-	public float rotateFaceUp = -1;
+	//Card rotations and text presentations
+	public bool rotateFaceUp = false;
+	public bool rotateVertical = false;
+	public bool rotateFlattenText = false;
 
-	public float m_maximumTilt = 45f;
-	public float m_tiltSpeed = 50f;
+//	private float m_maximumTilt = 45f;
+	private float m_tiltSpeed = 1.0f;
 
 	private float m_initialXRot;
 	private float m_initialYRot;
@@ -77,12 +80,27 @@ public class Card : MonoBehaviour {
 
 	// Call this to start the rotation
 	public void makeFaceUp(int x, int z, Card siblingCaller){
+		// set the faceUp status now even though rotation has not finished
+		isCardUp = true;
 
 		// This starts the rotation, could also use a boolean flag
-		rotateFaceUp = 0;
+		rotateFaceUp = false;
 		ChangeHighlight ();
 		siblingCaller.ChangeHighlight();
 	}
+
+	// Call this to make a card in the players hand
+	public void makeInHand (){
+		// set the faceUp status now even though rotation has not finished
+		isCardUp = true;
+
+		// This starts the rotation, could also use a boolean flag
+		rotateFaceUp = true;
+		rotateVertical = true;
+		rotateFlattenText = false;
+	}
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -110,24 +128,42 @@ public class Card : MonoBehaviour {
 		m_finalXValue = +180f;
 		m_finalZValue = 0f;
 		m_finalYValue = 0f;
-		if ((m_currentXRot <= (m_initialXRot + m_finalXValue)*0.99) && rotateFaceUp >= 0)
+		if ((m_currentXRot <= (m_initialXRot + m_finalXValue) * 0.99) && rotateFaceUp == true)
 		{
-			rotateFaceUp += Time.deltaTime * m_finalXValue/m_tiltSpeed;
+			m_currentXRot += Time.deltaTime * m_finalXValue / m_tiltSpeed;
+		}
 
-			m_currentXRot += rotateFaceUp;
-			m_currentYRot += 0;
-			m_currentZRot += 0;
- 			
-			//make sure that if it is close the target angle of rotation it doesn't over or under rotate
-			if (m_currentXRot > (m_initialXRot + m_finalXValue) * 0.98)
-			{
-				m_currentXRot = m_initialXRot + m_finalXValue;
-			}
+		if ((m_currentYRot <= (m_initialYRot + m_finalYValue) * 0.99) && rotateVertical == true)
+		{
+			m_currentYRot += Time.deltaTime * m_finalYValue / m_tiltSpeed;
+		}
 
-			transform.localRotation = Quaternion.Euler (m_currentXRot, m_currentYRot, m_currentZRot);
-		}        
+		if ((m_currentZRot <= (m_initialZRot + m_finalZValue) * 0.99) && rotateFlattenText == true)
+		{
+			m_currentZRot += Time.deltaTime * m_finalZValue / m_tiltSpeed;
+		}
+				
+		//make sure that if X is close the target angle of rotation it doesn't over or under rotate
+		if (m_currentXRot > (m_initialXRot + m_finalXValue) * 0.98)
+		{
+			m_currentXRot = m_initialXRot + m_finalXValue;
+		}
+
+		//make sure that if Y is close the target angle of rotation it doesn't over or under rotate
+		if (m_currentYRot > (m_initialYRot + m_finalYValue) * 0.98)
+		{
+			m_currentYRot = m_initialYRot + m_finalYValue;
+		}
+
+		//make sure that if Z is close the target angle of rotation it doesn't over or under rotate
+		if (m_currentZRot > (m_initialZRot + m_finalZValue) * 0.98)
+		{
+			m_currentZRot = m_initialZRot + m_finalZValue;
+		}
+
+		transform.localRotation = Quaternion.Euler (m_currentXRot, m_currentYRot, m_currentZRot);        
 	}
-		
+	
 	public void ChangeMaterial(string newCardType)
 	{
 		mats = gameObject.transform.Find("Card").GetComponent<Renderer> ().materials;

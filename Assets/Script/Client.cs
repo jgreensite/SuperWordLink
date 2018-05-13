@@ -148,16 +148,7 @@ public class Client : MonoBehaviour
 					//if we get the signal to start the lobby, start it 
 					if (bData [5] != "0")
 					{
-//					//Commented out this line and instead sent the CPCI
-//					GameManager.Instance.OpenLobby ();
-						Send (
-							"CPCI" + "|"
-							+ clientName + '|'
-							+ ((isHost) ? 1 : 0).ToString () + '|'
-							+ ((isPlayer) ? 1 : 0).ToString () + '|'
-							+ ((isRedTeam) ? 1 : 0).ToString () + '|'
-							+ clientID + '|'
-						);
+					GameManager.Instance.OpenLobby ();
 					}
 				}
 				
@@ -175,22 +166,24 @@ public class Client : MonoBehaviour
 				string[] pData = aData [2].Split (',');
 				GameBoard.Instance.populate = pData;
 
-				GameBoard.Instance.GenerateGameboard ();
+				GameBoard.Instance.GeneratePlayerGameboard ();
+
+				GetGameCardDeck ();
 				break;
 			case "SKEY":
 				{
 					switch (aData [1])
 					{
 					case "R":
-						GameBoard.Instance.resartGame ();
+						GameBoard.Instance.ResartGame ();
 						break;
 				
 					case "P":
-						GameBoard.Instance.setCamera (aData [1]);
+						GameBoard.Instance.SetCamera (aData [1]);
 						break;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 				
 					case "C":
-						GameBoard.Instance.setCamera (aData [1]);
+						GameBoard.Instance.SetCamera (aData [1]);
 						break;
 					}
 				}			
@@ -223,6 +216,7 @@ public class Client : MonoBehaviour
 		//Must be XML
 		else 
 		{
+			//TODO - Assumes that the xml message is one to populate a game card deck
 			gcd = GameCardDeck.LoadFromText(data);
 			for(int cnt = gcd.gameCards.Count-1; cnt > -1 ;cnt--)
 			{
@@ -238,8 +232,8 @@ public class Client : MonoBehaviour
 					gcdBlue.gameCards.Add (gc);
 				}
 			}
-			//TODO - GameManager.Instance.OpenLobby (); needs to be moved, at the moment can only receive an XML message for the initial gamedeck sent by the server
-			GameManager.Instance.OpenLobby ();
+			// Having populated the client side data strucutres for the deck now render the deck
+			GameBoard.Instance.GeneratePlayerHand();
 		}
 	}
 		
@@ -274,6 +268,18 @@ public class Client : MonoBehaviour
 			"CBEG" + "|"
 			+ clientName
 			+ concatPlayers
+		);
+	}
+
+	public void GetGameCardDeck()
+	{
+		Send (
+			"CPCI" + "|"
+			+ clientName + '|'
+			+ ((isHost) ? 1 : 0).ToString () + '|'
+			+ ((isPlayer) ? 1 : 0).ToString () + '|'
+			+ ((isRedTeam) ? 1 : 0).ToString () + '|'
+			+ clientID + '|'
 		);
 	}
 

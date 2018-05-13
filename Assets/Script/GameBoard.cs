@@ -17,9 +17,13 @@ public class GameBoard : MonoBehaviour
 
 	public static int gridXDim = CS.CSGRIDXDIM;
 	public static int gridZDim = CS.CSGRIDZDIM;
+	public static int cardHandDim = CS.CSCARDHANDDIM;
 
 	public Card[,] cardsPlayer = new Card[gridXDim,gridZDim];
 	public Card[,] cardsCaller = new Card[gridXDim,gridZDim];
+
+	//TODO - Remove hardcoding for number of players and cards in each player's hand
+	public Card[,] cardsPlayerHand = new Card[2,cardHandDim];
 
 	public GameObject redPfb;
 	public GameObject bluePfb;
@@ -34,15 +38,23 @@ public class GameBoard : MonoBehaviour
 
 	private Vector3 boardOffset = new Vector3(-1.00f,1.0f,-1.00f);
 
+	//TODO - Remove hardcoding for number of players, this will only work with 3 cards in the hand
+	private Vector3 handOffset = new Vector3(-0.5f,0.0f,0.0f);
+
 	public bool isRedStart;
 	public bool isRedTurn;
 	public bool isRestart;
 	public bool isGameover;
 
+	//GameboardCards
 	public int cntRedCards = 0;
 	public int cntBlueCards = 0;
 	public int cntCivilCards = 0;
 	public int cntDeathCards = 0;
+
+	//PlayerCards
+	public int cntRedHandCards = 0;
+	public int cntBlueHandCards = 0;
 
 	public Text countTextRed;
 	public Text countTextBlue;
@@ -71,6 +83,7 @@ public class GameBoard : MonoBehaviour
 		isRestart = false;
 		isGameover = false; 	
 
+		//TODO the dictionary should be the place where the initial cards are dealt
 		//Get Dictionary from the server, as opposed to getting it locally
 		//Only the host should make this request otherwise we'll generate too many cards as each client will request dictionary
 		if (client.isHost==true){
@@ -79,6 +92,7 @@ public class GameBoard : MonoBehaviour
 				+ client.clientName
 			);	
 		} 
+		// Get the initial set of Gamecards
 	}
 
 	private void Update()
@@ -96,7 +110,7 @@ public class GameBoard : MonoBehaviour
 		}
 		else if ((Input.GetKeyDown (KeyCode.C) || Input.GetKeyDown (KeyCode.P)) && (client.isPlayer == false || isGameover == true))
 		{
-			setCamera (Input.inputString.ToUpper());
+			SetCamera (Input.inputString.ToUpper());
 		}
 		else if(isGameover == false)
 		{
@@ -199,8 +213,6 @@ public class GameBoard : MonoBehaviour
 				case CS.GOOD:
 					//Flip the Card and keep on picking
 					selectedCard = cardsPlayer [x, z];
-					//TODO - isCardUp should occur as a result of startrotating, should not set it directly
-					selectedCard.isCardUp = true;
 					selectedCard.makeFaceUp (x,z, cardsCaller[x,z]);
 					//TODO - simplify this switch statement there is a lot of repeated elements in each case
 					//TODO - simplify EndTurn, checkVictory() and endGame(), think these could be one function
@@ -214,7 +226,6 @@ public class GameBoard : MonoBehaviour
 				case CS.BAD:
 					//flip the Card, end the turn
 					selectedCard = cardsPlayer [x, z];
-					selectedCard.isCardUp = true;
 					selectedCard.makeFaceUp (x,z, cardsCaller[x,z]);
 					EndTurn (moveResult);
 					break;
@@ -222,7 +233,6 @@ public class GameBoard : MonoBehaviour
 				case CS.DEATH_TEAM:
 					//flip the Card, end the game
 					selectedCard = cardsPlayer [x, z];
-					selectedCard.isCardUp = true;
 					selectedCard.makeFaceUp (x,z, cardsCaller[x,z]);
 					EndTurn (moveResult);
 					break;
@@ -230,7 +240,6 @@ public class GameBoard : MonoBehaviour
 				case CS.CIVIL_TEAM:
 					//flip the Card, end the turn
 					selectedCard = cardsPlayer [x, z];
-					selectedCard.isCardUp = true;
 					selectedCard.makeFaceUp (x,z, cardsCaller[x,z]);
 					EndTurn (moveResult);
 					break;
@@ -254,6 +263,9 @@ public class GameBoard : MonoBehaviour
 			{
 				//switch which team is picking
 				isRedTurn = !isRedTurn;
+
+				//Get the latest set of Gamecards
+				client.GetGameCardDeck ();
 
 				if (turnIndicator.GetComponent<Renderer> ().material.color == Color.blue)
 				{
@@ -327,14 +339,14 @@ public class GameBoard : MonoBehaviour
 		return(true);
 	}
 		
-	public void GenerateGameboard()
+	public void GeneratePlayerGameboard()
 	{
 		if (client.isPlayer == true)
 		{
-			setCamera ("P");
+			SetCamera ("P");
 		} else
 		{
-			setCamera ("C");
+			SetCamera ("C");
 		}
 		//reset counters for each of the card types
 		int rndChoose = 0;
@@ -369,7 +381,7 @@ public class GameBoard : MonoBehaviour
 					cntDeathCards += 1;
 					break;
 				}
-				GenerateCard (x, z, ref go, words [x + z * 5], populate [x + z * 5]);
+				GenerateGameBoardCard (x, z, ref go, words [x + z * 5], populate [x + z * 5]);
 			}
 		}
 		//Blue goes first
@@ -390,30 +402,95 @@ public class GameBoard : MonoBehaviour
 		countTextBlue.text = "Blue Remaining " + cntBlueCards;
 	}
 
-	private void GenerateCard(int x, int z, ref GameObject go, string word, string cardType)
+	public void GeneratePlayerHand()
+	{
+		if (client.isPlayer == true)
+		{
+			//TODO - Callers may get a differrent view  START HERE
+		}
+		//reset counters for each of the card types
+//		int rndChoose = 0;
+//		int redCnt = 0;
+//		int blueCnt = 0;
+//		int civilCnt = 0;
+//		int deathCnt = 0;
+//		bool validChoice = false;
+		GameObject go = null;
+		string cardInstructions = "";
+		string cardType = null;
+
+		for (int playerNum = 0; playerNum < 1; playerNum++)
+		{
+			for (int cardNum = 0; cardNum < 3; cardNum++)
+			{
+				switch (client.isRedTeam)
+				{
+				case true:
+					go = Instantiate (redPfb) as GameObject;
+					cntRedHandCards += 1;
+					cardInstructions = "Red";
+					cardType = CS.RED_TEAM;
+					break;
+				case false:
+					go = Instantiate (bluePfb) as GameObject;
+					cntBlueHandCards += 1;
+					cardInstructions = "Blue";
+					cardType = CS.BLUE_TEAM;
+					break;
+//				case CS.CIVIL_TEAM:
+//					go = Instantiate (civilPfb) as GameObject;
+//					cntCivilCards += 1;
+//					break;
+//				case CS.DEATH_TEAM:
+//					go = Instantiate (deathPfb) as GameObject;
+//					cntDeathCards += 1;
+//					break;
+				}
+				GeneratePlayerHandCard (playerNum, cardNum, ref go, cardInstructions, cardType);
+			}
+		}
+//		//Blue goes first
+//		if (cntBlueCards > cntRedCards)
+//		{
+//			isRedStart = false;
+//			isRedTurn = false;
+//			turnIndicatorScript.setColour ("blue");
+//
+//		} else
+//			//Red goes first
+//		{
+//			isRedStart = true;
+//			isRedTurn = true;
+//			turnIndicatorScript.setColour ("red");
+//		}
+//		countTextRed.text = "Red Remaining " + cntRedCards;
+//		countTextBlue.text = "Blue Remaining " + cntBlueCards;
+	}
+
+	private void GenerateGameBoardCard(int x, int z, ref GameObject go, string word, string cardType)
 	{
 		//TODO - the GenerateCard() class should be methods on the Card() class
 		go.transform.SetParent(transform);
-		Card cardPlayer = go.GetComponent<Card>();
-		cardPlayer.isCardUp = false;
+		Card cardGameBoard = go.GetComponent<Card>();
+		cardGameBoard.isCardUp = false;
 
 		//Add the word to the card
 		go.transform.Find("PlayingCardWordBack").GetComponent<TextMesh>().text=word;
 		go.transform.Find("PlayingCardWordFront").GetComponent<TextMesh>().text=word;
 
-		cardsPlayer[x, z] = cardPlayer;
+		cardsPlayer[x, z] = cardGameBoard;
 		Debug.Log(string.Concat(x, ",", z));
-		MoveCard (go, x, z);
+		MoveGameBoardCard (go, x, z);
 
-		cardPlayer.ChangeMaterial (cardType);
+		cardGameBoard.ChangeMaterial (cardType);
 
 		//Requires an empty object of uniform scale to preserve the scale of the card and allow it to rotate without distortion
 		var emptyObjectCard = new GameObject();
 		emptyObjectCard.transform.parent = gameBoardPlayer.transform;
-		cardPlayer.transform.parent = emptyObjectCard.transform;
+		cardGameBoard.transform.parent = emptyObjectCard.transform;
 
 		//copy the card for the Caller gameboard
-		Card cardCaller = Instantiate(cardPlayer, 3.35f*Vector3.forward + cardPlayer.transform.position, Quaternion.identity);
+		Card cardCaller = Instantiate(cardGameBoard, 3.35f*Vector3.forward + cardGameBoard.transform.position, Quaternion.identity);
 		cardsCaller[x, z] = cardCaller;
 
 		//Requires an empty object of uniform scale to preserve the scale of the card and allow it to rotate without distortion
@@ -422,17 +499,50 @@ public class GameBoard : MonoBehaviour
 		cardCaller.transform.parent = emptyObjectCardCaller.transform;
 
 		//Rotate the card
-		cardCaller.rotateFaceUp = 0;
+		cardCaller.rotateFaceUp = true;
 	}
 		
-	private void MoveCard(GameObject go, int x, int z)
+	private void GeneratePlayerHandCard(int playerNum, int cardNum, ref GameObject go, string word, string cardType)
+	{
+		//TODO - the GenerateCard() class should be methods on the Card() class
+		go.transform.SetParent(transform);
+		Card cardPlayerHand = go.GetComponent<Card>();
+		cardPlayerHand.isCardUp = true;
+
+		//Add the word to the card, but just the front not the back
+		go.transform.Find("PlayingCardWordBack").GetComponent<TextMesh>().text="";
+		go.transform.Find("PlayingCardWordFront").GetComponent<TextMesh>().text=word;
+
+		cardsPlayerHand[playerNum, cardNum] = cardPlayerHand;
+		Debug.Log(string.Concat("cardPlayerHand:", playerNum, ",", cardNum));
+		MovePlayerHandCard (go, playerNum, cardNum);
+
+		cardPlayerHand.ChangeMaterial (cardType);
+
+		//Requires an empty object of uniform scale to preserve the scale of the card and allow it to rotate without distortion
+		var emptyObjectCard = new GameObject();
+		emptyObjectCard.transform.parent = gameBoardPlayer.transform;
+		cardPlayerHand.transform.parent = emptyObjectCard.transform;
+
+		//Rotate the card
+		cardPlayerHand.rotateFaceUp = true;
+	}
+		
+	private void MovePlayerHandCard(GameObject go, int playerNum, int cardNum)
+	{
+		Vector3 cardPos = new Vector3(0.5F*cardNum,1,-1) + handOffset;
+		Debug.Log(cardPos);
+		go.transform.position = cardPos;
+	}
+
+	private void MoveGameBoardCard(GameObject go, int x, int z)
 	{
 		Vector3 cardPos = new Vector3(0.5F*x,0,0.5F*z) + boardOffset;
 		Debug.Log(cardPos);
 		go.transform.position = cardPos;
 	}
 
-	public void setCamera(string cam)
+	public void SetCamera(string cam)
 	{
 		switch (cam)
 		{
@@ -454,7 +564,7 @@ public class GameBoard : MonoBehaviour
 		}
 	}
 
-	public void resartGame()
+	public void ResartGame()
 	{
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex,LoadSceneMode.Single);
 	}

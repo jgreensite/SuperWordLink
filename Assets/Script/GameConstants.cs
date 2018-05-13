@@ -31,6 +31,9 @@ namespace AssemblyCSharp
 			public const string CEP_AFFECT_OWN_HAND = "affects your hand";
 			public const string CEP_AFFECT_OPPONENT_HAND = "affects opponent's hand";
 
+		//Number of Cards in player's hands
+		public const int CSCARDHANDDIM = 3;
+
 		//Gameboard dimensions
 		public const int CSGRIDXDIM = 5;
 		public const int CSGRIDZDIM = 5;

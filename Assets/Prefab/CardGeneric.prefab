@@ -334,9 +334,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab34cab2473d14c4685f1e2f7c4cc87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateFaceUp: -1
-  m_maximumTilt: 45
-  m_tiltSpeed: 50
+  rotateFaceUp: 255
+  rotateVertical: 0
+  rotateFlattenText: 0
   cardType: 
   isCardUp: 0
   mats:
