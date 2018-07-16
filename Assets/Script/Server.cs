@@ -369,6 +369,7 @@ public class Server : MonoBehaviour
 
 	private void BuildDeck()
 	{
+		string filePath = "";
 
 //		//Demo saving data
 //		//create a card
@@ -392,11 +393,15 @@ public class Server : MonoBehaviour
 //
 //		//add Card to deck
 //		gcd.gameCards.Add (gc);
-//
-//		gcd.Save ("/tmp/gamecarddeck1.xml");
+//		filePath = Application.persistentDataPath + "/gamecarddeck1.xml";
+//		gcd.Save (filePath);
+//		Debug.Log("Wrote : " + filePath);
 
 		//Demo loading data
-		gcd = GameCardDeck.Load ("/tmp/gamecarddeck2.xml");
+		filePath = Application.persistentDataPath + "/gamecarddeck2.xml";
+		gcd = GameCardDeck.Load (filePath);
+		Debug.Log("Loaded : " + filePath);
+
 
 		//Populate the Red and Blue Decks
 		int lastItem  = gcd.gameCards.Count;
@@ -414,8 +419,13 @@ public class Server : MonoBehaviour
 				gcdBlue.gameCards.Add (drawnCard);
 			}
 		}
-		gcdBlue.Save ("/tmp/gamecarddeckblue.xml");
-		gcdRed.Save ("/tmp/gamecarddeckred.xml");
+		filePath = Application.persistentDataPath + "/gamecarddeckblue.xml";
+		gcdBlue.Save (filePath);
+		Debug.Log("Wrote : " + filePath);
+
+		filePath = Application.persistentDataPath + "/gamecarddeckred.xml";
+		gcdRed.Save (filePath);
+		Debug.Log("Wrote : " + filePath);
 	}
 }
 

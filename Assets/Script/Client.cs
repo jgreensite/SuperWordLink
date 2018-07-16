@@ -25,6 +25,7 @@ public class Client : MonoBehaviour
 
 	//the decks that will be used in the game
 	private GameCardDeck gcd = new GameCardDeck ();
+	private GameCardDeck gcdTemp = new GameCardDeck ();
 	private GameCardDeck gcdRed = new GameCardDeck ();
 	private GameCardDeck gcdBlue = new GameCardDeck ();
 
@@ -175,6 +176,8 @@ public class Client : MonoBehaviour
 					switch (aData [1])
 					{
 					case "R":
+						//need to get rid of the local gameCard copy if we receive a restart
+						gcd.gameCards.RemoveAll (gameCards => gameCards.cardLocation != "");
 						GameBoard.Instance.ResartGame ();
 						break;
 				
@@ -217,23 +220,30 @@ public class Client : MonoBehaviour
 		else 
 		{
 			//TODO - Assumes that the xml message is one to populate a game card deck
-			gcd = GameCardDeck.LoadFromText(data);
-			for(int cnt = gcd.gameCards.Count-1; cnt > -1 ;cnt--)
+			gcdTemp = GameCardDeck.LoadFromText(data);
+			if (!(gcdTemp.SaveToText().Equals(gcd.SaveToText())))
 			{
-				GameCard gc = gcd.gameCards[cnt]; 
-				if (gc.cardSuit == CS.RED_TEAM)
+				gcd = GameCardDeck.LoadFromText (data);
+				gcdRed = new GameCardDeck();
+				gcdBlue = new GameCardDeck();
+//				for (int cnt = gcd.gameCards.Count - 1; cnt > -1; cnt--)
+				for (int cnt = 0; cnt < gcd.gameCards.Count; cnt++)
 				{
-					gcd.gameCards.Remove (gc);
-					gcdRed.gameCards.Add (gc);
+					GameCard gc = gcd.gameCards [cnt]; 
+					if (gc.cardSuit == CS.RED_TEAM)
+					{
+//						gcd.gameCards.Remove (gc);
+						gcdRed.gameCards.Add (gc);
+					}
+					else if (gc.cardSuit == CS.BLUE_TEAM)
+					{
+//						gcd.gameCards.Remove (gc);
+						gcdBlue.gameCards.Add (gc);
+					}
 				}
-				else if (gc.cardSuit == CS.BLUE_TEAM)
-				{
-					gcd.gameCards.Remove (gc);
-					gcdBlue.gameCards.Add (gc);
-				}
+				// If there are differences render the deck
+				GameBoard.Instance.GeneratePlayerHand ();
 			}
-			// Having populated the client side data strucutres for the deck now render the deck
-			GameBoard.Instance.GeneratePlayerHand();
 		}
 	}
 		

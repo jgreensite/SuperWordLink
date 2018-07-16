@@ -39,7 +39,7 @@ public class GameBoard : MonoBehaviour
 	private Vector3 boardOffset = new Vector3(-1.00f,1.0f,-1.00f);
 
 	//TODO - Remove hardcoding for number of players, this will only work with 3 cards in the hand
-	private Vector3 handOffset = new Vector3(-0.5f,0.0f,0.0f);
+	private Vector3 handOffset = new Vector3(0.0f,0.0f,-0.5f);
 
 	public bool isRedStart;
 	public bool isRedTurn;
@@ -213,7 +213,7 @@ public class GameBoard : MonoBehaviour
 				case CS.GOOD:
 					//Flip the Card and keep on picking
 					selectedCard = cardsPlayer [x, z];
-					selectedCard.makeFaceUp (x,z, cardsCaller[x,z]);
+					selectedCard.makeFaceUp (true, x,z, cardsCaller[x,z]);
 					//TODO - simplify this switch statement there is a lot of repeated elements in each case
 					//TODO - simplify EndTurn, checkVictory() and endGame(), think these could be one function
 					string winState = checkVictory ();
@@ -226,21 +226,21 @@ public class GameBoard : MonoBehaviour
 				case CS.BAD:
 					//flip the Card, end the turn
 					selectedCard = cardsPlayer [x, z];
-					selectedCard.makeFaceUp (x,z, cardsCaller[x,z]);
+					selectedCard.makeFaceUp (true, x,z, cardsCaller[x,z]);
 					EndTurn (moveResult);
 					break;
 				
 				case CS.DEATH_TEAM:
 					//flip the Card, end the game
 					selectedCard = cardsPlayer [x, z];
-					selectedCard.makeFaceUp (x,z, cardsCaller[x,z]);
+					selectedCard.makeFaceUp (true, x,z, cardsCaller[x,z]);
 					EndTurn (moveResult);
 					break;
 				
 				case CS.CIVIL_TEAM:
 					//flip the Card, end the turn
 					selectedCard = cardsPlayer [x, z];
-					selectedCard.makeFaceUp (x,z, cardsCaller[x,z]);
+					selectedCard.makeFaceUp (true, x,z, cardsCaller[x,z]);
 					EndTurn (moveResult);
 					break;
 				}
@@ -428,13 +428,13 @@ public class GameBoard : MonoBehaviour
 				case true:
 					go = Instantiate (redPfb) as GameObject;
 					cntRedHandCards += 1;
-					cardInstructions = "Red";
+					cardInstructions = "Red team instructions";
 					cardType = CS.RED_TEAM;
 					break;
 				case false:
 					go = Instantiate (bluePfb) as GameObject;
 					cntBlueHandCards += 1;
-					cardInstructions = "Blue";
+					cardInstructions = "Blue team instructions";
 					cardType = CS.BLUE_TEAM;
 					break;
 //				case CS.CIVIL_TEAM:
@@ -472,7 +472,7 @@ public class GameBoard : MonoBehaviour
 		//TODO - the GenerateCard() class should be methods on the Card() class
 		go.transform.SetParent(transform);
 		Card cardGameBoard = go.GetComponent<Card>();
-		cardGameBoard.isCardUp = false;
+		cardGameBoard.makeFaceUp(false);
 
 		//Add the word to the card
 		go.transform.Find("PlayingCardWordBack").GetComponent<TextMesh>().text=word;
@@ -489,6 +489,7 @@ public class GameBoard : MonoBehaviour
 		emptyObjectCard.transform.parent = gameBoardPlayer.transform;
 		cardGameBoard.transform.parent = emptyObjectCard.transform;
 
+		//Populate Caller Gameboard
 		//copy the card for the Caller gameboard
 		Card cardCaller = Instantiate(cardGameBoard, 3.35f*Vector3.forward + cardGameBoard.transform.position, Quaternion.identity);
 		cardsCaller[x, z] = cardCaller;
@@ -499,7 +500,7 @@ public class GameBoard : MonoBehaviour
 		cardCaller.transform.parent = emptyObjectCardCaller.transform;
 
 		//Rotate the card
-		cardCaller.rotateFaceUp = true;
+		cardCaller.makeFaceUp(true);
 	}
 		
 	private void GeneratePlayerHandCard(int playerNum, int cardNum, ref GameObject go, string word, string cardType)
@@ -507,7 +508,6 @@ public class GameBoard : MonoBehaviour
 		//TODO - the GenerateCard() class should be methods on the Card() class
 		go.transform.SetParent(transform);
 		Card cardPlayerHand = go.GetComponent<Card>();
-		cardPlayerHand.isCardUp = true;
 
 		//Add the word to the card, but just the front not the back
 		go.transform.Find("PlayingCardWordBack").GetComponent<TextMesh>().text="";
@@ -525,12 +525,12 @@ public class GameBoard : MonoBehaviour
 		cardPlayerHand.transform.parent = emptyObjectCard.transform;
 
 		//Rotate the card
-		cardPlayerHand.rotateFaceUp = true;
+		cardPlayerHand.makeInHand();
 	}
 		
 	private void MovePlayerHandCard(GameObject go, int playerNum, int cardNum)
 	{
-		Vector3 cardPos = new Vector3(0.5F*cardNum,1,-1) + handOffset;
+		Vector3 cardPos = new Vector3(-1.5f,1.25f,0.5F*cardNum) + handOffset;
 		Debug.Log(cardPos);
 		go.transform.position = cardPos;
 	}
