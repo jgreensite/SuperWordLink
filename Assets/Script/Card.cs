@@ -146,7 +146,7 @@ public class Card : MonoBehaviour {
 		m_finalZValue = 135f;
 
 		//This sets the desired rotation of the text on the card, the update function will then perform the rotation 
-		m_finalTextXValue = -90f;
+		m_finalTextXValue = -45f;
 		m_finalTextYValue = 180f;
 		m_finalTextZValue = 90f;
 	}

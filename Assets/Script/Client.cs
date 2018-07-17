@@ -176,7 +176,7 @@ public class Client : MonoBehaviour
 					switch (aData [1])
 					{
 					case "R":
-						//need to get rid of the local gameCard copy if we receive a restart
+						//need to get rid of the local gameCard copy if we receive a restart. When the scene loads we need to make sure we load a new set of cards
 						gcd.gameCards.RemoveAll (gameCards => gameCards.cardLocation != "");
 						GameBoard.Instance.ResartGame ();
 						break;

@@ -472,7 +472,6 @@ public class GameBoard : MonoBehaviour
 		//TODO - the GenerateCard() class should be methods on the Card() class
 		go.transform.SetParent(transform);
 		Card cardGameBoard = go.GetComponent<Card>();
-		cardGameBoard.makeFaceUp(false);
 
 		//Add the word to the card
 		go.transform.Find("PlayingCardWordBack").GetComponent<TextMesh>().text=word;
@@ -488,6 +487,9 @@ public class GameBoard : MonoBehaviour
 		var emptyObjectCard = new GameObject();
 		emptyObjectCard.transform.parent = gameBoardPlayer.transform;
 		cardGameBoard.transform.parent = emptyObjectCard.transform;
+
+		//Rotate the card
+		cardGameBoard.makeFaceUp(false);
 
 		//Populate Caller Gameboard
 		//copy the card for the Caller gameboard
