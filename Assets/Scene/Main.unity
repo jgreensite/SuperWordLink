@@ -762,6 +762,7 @@ MonoBehaviour:
   bluePfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 2}
   civilPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 2}
   deathPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 2}
+  handPfb: {fileID: 1961720848236538, guid: 0094f291f843849f7ab03d2442f152ba, type: 2}
   isRedStart: 0
   isRedTurn: 1
   isRestart: 0

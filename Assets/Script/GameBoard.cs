@@ -29,6 +29,7 @@ public class GameBoard : MonoBehaviour
 	public GameObject bluePfb;
 	public GameObject civilPfb;
 	public GameObject deathPfb;
+	public GameObject handPfb;
 
 	private GameObject turnIndicator;
 	private TurnIndicator turnIndicatorScript;
@@ -426,13 +427,13 @@ public class GameBoard : MonoBehaviour
 				switch (client.isRedTeam)
 				{
 				case true:
-					go = Instantiate (redPfb) as GameObject;
+					go = Instantiate (handPfb) as GameObject;
 					cntRedHandCards += 1;
 					cardInstructions = "Red team instructions";
 					cardType = CS.RED_TEAM;
 					break;
 				case false:
-					go = Instantiate (bluePfb) as GameObject;
+					go = Instantiate (handPfb) as GameObject;
 					cntBlueHandCards += 1;
 					cardInstructions = "Blue team instructions";
 					cardType = CS.BLUE_TEAM;

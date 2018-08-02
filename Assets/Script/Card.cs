@@ -34,9 +34,9 @@ public class Card : MonoBehaviour {
 	private float m_finalYValue = 0f;
 	private float m_finalZValue = 0f;
 
-	private float m_finalTextXValue = 0f;
-	private float m_finalTextYValue = 0f;
-	private float m_finalTextZValue = 0f;
+//	private float m_finalTextXValue = 0f;
+//	private float m_finalTextYValue = 0f;
+//	private float m_finalTextZValue = 0f;
 
 	public string cardType;
 	public bool isCardUp;
@@ -103,10 +103,10 @@ public class Card : MonoBehaviour {
 			m_finalYValue = 0f;
 			m_finalZValue = 0f;
 
-			//This sets the desired rotation of the text on the card, the update function will then perform the rotation 
-			m_finalTextXValue = 0f;
-			m_finalTextYValue = 0f;
-			m_finalTextZValue = 0f;
+//			//This sets the desired rotation of the text on the card, the update function will then perform the rotation 
+//			m_finalTextXValue = 0f;
+//			m_finalTextYValue = 0f;
+//			m_finalTextZValue = 0f;
 
 		}
 		else if (flagUp == false)
@@ -119,10 +119,10 @@ public class Card : MonoBehaviour {
 			m_finalYValue = 0f;
 			m_finalZValue = 0f;
 
-			//This sets the desired rotation of the text on the card, the update function will then perform the rotation 
-			m_finalTextXValue = 0f;
-			m_finalTextYValue = 0f;
-			m_finalTextZValue = 0f;
+//			//This sets the desired rotation of the text on the card, the update function will then perform the rotation 
+//			m_finalTextXValue = 0f;
+//			m_finalTextYValue = 0f;
+//			m_finalTextZValue = 0f;
 		}
 	}
 
@@ -142,13 +142,13 @@ public class Card : MonoBehaviour {
 
 		// This sets the desired rotation of the card, the update function will then perform the rotation 
 		m_finalXValue = 0f;
-		m_finalYValue = 90f;
-		m_finalZValue = 135f;
+		m_finalYValue = 0f;
+		m_finalZValue = 0f;
 
-		//This sets the desired rotation of the text on the card, the update function will then perform the rotation 
-		m_finalTextXValue = -45f;
-		m_finalTextYValue = 180f;
-		m_finalTextZValue = 90f;
+//		//This sets the desired rotation of the text on the card, the update function will then perform the rotation 
+//		m_finalTextXValue = 0f;
+//		m_finalTextYValue = 0f;
+//		m_finalTextZValue = 0f;
 	}
 
 
@@ -220,42 +220,42 @@ public class Card : MonoBehaviour {
 
 		transform.localRotation = Quaternion.Euler (m_currentXRot, m_currentYRot, m_currentZRot);
 
-		//rotate text on card
-		if ((m_currentTextXRot <= (m_initialTextXRot + m_finalTextXValue) * 0.99))
-		{
-			m_currentTextXRot += Time.deltaTime * m_finalTextXValue / m_tiltSpeed;
-		}
-
-		if ((m_currentTextYRot <= (m_initialTextYRot + m_finalTextYValue) * 0.99))
-		{
-			m_currentTextYRot += Time.deltaTime * m_finalTextYValue / m_tiltSpeed;
-		}
-
-		if ((m_currentTextZRot <= (m_initialTextZRot + m_finalTextZValue) * 0.99))
-		{
-			m_currentTextZRot += Time.deltaTime * m_finalTextZValue / m_tiltSpeed;
-		}
-
-		//make sure that if X is close the target angle of rotation it doesn't over or under rotate
-		if (m_currentTextXRot > (m_initialTextXRot + m_finalTextXValue) * 0.98)
-		{
-			m_currentTextXRot = m_initialTextXRot + m_finalTextXValue;
-		}
-
-		//make sure that if Y is close the target angle of rotation it doesn't over or under rotate
-		if (m_currentTextYRot > (m_initialTextYRot + m_finalTextYValue) * 0.98)
-		{
-			m_currentTextYRot = m_initialTextYRot + m_finalTextYValue;
-		}
-
-		//make sure that if Z is close the target angle of rotation it doesn't over or under rotate
-		if (m_currentTextZRot > (m_initialTextZRot + m_finalTextZValue) * 0.98)
-		{
-			m_currentTextZRot = m_initialTextZRot + m_finalTextZValue;
-		}
-
-		transform.Find("PlayingCardWordBack").transform.localRotation = Quaternion.Euler (m_currentTextXRot, m_currentTextYRot, m_currentTextZRot); 
-		transform.Find("PlayingCardWordFront").transform.localRotation = Quaternion.Euler (m_currentTextXRot, m_currentTextYRot, m_currentTextZRot); 
+//		//rotate text on card
+//		if ((m_currentTextXRot <= (m_initialTextXRot + m_finalTextXValue) * 0.99))
+//		{
+//			m_currentTextXRot += Time.deltaTime * m_finalTextXValue / m_tiltSpeed;
+//		}
+//
+//		if ((m_currentTextYRot <= (m_initialTextYRot + m_finalTextYValue) * 0.99))
+//		{
+//			m_currentTextYRot += Time.deltaTime * m_finalTextYValue / m_tiltSpeed;
+//		}
+//
+//		if ((m_currentTextZRot <= (m_initialTextZRot + m_finalTextZValue) * 0.99))
+//		{
+//			m_currentTextZRot += Time.deltaTime * m_finalTextZValue / m_tiltSpeed;
+//		}
+//
+//		//make sure that if X is close the target angle of rotation it doesn't over or under rotate
+//		if (m_currentTextXRot > (m_initialTextXRot + m_finalTextXValue) * 0.98)
+//		{
+//			m_currentTextXRot = m_initialTextXRot + m_finalTextXValue;
+//		}
+//
+//		//make sure that if Y is close the target angle of rotation it doesn't over or under rotate
+//		if (m_currentTextYRot > (m_initialTextYRot + m_finalTextYValue) * 0.98)
+//		{
+//			m_currentTextYRot = m_initialTextYRot + m_finalTextYValue;
+//		}
+//
+//		//make sure that if Z is close the target angle of rotation it doesn't over or under rotate
+//		if (m_currentTextZRot > (m_initialTextZRot + m_finalTextZValue) * 0.98)
+//		{
+//			m_currentTextZRot = m_initialTextZRot + m_finalTextZValue;
+//		}
+//
+//		transform.Find("PlayingCardWordBack").transform.localRotation = Quaternion.Euler (m_currentTextXRot, m_currentTextYRot, m_currentTextZRot); 
+//		transform.Find("PlayingCardWordFront").transform.localRotation = Quaternion.Euler (m_currentTextXRot, m_currentTextYRot, m_currentTextZRot); 
 	}
 	
 	public void ChangeMaterial(string newCardType)
