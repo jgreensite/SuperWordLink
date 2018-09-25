@@ -149,20 +149,35 @@ public class GameBoard : MonoBehaviour
 			return;
 		}
 
-		RaycastHit hit;
-		if (Physics.Raycast (currentCamera.GetComponent<UnityEngine.Camera>().ScreenPointToRay (Input.mousePosition), out hit, 25.0f, LayerMask.GetMask ("Board")))
+		RaycastHit hitGameBoard;
+		RaycastHit hitPlayerCard;
+
+		//Check if clicked on a card in the hand
+		if (Physics.Raycast (currentCamera.GetComponent<UnityEngine.Camera>().ScreenPointToRay (Input.mousePosition), out hitPlayerCard, 25.0f, LayerMask.GetMask (CS.OBJ_LOCATION_LAYER_PLAYERHAND)))
+		{
+			//TODO colliders on all cards are hardcoded, really should work them out from card geometry
+			Debug.Log (hitPlayerCard.transform.Find("PLayingCardWordFront"));
+//			float gameboardDimx = transform.Find ("Game Board Player").localScale.x;
+//			float gameboardDimz = transform.Find ("Game Board Player").localScale.z;
+//			mouseOver.x = (int)((hitGameBoard.point.x + gameboardDimx/2)/(2.45/gridXDim));
+//			mouseOver.y = (int)((hitGameBoard.point.z + gameboardDimz/2)/(2.35/gridZDim));
+		}
+		//check if clicked on a card on the deck
+		else
+			if (Physics.Raycast (currentCamera.GetComponent<UnityEngine.Camera>().ScreenPointToRay (Input.mousePosition), out hitGameBoard, 25.0f, LayerMask.GetMask (CS.OBJ_LOCATION_LAYER_GAMEBOARD)))
 		{
 			//TODO - the offset of 1.2 used here are hard coded based on the size of the box collider "real-world" numbers, it should be calculated
 			float gameboardDimx = transform.Find ("Game Board Player").localScale.x;
 			float gameboardDimz = transform.Find ("Game Board Player").localScale.z;
-			mouseOver.x = (int)((hit.point.x + gameboardDimx/2)/(2.45/gridXDim));
-			mouseOver.y = (int)((hit.point.z + gameboardDimz/2)/(2.35/gridZDim));
+			mouseOver.x = (int)((hitGameBoard.point.x + gameboardDimx/2)/(2.45/gridXDim));
+			mouseOver.y = (int)((hitGameBoard.point.z + gameboardDimz/2)/(2.35/gridZDim));
 		}
 		else
 		{
 			mouseOver.x = -1;
 			mouseOver.y = -1;
 		}
+
 			
 	}
 
@@ -419,6 +434,7 @@ public class GameBoard : MonoBehaviour
 		GameObject go = null;
 		string cardInstructions = "";
 		string cardType = null;
+		int cardId = 0;
 
 		for (int playerNum = 0; playerNum < 1; playerNum++)
 		{
@@ -428,12 +444,14 @@ public class GameBoard : MonoBehaviour
 				{
 				case true:
 					go = Instantiate (handPfb) as GameObject;
+					cardId = cntRedHandCards;
 					cntRedHandCards += 1;
 					cardInstructions = "Red team instructions";
 					cardType = CS.RED_TEAM;
 					break;
 				case false:
 					go = Instantiate (handPfb) as GameObject;
+					cardId = cntBlueHandCards;
 					cntBlueHandCards += 1;
 					cardInstructions = "Blue team instructions";
 					cardType = CS.BLUE_TEAM;
@@ -447,7 +465,7 @@ public class GameBoard : MonoBehaviour
 //					cntDeathCards += 1;
 //					break;
 				}
-				GeneratePlayerHandCard (playerNum, cardNum, ref go, cardInstructions, cardType);
+				GeneratePlayerHandCard (playerNum, cardNum, ref go, cardInstructions, cardType, cardId);
 			}
 		}
 //		//Blue goes first
@@ -506,7 +524,7 @@ public class GameBoard : MonoBehaviour
 		cardCaller.makeFaceUp(true);
 	}
 		
-	private void GeneratePlayerHandCard(int playerNum, int cardNum, ref GameObject go, string word, string cardType)
+	private void GeneratePlayerHandCard(int playerNum, int cardNum, ref GameObject go, string word, string cardType, int cardId)
 	{
 		//TODO - the GenerateCard() class should be methods on the Card() class
 		go.transform.SetParent(transform);
@@ -516,7 +534,12 @@ public class GameBoard : MonoBehaviour
 		go.transform.Find("PlayingCardWordBack").GetComponent<TextMesh>().text="";
 		go.transform.Find("PlayingCardWordFront").GetComponent<TextMesh>().text=word;
 
+		//Add the player and card id to the card, add the reference to it into the array that stores cards
+		cardPlayerHand.playerNum = playerNum;
+		cardPlayerHand.cardNum = cardNum;
+
 		cardsPlayerHand[playerNum, cardNum] = cardPlayerHand;
+
 		Debug.Log(string.Concat("cardPlayerHand:", playerNum, ",", cardNum));
 		MovePlayerHandCard (go, playerNum, cardNum);
 

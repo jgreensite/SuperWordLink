@@ -50,6 +50,9 @@ public class Card : MonoBehaviour {
 
 	public string tmpStr = CS.EMPTY;
 
+	public int playerNum;
+	public int cardNum;
+
 	// Check move is valid
 	public string ValidMove(bool isRedTurn){
 		string retVal = CS.ERROR;
@@ -144,6 +147,9 @@ public class Card : MonoBehaviour {
 		m_finalXValue = 0f;
 		m_finalYValue = 0f;
 		m_finalZValue = 0f;
+
+		//This sets the layer
+		gameObject.transform.Find("Card").gameObject.layer = LayerMask.NameToLayer(CS.OBJ_LOCATION_LAYER_PLAYERHAND);
 
 //		//This sets the desired rotation of the text on the card, the update function will then perform the rotation 
 //		m_finalTextXValue = 0f;

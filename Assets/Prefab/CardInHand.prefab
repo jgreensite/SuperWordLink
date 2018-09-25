@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33758975689288322}
   - component: {fileID: 23523181543349592}
   - component: {fileID: 114956809072028576}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 23422309912810384}
   - component: {fileID: 102511778130864122}
   - component: {fileID: 114208161242952430}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: PlayingCardWordBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 23051492663505424}
   - component: {fileID: 102328389929167976}
   - component: {fileID: 114580621376347068}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: PlayingCardWordFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,8 @@ GameObject:
   - component: {fileID: 114501818269234550}
   - component: {fileID: 114610394712610930}
   - component: {fileID: 114615881911691372}
-  m_Layer: 5
+  - component: {fileID: 65928037640681242}
+  m_Layer: 13
   m_Name: CardInHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -249,6 +250,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1333658735490204}
   m_Mesh: {fileID: 4300000, guid: 114dbd321239b4c86ba707da27639ac8, type: 3}
+--- !u!65 &65928037640681242
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1961720848236538}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 0.1, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!102 &102328389929167976
 TextMesh:
   serializedVersion: 3

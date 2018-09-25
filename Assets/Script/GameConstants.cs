@@ -4,6 +4,10 @@ namespace AssemblyCSharp
 {
 	public class CS
 	{
+		//Layers
+		public const string OBJ_LOCATION_LAYER_GAMEBOARD = "Board";
+		public const string OBJ_LOCATION_LAYER_PLAYERHAND = "Hand";
+
 		//Card Location
 		public const string CAR_LOCATION_GAMEBOARD = "card is on the Gameboard";
 		public const string CAR_LOCATION_RED_DECK = "card is in the Red Deck";
