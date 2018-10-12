@@ -156,7 +156,9 @@ public class GameBoard : MonoBehaviour
 		if (Physics.Raycast (currentCamera.GetComponent<UnityEngine.Camera>().ScreenPointToRay (Input.mousePosition), out hitPlayerCard, 25.0f, LayerMask.GetMask (CS.OBJ_LOCATION_LAYER_PLAYERHAND)))
 		{
 			//TODO colliders on all cards are hardcoded, really should work them out from card geometry
-			Debug.Log (hitPlayerCard.transform.Find("PLayingCardWordFront"));
+			Debug.Log (hitPlayerCard.collider.gameObject.GetComponent<Card>().cardNum);
+			Debug.Log (hitPlayerCard.collider.gameObject.GetComponent<Card>().playerNum);
+
 //			float gameboardDimx = transform.Find ("Game Board Player").localScale.x;
 //			float gameboardDimz = transform.Find ("Game Board Player").localScale.z;
 //			mouseOver.x = (int)((hitGameBoard.point.x + gameboardDimx/2)/(2.45/gridXDim));
@@ -465,6 +467,7 @@ public class GameBoard : MonoBehaviour
 //					cntDeathCards += 1;
 //					break;
 				}
+				//TODO - cardId is not used, possibly get rid of it or have it populated by the server
 				GeneratePlayerHandCard (playerNum, cardNum, ref go, cardInstructions, cardType, cardId);
 			}
 		}
