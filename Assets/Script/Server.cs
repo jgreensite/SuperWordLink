@@ -253,6 +253,16 @@ public class Server : MonoBehaviour
 				clients
 			);
 			break;
+		case "CHAN":
+			Broadcast (
+				"SHAN" + '|'
+				+ aData [1] + '|'
+				+ aData [2] + '|'
+				+ aData [3] + '|'
+				+ aData [4],
+				clients
+			);
+			break;
 		case "CDIC":
 			//Generate the Wordlist and assignment
 			WordDictionary worddictionary = FindObjectOfType<WordDictionary> ();

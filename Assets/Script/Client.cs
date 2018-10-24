@@ -85,6 +85,8 @@ public class Client : MonoBehaviour
 	//Reading messages from the Server
 	private void OnIncomingData(string data)
 	{
+		int x = 0;
+		int z = 0;
 		Debug.Log ("Client Receiving: " + data);
 		int howManyPlaying;
 
@@ -155,11 +157,17 @@ public class Client : MonoBehaviour
 				
 				break;
 			case "SMOV":
-				int x = int.Parse (aData [2]);
-				int z = int.Parse (aData [3]);
-				GameBoard.Instance.TryMove (x, z);
+				x = int.Parse (aData [2]);
+				z = int.Parse (aData [3]);
+				GameBoard.Instance.TryGameboardMove (x, z);
 				break;
-
+			
+			case "SHAN":
+				x = int.Parse (aData [2]);
+				z = int.Parse (aData [3]);
+				GameBoard.Instance.TryHandMove (x, z);
+				break;
+			
 			case "SDIC":
 				string[] wData = aData [1].Split (',');
 				GameBoard.Instance.words = wData;

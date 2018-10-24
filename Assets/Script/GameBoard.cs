@@ -63,8 +63,12 @@ public class GameBoard : MonoBehaviour
 	public string[] words = new string[25];
 	public string[] populate = new string[25];
 
+	//used to track selection of board and player cards
 	private Card selectedCard;
-	private Vector2 mouseOver;
+	private string cardSelectedLocation;
+	//TODO - The vectors are referenced using "x" and "y" properties, better to use arrays with more relevant property names
+	private Vector2 gameboardCardOver;
+	private Vector2 playerhandCardOver;
 
 	private Client client;
 
@@ -100,6 +104,8 @@ public class GameBoard : MonoBehaviour
 	{
 		//TODO - also need a UI button for restarting
 		// If the game is over of a restart situation has occured then don't accept anymore input
+		int x = 0;
+		int z = 0;
 
 		if (Input.GetKeyDown (KeyCode.R))
 		{
@@ -118,23 +124,46 @@ public class GameBoard : MonoBehaviour
 			UpdateMouseOver ();
 			//Debug.Log (mouseOver);
 
-			//if it is my turn
-			int x = (int)mouseOver.x;
-			int z = (int)mouseOver.y;
+			switch (cardSelectedLocation) {
+				//if chosen a card on the gameboard
+				case CS.OBJ_LOCATION_LAYER_GAMEBOARD:
+					x = (int)gameboardCardOver.x;
+					z = (int)gameboardCardOver.y;
 
-			//TODO - need to add in support for touch screens and cursor keys
-			if (Input.GetMouseButtonDown (0))
-				SelectCard (x, z);
+					//TODO - need to add in support for touch screens and cursor keys
+					if (Input.GetMouseButtonDown (0))
+						SelectGameBoardCard (x, z);
 
-			if (Input.GetMouseButtonUp (0))
-				//Send move to server
-				client.Send(
-					"CMOV" + '|'
-					+ client.clientName + '|'
-					+ (x.ToString()) + '|'
-					+ (z.ToString()) + '|'
-					+ client.clientID
-				);
+					if (Input.GetMouseButtonUp (0))
+						//Send move to server
+						client.Send (
+							"CMOV" + '|'
+							+ client.clientName + '|'
+							+ (x.ToString ()) + '|'
+							+ (z.ToString ()) + '|'
+							+ client.clientID
+						);
+				break;
+				//if chosen a card in a player's hand
+				case CS.OBJ_LOCATION_LAYER_PLAYERHAND:
+				x = (int)playerhandCardOver.x;
+				z = (int)playerhandCardOver.y;
+
+					//TODO - need to add in support for touch screens and cursor keys
+					if (Input.GetMouseButtonDown (0))
+						SelectGameBoardCard (x, z);
+
+					if (Input.GetMouseButtonUp (0))
+						//Send move to server
+						client.Send (
+							"CHAN" + '|'
+							+ client.clientName + '|'
+							+ (x.ToString ()) + '|'
+							+ (z.ToString ()) + '|'
+							+ client.clientID
+						);
+				break;
+			}
 		}
 	}
 
@@ -156,34 +185,33 @@ public class GameBoard : MonoBehaviour
 		if (Physics.Raycast (currentCamera.GetComponent<UnityEngine.Camera>().ScreenPointToRay (Input.mousePosition), out hitPlayerCard, 25.0f, LayerMask.GetMask (CS.OBJ_LOCATION_LAYER_PLAYERHAND)))
 		{
 			//TODO colliders on all cards are hardcoded, really should work them out from card geometry
-			Debug.Log (hitPlayerCard.collider.gameObject.GetComponent<Card>().cardNum);
-			Debug.Log (hitPlayerCard.collider.gameObject.GetComponent<Card>().playerNum);
+			cardSelectedLocation = CS.OBJ_LOCATION_LAYER_PLAYERHAND;
+			playerhandCardOver.x = hitPlayerCard.collider.gameObject.GetComponent<Card>().playerNum;
+			playerhandCardOver.y = hitPlayerCard.collider.gameObject.GetComponent<Card>().cardNum;
 
-//			float gameboardDimx = transform.Find ("Game Board Player").localScale.x;
-//			float gameboardDimz = transform.Find ("Game Board Player").localScale.z;
-//			mouseOver.x = (int)((hitGameBoard.point.x + gameboardDimx/2)/(2.45/gridXDim));
-//			mouseOver.y = (int)((hitGameBoard.point.z + gameboardDimz/2)/(2.35/gridZDim));
 		}
 		//check if clicked on a card on the deck
 		else
 			if (Physics.Raycast (currentCamera.GetComponent<UnityEngine.Camera>().ScreenPointToRay (Input.mousePosition), out hitGameBoard, 25.0f, LayerMask.GetMask (CS.OBJ_LOCATION_LAYER_GAMEBOARD)))
 		{
 			//TODO - the offset of 1.2 used here are hard coded based on the size of the box collider "real-world" numbers, it should be calculated
+			cardSelectedLocation = CS.OBJ_LOCATION_LAYER_GAMEBOARD;
 			float gameboardDimx = transform.Find ("Game Board Player").localScale.x;
 			float gameboardDimz = transform.Find ("Game Board Player").localScale.z;
-			mouseOver.x = (int)((hitGameBoard.point.x + gameboardDimx/2)/(2.45/gridXDim));
-			mouseOver.y = (int)((hitGameBoard.point.z + gameboardDimz/2)/(2.35/gridZDim));
+			gameboardCardOver.x = (int)((hitGameBoard.point.x + gameboardDimx/2)/(2.45/gridXDim));
+			gameboardCardOver.y = (int)((hitGameBoard.point.z + gameboardDimz/2)/(2.35/gridZDim));
 		}
 		else
 		{
-			mouseOver.x = -1;
-			mouseOver.y = -1;
+			gameboardCardOver.x = -1;
+			gameboardCardOver.y = -1;
+			playerhandCardOver.x = -1;
+			playerhandCardOver.y = -1;
+			cardSelectedLocation = "";
 		}
-
-			
 	}
 
-	private void SelectCard(int x, int z)
+	private void SelectGameBoardCard(int x, int z)
 	{
 		//Out of Bounds check
 		if((x < 0) || (x > (gridXDim-1)) || (z<0) || (z>(gridZDim-1)))
@@ -198,14 +226,36 @@ public class GameBoard : MonoBehaviour
 		if ((c != null) && (!c.isCardUp))
 		{
 			selectedCard = c;
-			Debug.Log ("Card selected is " + selectedCard.name);
+			Debug.Log ("Gameboard Card selected is " + selectedCard.name);
 		} else
 		{
-			Debug.Log ("Error - Card is either already selected or out of bounds");
+			Debug.Log ("Error - Gameboard Card is either already selected or out of bounds");
 		}
 	}
 
-	public void TryMove(int x, int z)
+	private void SelectPlayerHand(int playerNum, int cardNum)
+	{
+		//Out of Bounds check
+		if((playerNum < 0) || (playerNum > (cardsPlayerHand.GetLength(0) -1)) || (cardNum<0) || (cardNum>(cardsPlayerHand.GetLength(0)-1)))
+		{
+			Debug.Log("Item does not exist in array at " + playerNum + ", " + cardNum);
+			selectedCard = null;
+			return;
+		}
+
+		Card c = cardsPlayerHand[playerNum,cardNum];
+		//cannot flip a card that has been flipped
+		if ((c != null) && (!c.isCardUp))
+		{
+			selectedCard = c;
+			Debug.Log ("Player Hand Card selected is " + selectedCard.name);
+		} else
+		{
+			Debug.Log ("Error - Player Hand Card is either already selected or out of bounds");
+		}
+	}
+
+	public void TryGameboardMove(int x, int z)
 	{
 		string moveResult;
 
@@ -213,7 +263,7 @@ public class GameBoard : MonoBehaviour
 		//Note that we need to create local variables as if it is not your turn you may not have a selected card defined
 
 		//Select the card, note that it may not be this client that selected the card
-		SelectCard (x, z);
+		SelectGameBoardCard (x, z);
 
 //		//Check if we are out of bounds
 //		if ((x < 0) || (x > (gridXDim-1)) || (z < 0) || (z > (gridZDim-1)))
@@ -264,6 +314,62 @@ public class GameBoard : MonoBehaviour
 				}
 			}
 //		}
+	}
+
+	public void TryHandMove(int x, int z)
+	//TODO <START HERE>
+	//Need to build the TryHandMove Function to replicate the TryGameboardMove Function
+	{
+		string moveResult;
+
+		//Multiplayer support
+		//Note that we need to create local variables as if it is not your turn you may not have a selected card defined
+
+		//Select the card, note that it may not be this client that selected the card
+		SelectGameBoardCard (x, z);
+
+		if (selectedCard != null)
+		{				
+			moveResult = selectedCard.ValidMove (isRedTurn);
+			switch (moveResult)
+			{
+
+			case CS.GOOD:
+				//Flip the Card and keep on picking
+				selectedCard = cardsPlayer [x, z];
+				selectedCard.makeFaceUp (true, x,z, cardsCaller[x,z]);
+				//TODO - simplify this switch statement there is a lot of repeated elements in each case
+				//TODO - simplify EndTurn, checkVictory() and endGame(), think these could be one function
+				string winState = checkVictory ();
+				if ((winState == CS.BLUEWIN) || (winState == CS.REDWIN))
+				{
+					endGame ();
+				}
+				break;
+
+			case CS.BAD:
+				//flip the Card, end the turn
+				selectedCard = cardsPlayer [x, z];
+				selectedCard.makeFaceUp (true, x,z, cardsCaller[x,z]);
+				EndTurn (moveResult);
+				break;
+
+			case CS.DEATH_TEAM:
+				//flip the Card, end the game
+				selectedCard = cardsPlayer [x, z];
+				selectedCard.makeFaceUp (true, x,z, cardsCaller[x,z]);
+				EndTurn (moveResult);
+				break;
+
+			case CS.CIVIL_TEAM:
+				//flip the Card, end the turn
+				selectedCard = cardsPlayer [x, z];
+				selectedCard.makeFaceUp (true, x,z, cardsCaller[x,z]);
+				EndTurn (moveResult);
+				break;
+			}
+		}
+		//		}
 	}
 
 	private void EndTurn(string moveResult)
@@ -438,9 +544,9 @@ public class GameBoard : MonoBehaviour
 		string cardType = null;
 		int cardId = 0;
 
-		for (int playerNum = 0; playerNum < 1; playerNum++)
+		for (int playerNum = 0; playerNum < (cardsPlayerHand.GetLength(0)); playerNum++)
 		{
-			for (int cardNum = 0; cardNum < 3; cardNum++)
+			for (int cardNum = 0; cardNum < (cardsPlayerHand.GetLength(1)); cardNum++)
 			{
 				switch (client.isRedTeam)
 				{
