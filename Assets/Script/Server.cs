@@ -58,7 +58,7 @@ public class Server : MonoBehaviour
 			Debug.Log("Socket Error Server: " + e.Message);
 		}
 
-		BuildDeck ();
+//		BuildDeck ();
 	}
 
 	private void Update()
@@ -319,6 +319,7 @@ public class Server : MonoBehaviour
 			);
 			break;
 		case "CPCI":
+			BuildDeck ();
 			Broadcast (gcd.SaveToText ().Replace (System.Environment.NewLine, ""), clients);
 			break;
 		}
@@ -381,40 +382,58 @@ public class Server : MonoBehaviour
 	{
 		string filePath = "";
 
-//		//Demo saving data
-//		//create a card
-//		GameCard gc = new GameCard();
-//		gc.cardSuit = CS.RED_TEAM;
-//		gc.cardLocation = CS.CAR_LOCATION_RED_DECK;
-//		gc.cardRevealed = CS.CAR_REVEAL_HIDDEN;
-//
-//		//add CardWhenPlayable element to card 
-//		CardWhenPlayable cwp = new CardWhenPlayable ();
-//		cwp.turnStage = CS.CWP_PLAY_PLAYER_TURN;
-//		cwp.numTimes = 1;	
-//		gc.cardWhenPlayable.Add(cwp);
-//
-//		//add CardEffectPlayable element to card 
-//		CardEffectPlayable cep = new CardEffectPlayable ();
-//		cep.effectName = CS.CEP_EFFECT_REVEAL_CARD;
-//		cep.affectWhat = CS.CEP_AFFECT_GAMEBOARD;
-//		cep.numTimes = 1;
-//		gc.cardEffectPlayable.Add(cep);
-//
-//		//add Card to deck
-//		gcd.gameCards.Add (gc);
-//		filePath = Application.persistentDataPath + "/gamecarddeck1.xml";
-//		gcd.Save (filePath);
-//		Debug.Log("Wrote : " + filePath);
+//		//Demo loading data
+//		filePath = Application.persistentDataPath + "/gamecarddeck3.xml";
+//		gcd = GameCardDeck.Load (filePath);
+//		Debug.Log ("Loaded : " + filePath);
 
-		//Demo loading data
-		filePath = Application.persistentDataPath + "/gamecarddeck2.xml";
-		gcd = GameCardDeck.Load (filePath);
-		Debug.Log("Loaded : " + filePath);
+		//Clear the decks prior to rebuilding them
+		gcd.gameCards.Clear();
+		gcdBlue.gameCards.Clear();
+		gcdRed.gameCards.Clear();
 
+		for (int playerCnt = 0; playerCnt < clients.Count; playerCnt++)
+		{
+			for (int cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
+			{
+				//create a card
+				GameCard gc = new GameCard ();
+				gc.cardPlayerNum = playerCnt.ToString();
+				gc.cardClientID = clients [0].clientID;
+				if (clients [playerCnt].isRedTeam)
+				{
+					gc.cardSuit = CS.RED_TEAM;
+					gc.cardLocation = CS.CAR_LOCATION_RED_DECK;
+				} else if (!(clients [playerCnt].isRedTeam))
+				{
+					gc.cardSuit = CS.BLUE_TEAM;
+					gc.cardLocation = CS.CAR_LOCATION_BLUE_DECK;
+				}
+
+				gc.cardRevealed = CS.CAR_REVEAL_HIDDEN;
+
+				//add CardWhenPlayable element to card 
+				CardWhenPlayable cwp = new CardWhenPlayable ();
+				cwp.turnStage = CS.CWP_PLAY_PLAYER_TURN;
+				cwp.numTimes = 1;	
+				gc.cardWhenPlayable.Add (cwp);
+
+				//add CardEffectPlayable element to card 
+				CardEffectPlayable cep = new CardEffectPlayable ();
+				//randomly choose an effect
+				int rnd = UnityEngine.Random.Range(0, CS.CEP_EFFECTS.Length);
+				cep.effectName = CS.CEP_EFFECTS[rnd];
+				cep.affectWhat = CS.CEP_AFFECT_GAMEBOARD;
+				cep.numTimes = 1;
+				gc.cardEffectPlayable.Add (cep);
+
+				//add Card to deck
+				gcd.gameCards.Add (gc);
+			}
+		}
 
 		//Populate the Red and Blue Decks
-		int lastItem  = gcd.gameCards.Count;
+		int lastItem = gcd.gameCards.Count;
 		GameCard drawnCard = new GameCard ();
 
 		for (int cnt = 0; cnt <= (lastItem - 1); cnt++)
@@ -429,6 +448,12 @@ public class Server : MonoBehaviour
 				gcdBlue.gameCards.Add (drawnCard);
 			}
 		}
+
+		//Save the decks that have been created
+		filePath = Application.persistentDataPath + "/gamecarddeck1.xml";
+		gcd.Save (filePath);
+		Debug.Log ("Wrote : " + filePath);
+
 		filePath = Application.persistentDataPath + "/gamecarddeckblue.xml";
 		gcdBlue.Save (filePath);
 		Debug.Log("Wrote : " + filePath);

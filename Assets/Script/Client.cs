@@ -24,10 +24,10 @@ public class Client : MonoBehaviour
 	public List<GameClient> players = new List<GameClient>();
 
 	//the decks that will be used in the game
-	private GameCardDeck gcd = new GameCardDeck ();
+	public GameCardDeck gcd = new GameCardDeck ();
 	private GameCardDeck gcdTemp = new GameCardDeck ();
-	private GameCardDeck gcdRed = new GameCardDeck ();
-	private GameCardDeck gcdBlue = new GameCardDeck ();
+	public GameCardDeck gcdRed = new GameCardDeck ();
+	public GameCardDeck gcdBlue = new GameCardDeck ();
 
 	private void Start()
 	{
@@ -200,7 +200,7 @@ public class Client : MonoBehaviour
 				}			
 				break;
 			case "SBEG":
-
+				players.Clear ();
 				for (int i = 1; i < aData.Length; i++)
 				{
 					string[] bData = aData [i].Split (',');
@@ -232,6 +232,7 @@ public class Client : MonoBehaviour
 			if (!(gcdTemp.SaveToText().Equals(gcd.SaveToText())))
 			{
 				gcd = GameCardDeck.LoadFromText (data);
+				//TODO - Assumes only a red and blue deck
 				gcdRed = new GameCardDeck();
 				gcdBlue = new GameCardDeck();
 //				for (int cnt = gcd.gameCards.Count - 1; cnt > -1; cnt--)

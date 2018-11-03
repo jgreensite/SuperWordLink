@@ -135,7 +135,7 @@ public class Card : MonoBehaviour {
 
 		// This sets the highlight
 		ChangeHighlight ();
-		siblingCaller.ChangeHighlight();
+		//siblingCaller.ChangeHighlight();
 	}
 
 	// Call this to make a card in the players hand
@@ -155,6 +155,17 @@ public class Card : MonoBehaviour {
 //		m_finalTextXValue = 0f;
 //		m_finalTextYValue = 0f;
 //		m_finalTextZValue = 0f;
+	}
+
+	// Call this to highlight the card has been used and remove it from play
+	public void makeUsedUp(bool flagUp, int x, int z, Card siblingCaller){
+
+		//TODO - Change what happends to a card when it gets used
+		makeFaceUp (flagUp);
+
+		// This sets the highlight
+		ChangeHighlight ();
+		siblingCaller.ChangeHighlight();
 	}
 
 

@@ -25,8 +25,11 @@ namespace AssemblyCSharp
 
 		//Card effect playable
 			//Effects
-			public const string CEP_EFFECT_REVEAL_CARD = "reveals a card";
-			public const string CEP_EFFECT_CHANGE_CARD = "changes a card";
+			public const string CEP_EFFECT_REVEAL_CARD = "reveals a specific card on the board";
+			public const string CEP_EFFECT_CHANGE_CARD = "randomly changes a card on the board";
+			public const string CEP_EFFECT_REMOVE_CARD = "randomly removes a card from the board";
+			//Put all the Effects in here to make it is easy to ramdonly pick one
+			public static string [] CEP_EFFECTS = new string[]{CEP_EFFECT_REVEAL_CARD, CEP_EFFECT_CHANGE_CARD,CEP_EFFECT_REMOVE_CARD};
 
 			//Affects
 			public const string CEP_AFFECT_GAMEBOARD = "affects the game board";

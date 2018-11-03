@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,10 +38,11 @@ public class GameBoard : MonoBehaviour
 	private GameObject gameBoardCaller;
 	private GameObject gameBoardPlayer;
 
-	private Vector3 boardOffset = new Vector3(-1.00f,1.0f,-1.00f);
+	private Vector3 boardOffsetLeft = new Vector3(-1.00f,1.0f,-1.00f);
 
 	//TODO - Remove hardcoding for number of players, this will only work with 3 cards in the hand
-	private Vector3 handOffset = new Vector3(0.0f,0.0f,-0.5f);
+	private Vector3 handOffsetLeft = new Vector3(0.0f,0.0f,-0.5f);
+	private Vector3 handOffsetRight = new Vector3((gridXDim+1) *0.5f,0.0f,-0.5f);
 
 	public bool isRedStart;
 	public bool isRedTurn;
@@ -151,7 +153,7 @@ public class GameBoard : MonoBehaviour
 
 					//TODO - need to add in support for touch screens and cursor keys
 					if (Input.GetMouseButtonDown (0))
-						SelectGameBoardCard (x, z);
+						SelectPlayerHandCard (x, z);
 
 					if (Input.GetMouseButtonUp (0))
 						//Send move to server
@@ -188,11 +190,11 @@ public class GameBoard : MonoBehaviour
 			cardSelectedLocation = CS.OBJ_LOCATION_LAYER_PLAYERHAND;
 			playerhandCardOver.x = hitPlayerCard.collider.gameObject.GetComponent<Card>().playerNum;
 			playerhandCardOver.y = hitPlayerCard.collider.gameObject.GetComponent<Card>().cardNum;
+			//Debug.Log("Selected Card in Hand for player:" + playerhandCardOver.x + " at position:" + playerhandCardOver.y);
 
 		}
 		//check if clicked on a card on the deck
-		else
-			if (Physics.Raycast (currentCamera.GetComponent<UnityEngine.Camera>().ScreenPointToRay (Input.mousePosition), out hitGameBoard, 25.0f, LayerMask.GetMask (CS.OBJ_LOCATION_LAYER_GAMEBOARD)))
+		else if (Physics.Raycast (currentCamera.GetComponent<UnityEngine.Camera>().ScreenPointToRay (Input.mousePosition), out hitGameBoard, 25.0f, LayerMask.GetMask (CS.OBJ_LOCATION_LAYER_GAMEBOARD)))
 		{
 			//TODO - the offset of 1.2 used here are hard coded based on the size of the box collider "real-world" numbers, it should be calculated
 			cardSelectedLocation = CS.OBJ_LOCATION_LAYER_GAMEBOARD;
@@ -216,7 +218,7 @@ public class GameBoard : MonoBehaviour
 		//Out of Bounds check
 		if((x < 0) || (x > (gridXDim-1)) || (z<0) || (z>(gridZDim-1)))
 		{
-			Debug.Log("Item does not exist in array at " + x + ", " + z);
+			Debug.Log("Item does not exist in gameboard array at " + x + ", " + z);
 			selectedCard = null;
 			return;
 		}
@@ -226,29 +228,29 @@ public class GameBoard : MonoBehaviour
 		if ((c != null) && (!c.isCardUp))
 		{
 			selectedCard = c;
-			Debug.Log ("Gameboard Card selected is " + selectedCard.name);
+			Debug.Log ("Gameboard Card selected is at position x:" + x +" y:" +z);
 		} else
 		{
 			Debug.Log ("Error - Gameboard Card is either already selected or out of bounds");
 		}
 	}
 
-	private void SelectPlayerHand(int playerNum, int cardNum)
+	private void SelectPlayerHandCard(int playerNum, int cardNum)
 	{
 		//Out of Bounds check
-		if((playerNum < 0) || (playerNum > (cardsPlayerHand.GetLength(0) -1)) || (cardNum<0) || (cardNum>(cardsPlayerHand.GetLength(0)-1)))
+		if((playerNum < 0) || (playerNum > (cardsPlayerHand.GetLength(0) -1)) || (cardNum<0) || (cardNum>(cardsPlayerHand.GetLength(1)-1)))
 		{
-			Debug.Log("Item does not exist in array at " + playerNum + ", " + cardNum);
+			Debug.Log("Item does not exist in player hand array at " + playerNum + ", " + cardNum);
 			selectedCard = null;
 			return;
 		}
 
 		Card c = cardsPlayerHand[playerNum,cardNum];
-		//cannot flip a card that has been flipped
-		if ((c != null) && (!c.isCardUp))
+		//TODO - There is an implied assumption here that there is no need to check to see if the card in hand has already been selected as used, it's possible to get into this state if the server and client are not in sync or the user hammers that UI clicking like crazy
+		if (c != null)
 		{
 			selectedCard = c;
-			Debug.Log ("Player Hand Card selected is " + selectedCard.name);
+			Debug.Log ("Player Hand Card selected is player:" + selectedCard.playerNum + " card num:" + selectedCard.cardNum);
 		} else
 		{
 			Debug.Log ("Error - Player Hand Card is either already selected or out of bounds");
@@ -317,7 +319,6 @@ public class GameBoard : MonoBehaviour
 	}
 
 	public void TryHandMove(int x, int z)
-	//TODO <START HERE>
 	//Need to build the TryHandMove Function to replicate the TryGameboardMove Function
 	{
 		string moveResult;
@@ -326,8 +327,8 @@ public class GameBoard : MonoBehaviour
 		//Note that we need to create local variables as if it is not your turn you may not have a selected card defined
 
 		//Select the card, note that it may not be this client that selected the card
-		SelectGameBoardCard (x, z);
-
+		SelectPlayerHandCard (x, z);
+		//TODO <START HERE> Build the logic for selecting a card in the hand
 		if (selectedCard != null)
 		{				
 			moveResult = selectedCard.ValidMove (isRedTurn);
@@ -336,8 +337,9 @@ public class GameBoard : MonoBehaviour
 
 			case CS.GOOD:
 				//Flip the Card and keep on picking
-				selectedCard = cardsPlayer [x, z];
-				selectedCard.makeFaceUp (true, x,z, cardsCaller[x,z]);
+				selectedCard = cardsPlayerHand [x, z];
+				//TODO <START HERE> this is not right selectedCard need not be passed into the function
+				selectedCard.makeUsedUp (true, x,z, selectedCard);
 				//TODO - simplify this switch statement there is a lot of repeated elements in each case
 				//TODO - simplify EndTurn, checkVictory() and endGame(), think these could be one function
 				string winState = checkVictory ();
@@ -347,6 +349,7 @@ public class GameBoard : MonoBehaviour
 				}
 				break;
 
+			//TODO <START HERE> This logic has been copied and needs to be changed, these states should not be possible for a card in hand
 			case CS.BAD:
 				//flip the Card, end the turn
 				selectedCard = cardsPlayer [x, z];
@@ -542,57 +545,64 @@ public class GameBoard : MonoBehaviour
 		GameObject go = null;
 		string cardInstructions = "";
 		string cardType = null;
+		string clientID = "";
 		int cardId = 0;
+		int playerNum = 0;
+		int cardNum = 0;
 
-		for (int playerNum = 0; playerNum < (cardsPlayerHand.GetLength(0)); playerNum++)
+		for (int cnt=0; cnt < (client.gcd.gameCards.Count); cnt++)
 		{
-			for (int cardNum = 0; cardNum < (cardsPlayerHand.GetLength(1)); cardNum++)
+			//TO DO - This is limited to red and blue only and is based on team on owner of cards, add owner of cards to cards using playerID from server
+			playerNum = Convert.ToInt32(client.gcd.gameCards[cnt].cardPlayerNum);
+			clientID = client.gcd.gameCards [cnt].cardClientID;
+			go = Instantiate (handPfb) as GameObject;
+
+			if (client.gcd.gameCards[cnt].cardSuit == CS.RED_TEAM)
 			{
-				switch (client.isRedTeam)
-				{
-				case true:
-					go = Instantiate (handPfb) as GameObject;
-					cardId = cntRedHandCards;
-					cntRedHandCards += 1;
-					cardInstructions = "Red team instructions";
-					cardType = CS.RED_TEAM;
-					break;
-				case false:
-					go = Instantiate (handPfb) as GameObject;
-					cardId = cntBlueHandCards;
-					cntBlueHandCards += 1;
-					cardInstructions = "Blue team instructions";
-					cardType = CS.BLUE_TEAM;
-					break;
-//				case CS.CIVIL_TEAM:
-//					go = Instantiate (civilPfb) as GameObject;
-//					cntCivilCards += 1;
-//					break;
-//				case CS.DEATH_TEAM:
-//					go = Instantiate (deathPfb) as GameObject;
-//					cntDeathCards += 1;
-//					break;
+				//TODO - cannot assume player 0 is RED and player 1 is BLUE
+				cardNum = cntRedHandCards;
+				cntRedHandCards += 1;
+				cardInstructions =
+				client.gcd.gameCards [cnt].cardSuit +
+				Environment.NewLine + String.Join (" ", new string[] {
+					client.gcd.gameCards [cnt].cardWhenPlayable [0].turnStage,
+					"can be played",
+					client.gcd.gameCards [cnt].cardWhenPlayable [0].numTimes.ToString(), "time"
 				}
-				//TODO - cardId is not used, possibly get rid of it or have it populated by the server
-				GeneratePlayerHandCard (playerNum, cardNum, ref go, cardInstructions, cardType, cardId);
+				) +
+				Environment.NewLine + String.Join (" ", new string[] {
+					client.gcd.gameCards [cnt].cardEffectPlayable [0].effectName,
+					client.gcd.gameCards [cnt].cardEffectPlayable [0].affectWhat,
+					"can be played",
+					client.gcd.gameCards [cnt].cardEffectPlayable [0].numTimes.ToString(), "time"
+				}
+				); 
+				cardType = CS.RED_TEAM;
+			} else if (client.gcd.gameCards[cnt].cardSuit == CS.BLUE_TEAM)
+			{
+				//TODO - cannot assume player 0 is RED and player 1 is BLUE
+				cardNum = cntBlueHandCards;
+				cntBlueHandCards += 1;
+				cardInstructions =
+				client.gcd.gameCards [cnt].cardSuit +
+				Environment.NewLine + String.Join (" ", new string[] {
+					client.gcd.gameCards [cnt].cardWhenPlayable [0].turnStage,
+					"can be played",
+					client.gcd.gameCards [cnt].cardWhenPlayable [0].numTimes.ToString(), "time"
+				}
+				) +
+				Environment.NewLine + String.Join (" ", new string[] {
+					client.gcd.gameCards [cnt].cardEffectPlayable [0].effectName,
+					client.gcd.gameCards [cnt].cardEffectPlayable [0].affectWhat,
+					"can be played",
+					client.gcd.gameCards [cnt].cardEffectPlayable [0].numTimes.ToString(), "time"
+				}
+				); 
+					cardType = CS.BLUE_TEAM;
 			}
+
+			GeneratePlayerHandCard (playerNum, clientID, cardNum, ref go, cardInstructions, cardType);
 		}
-//		//Blue goes first
-//		if (cntBlueCards > cntRedCards)
-//		{
-//			isRedStart = false;
-//			isRedTurn = false;
-//			turnIndicatorScript.setColour ("blue");
-//
-//		} else
-//			//Red goes first
-//		{
-//			isRedStart = true;
-//			isRedTurn = true;
-//			turnIndicatorScript.setColour ("red");
-//		}
-//		countTextRed.text = "Red Remaining " + cntRedCards;
-//		countTextBlue.text = "Blue Remaining " + cntBlueCards;
 	}
 
 	private void GenerateGameBoardCard(int x, int z, ref GameObject go, string word, string cardType)
@@ -633,7 +643,7 @@ public class GameBoard : MonoBehaviour
 		cardCaller.makeFaceUp(true);
 	}
 		
-	private void GeneratePlayerHandCard(int playerNum, int cardNum, ref GameObject go, string word, string cardType, int cardId)
+	private void GeneratePlayerHandCard(int playerNum, string clientID, int cardNum, ref GameObject go, string word, string cardType)
 	{
 		//TODO - the GenerateCard() class should be methods on the Card() class
 		go.transform.SetParent(transform);
@@ -665,14 +675,22 @@ public class GameBoard : MonoBehaviour
 		
 	private void MovePlayerHandCard(GameObject go, int playerNum, int cardNum)
 	{
-		Vector3 cardPos = new Vector3(-1.5f,1.25f,0.5F*cardNum) + handOffset;
+		Vector3 cardPos = new Vector3 (-1.5f, 1.25f, 0.5F * cardNum);
+		//TODO - remove hardcoding for number of players only being 2, the else statement will not work with only 2 players
+		if (client.players[playerNum].clientID == client.clientID)
+		{
+			cardPos	+= handOffsetLeft;
+		} else
+		{
+			cardPos += handOffsetRight;
+		}
 		Debug.Log(cardPos);
 		go.transform.position = cardPos;
 	}
 
 	private void MoveGameBoardCard(GameObject go, int x, int z)
 	{
-		Vector3 cardPos = new Vector3(0.5F*x,0,0.5F*z) + boardOffset;
+	 	Vector3 cardPos = new Vector3(0.5F*x,0,0.5F*z) + boardOffsetLeft;
 		Debug.Log(cardPos);
 		go.transform.position = cardPos;
 	}
