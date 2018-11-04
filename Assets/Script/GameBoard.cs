@@ -531,17 +531,12 @@ public class GameBoard : MonoBehaviour
 
 	public void GeneratePlayerHand()
 	{
-		if (client.isPlayer == true)
+		if (client.isPlayer != true)
 		{
 			//TODO - Callers may get a differrent view  START HERE
 		}
+
 		//reset counters for each of the card types
-//		int rndChoose = 0;
-//		int redCnt = 0;
-//		int blueCnt = 0;
-//		int civilCnt = 0;
-//		int deathCnt = 0;
-//		bool validChoice = false;
 		GameObject go = null;
 		string cardInstructions = "";
 		string cardType = null;
@@ -549,6 +544,17 @@ public class GameBoard : MonoBehaviour
 		int cardId = 0;
 		int playerNum = 0;
 		int cardNum = 0;
+		cntRedHandCards = 0;
+		cntBlueHandCards = 0;
+
+		//<START HERE>
+		// reset the players hand
+		GameObject[] gameObjects;
+		gameObjects = GameObject.FindGameObjectsWithTag (CS.OBJ_LOCATION_TAG_PLAYERHAND);
+		for(var i = 0 ; i < gameObjects.Length ; i ++)
+		{
+			Destroy(gameObjects[i]);
+		}
 
 		for (int cnt=0; cnt < (client.gcd.gameCards.Count); cnt++)
 		{
@@ -668,6 +674,8 @@ public class GameBoard : MonoBehaviour
 		var emptyObjectCard = new GameObject();
 		emptyObjectCard.transform.parent = gameBoardPlayer.transform;
 		cardPlayerHand.transform.parent = emptyObjectCard.transform;
+		emptyObjectCard.tag = CS.OBJ_LOCATION_TAG_PLAYERHAND;
+		emptyObjectCard.name = CS.OBJ_NAME_ROOT_CARD;
 
 		//Rotate the card
 		cardPlayerHand.makeInHand();

@@ -4,9 +4,16 @@ namespace AssemblyCSharp
 {
 	public class CS
 	{
+		//Names of Objects
+		public const string OBJ_NAME_ROOT_CARD = "Card Root";
+
 		//Layers
 		public const string OBJ_LOCATION_LAYER_GAMEBOARD = "Board";
 		public const string OBJ_LOCATION_LAYER_PLAYERHAND = "Hand";
+
+		//Tag make the same as layers, note that these must be set in the editor
+		public const string OBJ_LOCATION_TAG_GAMEBOARD = OBJ_LOCATION_LAYER_GAMEBOARD;
+		public const string OBJ_LOCATION_TAG_PLAYERHAND = OBJ_LOCATION_LAYER_PLAYERHAND;
 
 		//Card Location
 		public const string CAR_LOCATION_GAMEBOARD = "card is on the Gameboard";
