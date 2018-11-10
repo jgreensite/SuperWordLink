@@ -387,6 +387,8 @@ public class Server : MonoBehaviour
 //		gcd = GameCardDeck.Load (filePath);
 //		Debug.Log ("Loaded : " + filePath);
 
+		//<START HERE> The Server needs to determine if it is going to create a new card, change an existing one, or expire a card having been used
+
 		//Clear the decks prior to rebuilding them
 		gcd.gameCards.Clear();
 		gcdBlue.gameCards.Clear();

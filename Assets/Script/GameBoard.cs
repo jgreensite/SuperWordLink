@@ -547,7 +547,6 @@ public class GameBoard : MonoBehaviour
 		cntRedHandCards = 0;
 		cntBlueHandCards = 0;
 
-		//<START HERE>
 		// reset the players hand
 		GameObject[] gameObjects;
 		gameObjects = GameObject.FindGameObjectsWithTag (CS.OBJ_LOCATION_TAG_PLAYERHAND);
