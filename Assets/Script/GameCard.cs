@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 	[XmlRoot("GameCard")]
 	public class GameCard
 	{
+		public string cardID { get; set;}
 		public string cardPlayerNum { get; set;}
 		public string cardClientID { get; set;}
 		public string cardSuit { get; set; }

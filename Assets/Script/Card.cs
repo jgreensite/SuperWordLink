@@ -39,7 +39,9 @@ public class Card : MonoBehaviour {
 //	private float m_finalTextZValue = 0f;
 
 	public string cardType;
+	public string cardID;
 	public bool isCardUp;
+	public bool isDiscard;
 	int cnt = 0;
 
 	public Material[] mats = new Material[CS.NUMCARDMATERIALS];
@@ -159,7 +161,7 @@ public class Card : MonoBehaviour {
 	}
 
 	// Call this to highlight the card has been used and remove it from play
-	public void makeUsedUp(bool flagUp, int x, int z, Card siblingCaller){
+	public void makeUsedUp(bool flagUp, Card siblingCaller){
 
 		//TODO - Change what happends to a card when it gets used
 		makeFaceUp (flagUp);

@@ -89,6 +89,7 @@ public class Client : MonoBehaviour
 		int z = 0;
 		Debug.Log ("Client Receiving: " + data);
 		int howManyPlaying;
+		string cardID = "";
 
 
 		//TODO - remove this when all messaging is done via XML
@@ -163,9 +164,8 @@ public class Client : MonoBehaviour
 				break;
 			
 			case "SHAN":
-				x = int.Parse (aData [2]);
-				z = int.Parse (aData [3]);
-				GameBoard.Instance.TryHandMove (x, z);
+				cardID = aData [2];
+				GameBoard.Instance.TryHandMove (cardID);
 				break;
 			
 			case "SDIC":
@@ -185,7 +185,7 @@ public class Client : MonoBehaviour
 					{
 					case "R":
 						//need to get rid of the local gameCard copy if we receive a restart. When the scene loads we need to make sure we load a new set of cards
-						gcd.gameCards.RemoveAll (gameCards => gameCards.cardLocation != "");
+						gcd.gameCards.RemoveAll (gameCards => gameCards.cardID != "");
 						GameBoard.Instance.ResartGame ();
 						break;
 				
@@ -235,18 +235,15 @@ public class Client : MonoBehaviour
 				//TODO - Assumes only a red and blue deck
 				gcdRed = new GameCardDeck();
 				gcdBlue = new GameCardDeck();
-//				for (int cnt = gcd.gameCards.Count - 1; cnt > -1; cnt--)
 				for (int cnt = 0; cnt < gcd.gameCards.Count; cnt++)
 				{
 					GameCard gc = gcd.gameCards [cnt]; 
 					if (gc.cardSuit == CS.RED_TEAM)
 					{
-//						gcd.gameCards.Remove (gc);
 						gcdRed.gameCards.Add (gc);
 					}
 					else if (gc.cardSuit == CS.BLUE_TEAM)
 					{
-//						gcd.gameCards.Remove (gc);
 						gcdBlue.gameCards.Add (gc);
 					}
 				}

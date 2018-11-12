@@ -24,7 +24,8 @@ public class GameBoard : MonoBehaviour
 	public Card[,] cardsCaller = new Card[gridXDim,gridZDim];
 
 	//TODO - Remove hardcoding for number of players and cards in each player's hand
-	public Card[,] cardsPlayerHand = new Card[2,cardHandDim];
+	//public List<Card> cardsPlayerHand;
+	public Dictionary<string, Card> cardsPlayerHand = new Dictionary<string, Card>();
 
 	public GameObject redPfb;
 	public GameObject bluePfb;
@@ -68,9 +69,10 @@ public class GameBoard : MonoBehaviour
 	//used to track selection of board and player cards
 	private Card selectedCard;
 	private string cardSelectedLocation;
-	//TODO - The vectors are referenced using "x" and "y" properties, better to use arrays with more relevant property names
+
+	//TODO - The vectors are referenced using "x" and "y" properties, better to use arrays with more relevant property names, see how "hand is different to board"
 	private Vector2 gameboardCardOver;
-	private Vector2 playerhandCardOver;
+	private string playerhandCardOver;
 
 	private Client client;
 
@@ -132,9 +134,9 @@ public class GameBoard : MonoBehaviour
 					x = (int)gameboardCardOver.x;
 					z = (int)gameboardCardOver.y;
 
-					//TODO - need to add in support for touch screens and cursor keys
-					if (Input.GetMouseButtonDown (0))
-						SelectGameBoardCard (x, z);
+//					//TODO - need to add in support for touch screens and cursor keys
+//					if (Input.GetMouseButtonDown (0))
+//						SelectGameBoardCard (x, z);
 
 					if (Input.GetMouseButtonUp (0))
 						//Send move to server
@@ -146,22 +148,20 @@ public class GameBoard : MonoBehaviour
 							+ client.clientID
 						);
 				break;
+
 				//if chosen a card in a player's hand
 				case CS.OBJ_LOCATION_LAYER_PLAYERHAND:
-				x = (int)playerhandCardOver.x;
-				z = (int)playerhandCardOver.y;
 
 					//TODO - need to add in support for touch screens and cursor keys
-					if (Input.GetMouseButtonDown (0))
-						SelectPlayerHandCard (x, z);
+//					if (Input.GetMouseButtonDown (0))
+//							 (x, z);
 
 					if (Input.GetMouseButtonUp (0))
 						//Send move to server
 						client.Send (
 							"CHAN" + '|'
 							+ client.clientName + '|'
-							+ (x.ToString ()) + '|'
-							+ (z.ToString ()) + '|'
+							+ playerhandCardOver + '|'
 							+ client.clientID
 						);
 				break;
@@ -188,8 +188,7 @@ public class GameBoard : MonoBehaviour
 		{
 			//TODO colliders on all cards are hardcoded, really should work them out from card geometry
 			cardSelectedLocation = CS.OBJ_LOCATION_LAYER_PLAYERHAND;
-			playerhandCardOver.x = hitPlayerCard.collider.gameObject.GetComponent<Card>().playerNum;
-			playerhandCardOver.y = hitPlayerCard.collider.gameObject.GetComponent<Card>().cardNum;
+			playerhandCardOver = hitPlayerCard.collider.gameObject.GetComponent<Card>().cardID;
 			//Debug.Log("Selected Card in Hand for player:" + playerhandCardOver.x + " at position:" + playerhandCardOver.y);
 
 		}
@@ -207,8 +206,7 @@ public class GameBoard : MonoBehaviour
 		{
 			gameboardCardOver.x = -1;
 			gameboardCardOver.y = -1;
-			playerhandCardOver.x = -1;
-			playerhandCardOver.y = -1;
+			playerhandCardOver = "";
 			cardSelectedLocation = "";
 		}
 	}
@@ -235,21 +233,23 @@ public class GameBoard : MonoBehaviour
 		}
 	}
 
-	private void SelectPlayerHandCard(int playerNum, int cardNum)
+	private void SelectPlayerHandCard(string cardID)
 	{
 		//Out of Bounds check
-		if((playerNum < 0) || (playerNum > (cardsPlayerHand.GetLength(0) -1)) || (cardNum<0) || (cardNum>(cardsPlayerHand.GetLength(1)-1)))
+		Card c;
+		if(!(cardsPlayerHand.TryGetValue(cardID, out c)))
 		{
-			Debug.Log("Item does not exist in player hand array at " + playerNum + ", " + cardNum);
+			Debug.Log("Item does not exist in player hand array " + cardID);
 			selectedCard = null;
 			return;
 		}
 
-		Card c = cardsPlayerHand[playerNum,cardNum];
+		c = cardsPlayerHand[cardID];
 		//TODO - There is an implied assumption here that there is no need to check to see if the card in hand has already been selected as used, it's possible to get into this state if the server and client are not in sync or the user hammers that UI clicking like crazy
 		if (c != null)
 		{
 			selectedCard = c;
+			selectedCard.isDiscard = true;
 			Debug.Log ("Player Hand Card selected is player:" + selectedCard.playerNum + " card num:" + selectedCard.cardNum);
 		} else
 		{
@@ -318,7 +318,7 @@ public class GameBoard : MonoBehaviour
 //		}
 	}
 
-	public void TryHandMove(int x, int z)
+	public void TryHandMove(string cardID)
 	//Need to build the TryHandMove Function to replicate the TryGameboardMove Function
 	{
 		string moveResult;
@@ -327,7 +327,8 @@ public class GameBoard : MonoBehaviour
 		//Note that we need to create local variables as if it is not your turn you may not have a selected card defined
 
 		//Select the card, note that it may not be this client that selected the card
-		SelectPlayerHandCard (x, z);
+
+		SelectPlayerHandCard (cardID);
 		//TODO <START HERE> Build the logic for selecting a card in the hand
 		if (selectedCard != null)
 		{				
@@ -337,9 +338,9 @@ public class GameBoard : MonoBehaviour
 
 			case CS.GOOD:
 				//Flip the Card and keep on picking
-				selectedCard = cardsPlayerHand [x, z];
+				selectedCard = cardsPlayerHand [cardID];
 				//TODO <START HERE> this is not right selectedCard need not be passed into the function
-				selectedCard.makeUsedUp (true, x,z, selectedCard);
+				selectedCard.makeUsedUp (true, selectedCard);
 				//TODO - simplify this switch statement there is a lot of repeated elements in each case
 				//TODO - simplify EndTurn, checkVictory() and endGame(), think these could be one function
 				string winState = checkVictory ();
@@ -348,31 +349,14 @@ public class GameBoard : MonoBehaviour
 					endGame ();
 				}
 				break;
-
-			//TODO <START HERE> This logic has been copied and needs to be changed, these states should not be possible for a card in hand
-			case CS.BAD:
-				//flip the Card, end the turn
-				selectedCard = cardsPlayer [x, z];
-				selectedCard.makeFaceUp (true, x,z, cardsCaller[x,z]);
-				EndTurn (moveResult);
+			default:
+				{
+					Debug.Log("Error - Invalid result from trying to move card in hand");
+				}
 				break;
 
-			case CS.DEATH_TEAM:
-				//flip the Card, end the game
-				selectedCard = cardsPlayer [x, z];
-				selectedCard.makeFaceUp (true, x,z, cardsCaller[x,z]);
-				EndTurn (moveResult);
-				break;
-
-			case CS.CIVIL_TEAM:
-				//flip the Card, end the turn
-				selectedCard = cardsPlayer [x, z];
-				selectedCard.makeFaceUp (true, x,z, cardsCaller[x,z]);
-				EndTurn (moveResult);
-				break;
 			}
 		}
-		//		}
 	}
 
 	private void EndTurn(string moveResult)
@@ -541,7 +525,7 @@ public class GameBoard : MonoBehaviour
 		string cardInstructions = "";
 		string cardType = null;
 		string clientID = "";
-		int cardId = 0;
+		string cardID = "";
 		int playerNum = 0;
 		int cardNum = 0;
 		cntRedHandCards = 0;
@@ -560,11 +544,11 @@ public class GameBoard : MonoBehaviour
 			//TO DO - This is limited to red and blue only and is based on team on owner of cards, add owner of cards to cards using playerID from server
 			playerNum = Convert.ToInt32(client.gcd.gameCards[cnt].cardPlayerNum);
 			clientID = client.gcd.gameCards [cnt].cardClientID;
+			cardID = client.gcd.gameCards [cnt].cardID;
 			go = Instantiate (handPfb) as GameObject;
 
 			if (client.gcd.gameCards[cnt].cardSuit == CS.RED_TEAM)
 			{
-				//TODO - cannot assume player 0 is RED and player 1 is BLUE
 				cardNum = cntRedHandCards;
 				cntRedHandCards += 1;
 				cardInstructions =
@@ -585,7 +569,6 @@ public class GameBoard : MonoBehaviour
 				cardType = CS.RED_TEAM;
 			} else if (client.gcd.gameCards[cnt].cardSuit == CS.BLUE_TEAM)
 			{
-				//TODO - cannot assume player 0 is RED and player 1 is BLUE
 				cardNum = cntBlueHandCards;
 				cntBlueHandCards += 1;
 				cardInstructions =
@@ -606,7 +589,7 @@ public class GameBoard : MonoBehaviour
 					cardType = CS.BLUE_TEAM;
 			}
 
-			GeneratePlayerHandCard (playerNum, clientID, cardNum, ref go, cardInstructions, cardType);
+			GeneratePlayerHandCard (playerNum, clientID, cardNum, cardID, ref go, cardInstructions, cardType);
 		}
 	}
 
@@ -648,7 +631,7 @@ public class GameBoard : MonoBehaviour
 		cardCaller.makeFaceUp(true);
 	}
 		
-	private void GeneratePlayerHandCard(int playerNum, string clientID, int cardNum, ref GameObject go, string word, string cardType)
+	private void GeneratePlayerHandCard(int playerNum, string clientID, int cardNum, string cardID, ref GameObject go, string word, string cardType)
 	{
 		//TODO - the GenerateCard() class should be methods on the Card() class
 		go.transform.SetParent(transform);
@@ -658,11 +641,12 @@ public class GameBoard : MonoBehaviour
 		go.transform.Find("PlayingCardWordBack").GetComponent<TextMesh>().text="";
 		go.transform.Find("PlayingCardWordFront").GetComponent<TextMesh>().text=word;
 
-		//Add the player and card id to the card, add the reference to it into the array that stores cards
+		//Add the player number, card number and card id to the card, add the reference to it into the array that stores cards
 		cardPlayerHand.playerNum = playerNum;
 		cardPlayerHand.cardNum = cardNum;
+		cardPlayerHand.cardID = cardID;
 
-		cardsPlayerHand[playerNum, cardNum] = cardPlayerHand;
+		cardsPlayerHand.Add(cardID,cardPlayerHand);
 
 		Debug.Log(string.Concat("cardPlayerHand:", playerNum, ",", cardNum));
 		MovePlayerHandCard (go, playerNum, cardNum);

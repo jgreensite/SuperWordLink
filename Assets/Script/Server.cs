@@ -254,12 +254,14 @@ public class Server : MonoBehaviour
 			);
 			break;
 		case "CHAN":
+			//Update the deck replacing the card with a new card
+			UpdateDeck (aData [2]);
+//			Broadcast (gcd.SaveToText ().Replace (System.Environment.NewLine, ""), clients);
 			Broadcast (
 				"SHAN" + '|'
 				+ aData [1] + '|'
 				+ aData [2] + '|'
-				+ aData [3] + '|'
-				+ aData [4],
+				+ aData [3],
 				clients
 			);
 			break;
@@ -393,41 +395,14 @@ public class Server : MonoBehaviour
 		gcd.gameCards.Clear();
 		gcdBlue.gameCards.Clear();
 		gcdRed.gameCards.Clear();
+		GameCard gc = new GameCard ();
 
 		for (int playerCnt = 0; playerCnt < clients.Count; playerCnt++)
 		{
 			for (int cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
 			{
-				//create a card
-				GameCard gc = new GameCard ();
-				gc.cardPlayerNum = playerCnt.ToString();
-				gc.cardClientID = clients [0].clientID;
-				if (clients [playerCnt].isRedTeam)
-				{
-					gc.cardSuit = CS.RED_TEAM;
-					gc.cardLocation = CS.CAR_LOCATION_RED_DECK;
-				} else if (!(clients [playerCnt].isRedTeam))
-				{
-					gc.cardSuit = CS.BLUE_TEAM;
-					gc.cardLocation = CS.CAR_LOCATION_BLUE_DECK;
-				}
-
-				gc.cardRevealed = CS.CAR_REVEAL_HIDDEN;
-
-				//add CardWhenPlayable element to card 
-				CardWhenPlayable cwp = new CardWhenPlayable ();
-				cwp.turnStage = CS.CWP_PLAY_PLAYER_TURN;
-				cwp.numTimes = 1;	
-				gc.cardWhenPlayable.Add (cwp);
-
-				//add CardEffectPlayable element to card 
-				CardEffectPlayable cep = new CardEffectPlayable ();
-				//randomly choose an effect
-				int rnd = UnityEngine.Random.Range(0, CS.CEP_EFFECTS.Length);
-				cep.effectName = CS.CEP_EFFECTS[rnd];
-				cep.affectWhat = CS.CEP_AFFECT_GAMEBOARD;
-				cep.numTimes = 1;
-				gc.cardEffectPlayable.Add (cep);
+				//create new card
+				gc = makeCard (playerCnt);
 
 				//add Card to deck
 				gcd.gameCards.Add (gc);
@@ -463,6 +438,60 @@ public class Server : MonoBehaviour
 		filePath = Application.persistentDataPath + "/gamecarddeckred.xml";
 		gcdRed.Save (filePath);
 		Debug.Log("Wrote : " + filePath);
+	}
+
+	private void UpdateDeck(string cardID)
+	{
+		GameCard gc = new GameCard ();
+		for (int playerCnt = 0; playerCnt < clients.Count; playerCnt++)
+		{
+			for (int cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
+			{
+				if (gcd.gameCards [playerCnt * CS.CSCARDHANDDIM + cardNum].cardID == cardID)
+				{
+					//create a new card
+					gc = makeCard (playerCnt);
+
+					//update deck, replacing old card with new card
+					gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum] = gc;
+				}
+			}
+		}
+	}
+
+	private GameCard makeCard (int playerCnt)
+	{
+		//create a card
+		GameCard gc = new GameCard ();
+		gc.cardID = System.Guid.NewGuid ().ToString ();
+		gc.cardPlayerNum = playerCnt.ToString ();
+		gc.cardClientID = clients [playerCnt].clientID;
+		if (clients [playerCnt].isRedTeam)
+		{
+			gc.cardSuit = CS.RED_TEAM;
+			gc.cardLocation = CS.CAR_LOCATION_RED_DECK;
+		}
+		else
+			if (!(clients [playerCnt].isRedTeam))
+			{
+				gc.cardSuit = CS.BLUE_TEAM;
+				gc.cardLocation = CS.CAR_LOCATION_BLUE_DECK;
+			}
+		gc.cardRevealed = CS.CAR_REVEAL_HIDDEN;
+		//add CardWhenPlayable element to card 
+		CardWhenPlayable cwp = new CardWhenPlayable ();
+		cwp.turnStage = CS.CWP_PLAY_PLAYER_TURN;
+		cwp.numTimes = 1;
+		gc.cardWhenPlayable.Add (cwp);
+		//add CardEffectPlayable element to card 
+		CardEffectPlayable cep = new CardEffectPlayable ();
+		//randomly choose an effect
+		int rnd = UnityEngine.Random.Range (0, CS.CEP_EFFECTS.Length);
+		cep.effectName = CS.CEP_EFFECTS [rnd];
+		cep.affectWhat = CS.CEP_AFFECT_GAMEBOARD;
+		cep.numTimes = 1;
+		gc.cardEffectPlayable.Add (cep);
+		return gc;
 	}
 }
 

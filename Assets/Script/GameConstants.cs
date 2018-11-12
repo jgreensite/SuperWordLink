@@ -21,6 +21,7 @@ namespace AssemblyCSharp
 		public const string CAR_LOCATION_BLUE_DECK = "card is in the Blue Deck";
 		public const string CAR_LOCATION_RED_HAND = "card is in the Red Hand";
 		public const string CAR_LOCATION_BLUE_HAND = "card is in the Blue Hand";
+		public const string CAR_LOCATION_DISCARD_DECK = "card is in the Discard Deck";
 
 		//Card Status
 		public const string CAR_REVEAL_HIDDEN = "card face is hidden";
