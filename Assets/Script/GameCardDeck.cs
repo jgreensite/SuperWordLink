@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Xml;
-using System.Xml.Serialization;
 using System.IO;
-using System;
-using AssemblyCSharp;  
+using System.Xml.Serialization;
 
 //static public void Serialize(AddressDetails details)
 //{ 
@@ -26,44 +23,44 @@ using AssemblyCSharp;
 [XmlRoot("GameCardDeck")]
 public class GameCardDeck
 {
-	[XmlArray("GameCards"),XmlArrayItem("GameCard")]
-	public List<GameCard> gameCards = new List<GameCard>();
+    [XmlArray("GameCards")] [XmlArrayItem("GameCard")]
+    public List<GameCard> gameCards = new List<GameCard>();
 
-	public void Save(string path)
-	{
-		var serializer = new XmlSerializer(typeof(GameCardDeck));
-		using(var stream = new FileStream(path, FileMode.Create))
-		{
-			serializer.Serialize(stream, this);
-		}
-	}
-		
-
-	public string SaveToText()
-	{
-		XmlSerializer xmlSerializer = new XmlSerializer(typeof(GameCardDeck));
-
-		using(StringWriter textWriter = new StringWriter())
-		{
-			xmlSerializer.Serialize(textWriter, this);
-			return textWriter.ToString();
-		}
-	}
+    public void Save(string path)
+    {
+        var serializer = new XmlSerializer(typeof(GameCardDeck));
+        using (var stream = new FileStream(path, FileMode.Create))
+        {
+            serializer.Serialize(stream, this);
+        }
+    }
 
 
-	public static GameCardDeck Load(string path)
-	{
-		var serializer = new XmlSerializer(typeof(GameCardDeck));
-		using(var stream = new FileStream(path, FileMode.Open))
-		{
-			return serializer.Deserialize(stream) as GameCardDeck;
-		}
-	}
+    public string SaveToText()
+    {
+        var xmlSerializer = new XmlSerializer(typeof(GameCardDeck));
 
-	//Loads the xml directly from the given string. Useful in combination with www.text.
-	public static GameCardDeck LoadFromText(string text) 
-	{
-		var serializer = new XmlSerializer(typeof(GameCardDeck));
-		return serializer.Deserialize(new StringReader(text)) as GameCardDeck;
-	}
+        using (var textWriter = new StringWriter())
+        {
+            xmlSerializer.Serialize(textWriter, this);
+            return textWriter.ToString();
+        }
+    }
+
+
+    public static GameCardDeck Load(string path)
+    {
+        var serializer = new XmlSerializer(typeof(GameCardDeck));
+        using (var stream = new FileStream(path, FileMode.Open))
+        {
+            return serializer.Deserialize(stream) as GameCardDeck;
+        }
+    }
+
+    //Loads the xml directly from the given string. Useful in combination with www.text.
+    public static GameCardDeck LoadFromText(string text)
+    {
+        var serializer = new XmlSerializer(typeof(GameCardDeck));
+        return serializer.Deserialize(new StringReader(text)) as GameCardDeck;
+    }
 }

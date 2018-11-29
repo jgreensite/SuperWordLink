@@ -1,511 +1,477 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.IO;
 using AssemblyCSharp;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Server : MonoBehaviour
 {
-	//makes class a singleton
-	public static Server Instance { set; get; }
+    private List<ServerClient> clients;
+    private List<ServerClient> disconnectList;
 
-	public int port = 6321;
-	private List<ServerClient> clients;
-	private List<ServerClient> disconnectList;
+    //the decks that will be used in the game
+    private readonly GameCardDeck gcd = new GameCardDeck();
+    private readonly GameCardDeck gcdBlue = new GameCardDeck();
+    private readonly GameCardDeck gcdRed = new GameCardDeck();
+    public int numParticipants;
+    private string[] populate = new string[25];
 
-	//the actual server
-	private TcpListener server;
-	private bool serverStarted;
+    public int port = 6321;
 
-	//the list of words and their assignments
+    //the actual server
+    private TcpListener server;
+    private bool serverStarted;
 
-	string[] words = new string[25];
-	string[] populate = new string[25];
-	public int numParticipants = 0;
+    //the list of words and their assignments
 
-	//the decks that will be used in the game
-	private GameCardDeck gcd = new GameCardDeck ();
-	private GameCardDeck gcdRed = new GameCardDeck ();
-	private GameCardDeck gcdBlue = new GameCardDeck ();
+    private string[] words = new string[25];
 
-	public void Init(){
+    //makes class a singleton
+    public static Server Instance { set; get; }
 
-		//needed to make this a singleton
-		Instance = this;
+    public void Init()
+    {
+        //needed to make this a singleton
+        Instance = this;
 
-		//needed to preserve game objects
-		DontDestroyOnLoad(gameObject);
-		GameManager.Instance.goDontDestroyList.Add (gameObject);
-		Debug.Log ("Added Server at position:" + GameManager.Instance.goDontDestroyList.Count + " to donotdestroylist");
+        //needed to preserve game objects
+        DontDestroyOnLoad(gameObject);
+        GameManager.Instance.goDontDestroyList.Add(gameObject);
+        Debug.Log("Added Server at position:" + GameManager.Instance.goDontDestroyList.Count + " to donotdestroylist");
 
-		//create lists of clients that need to be connected / disconnected
-		clients = new List<ServerClient>();
-		disconnectList = new List<ServerClient>();
+        //create lists of clients that need to be connected / disconnected
+        clients = new List<ServerClient>();
+        disconnectList = new List<ServerClient>();
 
-		try
-		{
-			//create a new listener and start it listening
-			server = new TcpListener (IPAddress.Any, port);
-			server.Start();
-			startListening();
-			serverStarted = true;
-		}
-		catch (Exception e)
-		{
-			Debug.Log("Socket Error Server: " + e.Message);
-		}
+        try
+        {
+            //create a new listener and start it listening
+            server = new TcpListener(IPAddress.Any, port);
+            server.Start();
+            startListening();
+            serverStarted = true;
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Socket Error Server: " + e.Message);
+        }
 
 //		BuildDeck ();
-	}
+    }
 
-	private void Update()
-	// Note if we want this on a standard Linux server that has no context of Unity we'll need to take out the reference to Monobehaviour and build an update function ourselves (running a continuous loop waiting for something to happen
-	{
-		if (!serverStarted)
-		{
-			return;
-		}
-			
-		foreach (ServerClient c in clients)
-		{
-			//is the client still connected?
+    private void Update()
+        // Note if we want this on a standard Linux server that has no context of Unity we'll need to take out the reference to Monobehaviour and build an update function ourselves (running a continuous loop waiting for something to happen
+    {
+        if (!serverStarted) return;
 
-			if(!IsConnected(c.tcp))
-			//if not disconnect the tcp client
-			{
-				c.tcp.Close();
-				disconnectList.Add (c);
-				continue;
-			}
-			else
-			//assume if not disconnected then are connected
-			{
-				//check the tcp stream of each client to see if they have placed something on it
-				NetworkStream s = c.tcp.GetStream();
-				if (s.DataAvailable)
-				{
-					StreamReader reader = new StreamReader (s, true);
-					// all data on a single line
-					string data = reader.ReadLine ();
-					if (data != null)
-					// if there is data then read it
-					{
-						OnIncomingData (c, data);
-					}
-				}	
-			}
-		}
+        foreach (var c in clients)
+            //is the client still connected?
 
-		for (int i = 0; i < disconnectList.Count - 1; i++)
-		{
-			//Tell the player running the server that someone has disconnected
+            if (!IsConnected(c.tcp))
+                //if not disconnect the tcp client
+            {
+                c.tcp.Close();
+                disconnectList.Add(c);
+            }
+            else
+                //assume if not disconnected then are connected
+            {
+                //check the tcp stream of each client to see if they have placed something on it
+                var s = c.tcp.GetStream();
+                if (s.DataAvailable)
+                {
+                    var reader = new StreamReader(s, true);
+                    // all data on a single line
+                    var data = reader.ReadLine();
+                    if (data != null)
+                        // if there is data then read it
+                        OnIncomingData(c, data);
+                }
+            }
 
-			clients.Remove (disconnectList [i]);
-			disconnectList.RemoveAt (i);
-		}
-	}
+        for (var i = 0; i < disconnectList.Count - 1; i++)
+        {
+            //Tell the player running the server that someone has disconnected
 
-	private void startListening()
-	{
-		//uses an asynchronous callback to connect a server to a client, this allows us to listen for connections but will not get any data from them
-		server.BeginAcceptTcpClient (AcceptTcpClient, server);
-	}
+            clients.Remove(disconnectList[i]);
+            disconnectList.RemoveAt(i);
+        }
+    }
 
-	private void AcceptTcpClient(IAsyncResult ar)
-	{
-		//Listen for a client connection
-		TcpListener listener = (TcpListener)ar.AsyncState;
+    private void startListening()
+    {
+        //uses an asynchronous callback to connect a server to a client, this allows us to listen for connections but will not get any data from them
+        server.BeginAcceptTcpClient(AcceptTcpClient, server);
+    }
 
-		//Get a list of all the users that are connected, do this before the client connects
-		string Allusers = "";
-		foreach (ServerClient i in clients)
-		{
-			Allusers +=
-			"|"
-			+ i.clientName + ","
-			+ ((i.isHost)?1:0).ToString() + ","
-			+ ((i.isPlayer)?1:0).ToString() + ","
-			+ ((i.isRedTeam)?1:0).ToString() + ","
-			+ (i.clientID);
-		}
+    private void AcceptTcpClient(IAsyncResult ar)
+    {
+        //Listen for a client connection
+        var listener = (TcpListener) ar.AsyncState;
 
-		//If a client connection occurs add it to the list of clients
-		ServerClient sc = new ServerClient (listener.EndAcceptTcpClient (ar));
-		clients.Add (sc);
+        //Get a list of all the users that are connected, do this before the client connects
+        var Allusers = "";
+        foreach (var i in clients)
+            Allusers +=
+                "|"
+                + i.clientName + ","
+                + (i.isHost ? 1 : 0) + ","
+                + (i.isPlayer ? 1 : 0) + ","
+                + (i.isRedTeam ? 1 : 0) + ","
+                + i.clientID;
 
-		//Once a connection occurs the listener will stop, so if you want to listen for more clients you need to restart listening again.
-		startListening();
+        //If a client connection occurs add it to the list of clients
+        var sc = new ServerClient(listener.EndAcceptTcpClient(ar));
+        clients.Add(sc);
 
-		Debug.Log ("Somebody has connected. Starting to listen for any other clients");
+        //Once a connection occurs the listener will stop, so if you want to listen for more clients you need to restart listening again.
+        startListening();
 
-		//Ask last person that connected to state who they are
-		Broadcast ("SWHO" + Allusers ,clients[clients.Count-1]);
-	}
-		
-	private bool IsConnected(TcpClient c)
-	{
-		try
-		{
-			if (c !=null && c.Client !=null && c.Client.Connected)
-			{
-				if(c.Client.Poll(0,SelectMode.SelectRead))
-					return !(c.Client.Receive(new byte[1], SocketFlags.Peek) == 0);
-				return true;
-			}
-			else
-			{
-				return false;	
-			}
-		}
-		catch{
-			//TODO - Should not have processing on the exception path, need to handle this differently
-			return false;
-		}
-	}
+        Debug.Log("Somebody has connected. Starting to listen for any other clients");
 
-	//Server send
-	private void Broadcast(string data, List<ServerClient> cl)
-	{
-		foreach (ServerClient sc in cl)
-		{
-			try
-			{
-				Debug.Log ("Server Sending To:" + sc.clientName + " => " + data);
-				StreamWriter writer = new StreamWriter(sc.tcp.GetStream());
-				//this has been replace from data to xml
-				writer.WriteLine(data);
-				writer.Flush();
-			}
-			catch (Exception e)
-			{
-				Debug.Log ("Write error : " + e.Message);
-			}
-		}
-	}
+        //Ask last person that connected to state who they are
+        Broadcast("SWHO" + Allusers, clients[clients.Count - 1]);
+    }
 
-	//Used to create a list of clients that only has one item in it, so that can broadcast when only one client connected
-	private void Broadcast(string data, ServerClient c)
-	{
-		List<ServerClient> sc = new List<ServerClient>{ c };
-		Broadcast (data, sc);
-	}
+    private bool IsConnected(TcpClient c)
+    {
+        try
+        {
+            if (c != null && c.Client != null && c.Client.Connected)
+            {
+                if (c.Client.Poll(0, SelectMode.SelectRead))
+                    return !(c.Client.Receive(new byte[1], SocketFlags.Peek) == 0);
+                return true;
+            }
 
-	//Server read
-	private void OnIncomingData(ServerClient c, string data)
-	{
-		Debug.Log ("Server Receiving: " + data);
+            return false;
+        }
+        catch
+        {
+            //TODO - Should not have processing on the exception path, need to handle this differently
+            return false;
+        }
+    }
 
-		//parse the incoming data stream
-		string[] aData = data.Split('|');
+    //Server send
+    private void Broadcast(string data, List<ServerClient> cl)
+    {
+        foreach (var sc in cl)
+            try
+            {
+                Debug.Log("Server Sending To:" + sc.clientName + " => " + data);
+                var writer = new StreamWriter(sc.tcp.GetStream());
+                //this has been replace from data to xml
+                writer.WriteLine(data);
+                writer.Flush();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Write error : " + e.Message);
+            }
+    }
 
-		switch (aData [0])
-		{
-		case "CWHO":
-			//See if the number of participants is greater than zero, if it is then it must have been sent
+    //Used to create a list of clients that only has one item in it, so that can broadcast when only one client connected
+    private void Broadcast(string data, ServerClient c)
+    {
+        var sc = new List<ServerClient> {c};
+        Broadcast(data, sc);
+    }
 
-			// if the new client that is added is a host then it will determine the number of players
-			if ((aData[2] == "1")? true : false) 
-			{
-				Int32.TryParse (aData[6], out numParticipants);
-			
-				//if a client intitiates a host call then clear all other client's connections
-				int i = 0;
-				if (clients.Count > 1)
-				{
-					do
-					{
-						ServerClient sc = clients [i];
+    //Server read
+    private void OnIncomingData(ServerClient c, string data)
+    {
+        Debug.Log("Server Receiving: " + data);
 
-						//is the client still connected?
-						if (IsConnected (sc.tcp))
+        //parse the incoming data stream
+        var aData = data.Split('|');
 
-						//TODO - upgrade the server to be able to manage multiple games and present the list of games that are currently running to the players
-						{
-							sc.tcp.Close ();
-							clients.Remove (sc);
-						}
-						i++;
-					} while (i < clients.Count - 2);
-				}
-			}
+        switch (aData[0])
+        {
+            case "CWHO":
+                //See if the number of participants is greater than zero, if it is then it must have been sent
 
-			// add the new client details, remember that it will always be the last client in the list of clients that we do not have the details for
-			clients[clients.Count-1].clientName = aData[1];
-			clients[clients.Count-1].isHost = ((aData[2] == "1")? true : false);
-			clients[clients.Count-1].isPlayer = ((aData[3] == "1")? true : false);
-			clients[clients.Count-1].isRedTeam = ((aData[4] == "1")? true : false);
-			clients[clients.Count-1].clientID = (aData[5]);
+                // if the new client that is added is a host then it will determine the number of players
+                if (aData[2] == "1" ? true : false)
+                {
+                    int.TryParse(aData[6], out numParticipants);
 
-			//get a list of all the users that are connected, do this after adding the new client's details to this list
-			//broadcast this updated list to all the connected clients
-			Broadcast ("SCNN" + GetStringOfAllClients(), clients);
-			break;
-		case "CMOV":
-			Broadcast (
-				"SMOV" + '|'
-				+ aData [1] + '|'
-				+ aData [2] + '|'
-				+ aData [3] + '|'
-				+ aData [4],
-				clients
-			);
-			break;
-		case "CHAN":
-			//Update the deck replacing the card with a new card
-			UpdateDeck (aData [2]);
+                    //if a client intitiates a host call then clear all other client's connections
+                    var i = 0;
+                    if (clients.Count > 1)
+                        do
+                        {
+                            var sc = clients[i];
+
+                            //is the client still connected?
+                            if (IsConnected(sc.tcp))
+
+                                //TODO - upgrade the server to be able to manage multiple games and present the list of games that are currently running to the players
+                            {
+                                sc.tcp.Close();
+                                clients.Remove(sc);
+                            }
+
+                            i++;
+                        } while (i < clients.Count - 2);
+                }
+
+                // add the new client details, remember that it will always be the last client in the list of clients that we do not have the details for
+                clients[clients.Count - 1].clientName = aData[1];
+                clients[clients.Count - 1].isHost = aData[2] == "1" ? true : false;
+                clients[clients.Count - 1].isPlayer = aData[3] == "1" ? true : false;
+                clients[clients.Count - 1].isRedTeam = aData[4] == "1" ? true : false;
+                clients[clients.Count - 1].clientID = aData[5];
+
+                //get a list of all the users that are connected, do this after adding the new client's details to this list
+                //broadcast this updated list to all the connected clients
+                Broadcast("SCNN" + GetStringOfAllClients(), clients);
+                break;
+            case "CMOV":
+                Broadcast(
+                    "SMOV" + '|'
+                           + aData[1] + '|'
+                           + aData[2] + '|'
+                           + aData[3] + '|'
+                           + aData[4],
+                    clients
+                );
+                break;
+            case "CHAN":
+                //Update the server copy of the deck replacing the card with a new card
+                UpdateDeck(aData[2]);
 //			Broadcast (gcd.SaveToText ().Replace (System.Environment.NewLine, ""), clients);
-			Broadcast (
-				"SHAN" + '|'
-				+ aData [1] + '|'
-				+ aData [2] + '|'
-				+ aData [3],
-				clients
-			);
-			break;
-		case "CDIC":
-			//Generate the Wordlist and assignment
-			WordDictionary worddictionary = FindObjectOfType<WordDictionary> ();
-			words = worddictionary.GetWords();
-			populate = worddictionary.AssignWords ();
+                Broadcast(
+                    "SHAN" + '|'
+                           + aData[1] + '|'
+                           + aData[2] + '|'
+                           + aData[3],
+                    clients
+                );
+                break;
+            case "CDIC":
+                //Generate the Wordlist and assignment
+                var worddictionary = FindObjectOfType<WordDictionary>();
+                words = worddictionary.GetWords();
+                populate = worddictionary.AssignWords();
 
-			string distWords = "";
-			string distPopulate = "";
-			foreach (string tmpStr in words)
-			{
-				distWords += tmpStr + ",";	
-			}
+                var distWords = "";
+                var distPopulate = "";
+                foreach (var tmpStr in words) distWords += tmpStr + ",";
 
-			foreach (string tmpStr in populate)
-			{
-				distPopulate += tmpStr + ",";	
-			}
-			Broadcast (
-				"SDIC" + '|'
-				+ distWords + '|'
-				+ distPopulate,
-				clients
-			);
-			break;
-		case "CKEY":
-			string tmpVal = aData [2].ToUpper();
-			Broadcast (
-				"SKEY" + '|'
-				+ tmpVal,
-				clients
-			);
-			break;
-		case "CBEG":
-			//Note that start at 2 not 1 becuase the name of the client is transmitted at position 1
-			for (int i = 2; i < aData.Length; i++)
-			{
-				string[] bData = aData [i].Split (',');
-				foreach (ServerClient sc in clients)
-				{
-					//TODO - improve matching, should not be matching on client name it's brittle
-					//Populate the client attributes
-					if (String.Equals (bData [3], sc.clientID))
-					{
-						sc.isPlayer = (bData [1] == "0") ? false : true;
-						sc.isRedTeam = (bData [2] == "0") ? false : true;
-					}
-				}
-	
-			}
+                foreach (var tmpStr in populate) distPopulate += tmpStr + ",";
+                Broadcast(
+                    "SDIC" + '|'
+                           + distWords + '|'
+                           + distPopulate,
+                    clients
+                );
+                break;
+            case "CKEY":
+                var tmpVal = aData[2].ToUpper();
+                Broadcast(
+                    "SKEY" + '|'
+                           + tmpVal,
+                    clients
+                );
+                break;
+            case "CBEG":
+                //Note that start at 2 not 1 becuase the name of the client is transmitted at position 1
+                for (var i = 2; i < aData.Length; i++)
+                {
+                    var bData = aData[i].Split(',');
+                    foreach (var sc in clients)
+                        //TODO - improve matching, should not be matching on client name it's brittle
+                        //Populate the client attributes
+                        if (string.Equals(bData[3], sc.clientID))
+                        {
+                            sc.isPlayer = bData[1] == "0" ? false : true;
+                            sc.isRedTeam = bData[2] == "0" ? false : true;
+                        }
+                }
 
-			Broadcast (
-				"SBEG" + GetStringOfAllClients(),
-				clients
-			);
-			break;
-		case "CPCI":
-			BuildDeck ();
-			Broadcast (gcd.SaveToText ().Replace (System.Environment.NewLine, ""), clients);
-			break;
-		}
-	}
+                Broadcast(
+                    "SBEG" + GetStringOfAllClients(),
+                    clients
+                );
+                break;
+            case "CPCI":
+                BuildDeck();
+                Broadcast(gcd.SaveToText().Replace(Environment.NewLine, ""), clients);
+                break;
+        }
+    }
 
-	private string GetStringOfAllClients()
-	{
-		string concatClients = "";
-		for (int i = 0; i < clients.Count;i ++)
-		{
-			concatClients += "|"
-				+ clients[i].clientName + ","
-				+ ((clients[i].isHost) ? 1 : 0).ToString () + ","
-				+ ((clients[i].isPlayer) ? 1 : 0).ToString () + ","
-				+ ((clients[i].isRedTeam) ? 1 : 0).ToString () + ","
-				+ clients[i].clientID + ",";
+    private string GetStringOfAllClients()
+    {
+        var concatClients = "";
+        for (var i = 0; i < clients.Count; i++)
+        {
+            concatClients += "|"
+                             + clients[i].clientName + ","
+                             + (clients[i].isHost ? 1 : 0) + ","
+                             + (clients[i].isPlayer ? 1 : 0) + ","
+                             + (clients[i].isRedTeam ? 1 : 0) + ","
+                             + clients[i].clientID + ",";
 
-			// TODO - Change this it is not the easiest to understand code
-			// this is a "magic field" that tells the client it should add the participant and start the lobby
-			// it is placed on the last entry of the message sent to the client
-			// Really this should be another message embedded in this message
-			if ((numParticipants != 0) && (clients.Count == numParticipants) && (i == clients.Count-1))
-			{
-				concatClients += numParticipants.ToString ();
-			}
-			else
-			{
-				concatClients += 0;
-			}
-		}
-		return concatClients;
-	}
+            // TODO - Change this it is not the easiest to understand code
+            // this is a "magic field" that tells the client it should add the participant and start the lobby
+            // it is placed on the last entry of the message sent to the client
+            // Really this should be another message embedded in this message
+            if (numParticipants != 0 && clients.Count == numParticipants && i == clients.Count - 1)
+                concatClients += numParticipants.ToString();
+            else
+                concatClients += 0;
+        }
 
-	public void Shutdown()
-	{
-		foreach (ServerClient c in clients)
-		{
-			//is the client still connected?
+        return concatClients;
+    }
 
-			if(IsConnected(c.tcp))
-				//if not disconnect the tcp client
-			{
-				c.tcp.Close();
-				disconnectList.Add (c);
-				continue;
-			}
-		}
+    public void Shutdown()
+    {
+        foreach (var c in clients)
+            //is the client still connected?
 
-		for (int i = 0; i < disconnectList.Count - 1; i++)
-		{
-			//Tell the player running the server that someone has disconnected
+            if (IsConnected(c.tcp))
+                //if not disconnect the tcp client
+            {
+                c.tcp.Close();
+                disconnectList.Add(c);
+            }
 
-			clients.Remove (disconnectList [i]);
-			disconnectList.RemoveAt (i);
-		}
-		server.Stop();
-	}
+        for (var i = 0; i < disconnectList.Count - 1; i++)
+        {
+            //Tell the player running the server that someone has disconnected
 
-	private void BuildDeck()
-	{
-		string filePath = "";
+            clients.Remove(disconnectList[i]);
+            disconnectList.RemoveAt(i);
+        }
+
+        server.Stop();
+    }
+
+    private void BuildDeck()
+    {
+        var filePath = "";
 
 //		//Demo loading data
 //		filePath = Application.persistentDataPath + "/gamecarddeck3.xml";
 //		gcd = GameCardDeck.Load (filePath);
 //		Debug.Log ("Loaded : " + filePath);
 
-		//<START HERE> The Server needs to determine if it is going to create a new card, change an existing one, or expire a card having been used
+        //<START HERE> The Server needs to determine if it is going to create a new card, change an existing one, or expire a card having been used
 
-		//Clear the decks prior to rebuilding them
-		gcd.gameCards.Clear();
-		gcdBlue.gameCards.Clear();
-		gcdRed.gameCards.Clear();
-		GameCard gc = new GameCard ();
+        //Clear the decks prior to rebuilding them
+        gcd.gameCards.Clear();
+        gcdBlue.gameCards.Clear();
+        gcdRed.gameCards.Clear();
+        var gc = new GameCard();
 
-		for (int playerCnt = 0; playerCnt < clients.Count; playerCnt++)
-		{
-			for (int cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
-			{
-				//create new card
-				gc = makeCard (playerCnt);
+        for (var playerCnt = 0; playerCnt < clients.Count; playerCnt++)
+        for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
+        {
+            //create new card
+            gc = makeCard(playerCnt);
 
-				//add Card to deck
-				gcd.gameCards.Add (gc);
-			}
-		}
+            //add Card to deck
+            gcd.gameCards.Add(gc);
+        }
 
-		//Populate the Red and Blue Decks
-		int lastItem = gcd.gameCards.Count;
-		GameCard drawnCard = new GameCard ();
+        //Populate the Red and Blue Decks
+        var lastItem = gcd.gameCards.Count;
+        var drawnCard = new GameCard();
 
-		for (int cnt = 0; cnt <= (lastItem - 1); cnt++)
-		{
-			drawnCard = gcd.gameCards [cnt];
-			if (drawnCard.cardLocation == CS.CAR_LOCATION_RED_DECK)
-			{
-				gcdRed.gameCards.Add (drawnCard);
-			}
-			else if (drawnCard.cardLocation == CS.CAR_LOCATION_BLUE_DECK)
-			{
-				gcdBlue.gameCards.Add (drawnCard);
-			}
-		}
+        for (var cnt = 0; cnt <= lastItem - 1; cnt++)
+        {
+            drawnCard = gcd.gameCards[cnt];
+            if (drawnCard.cardLocation == CS.CAR_LOCATION_RED_DECK)
+                gcdRed.gameCards.Add(drawnCard);
+            else if (drawnCard.cardLocation == CS.CAR_LOCATION_BLUE_DECK) gcdBlue.gameCards.Add(drawnCard);
+        }
 
-		//Save the decks that have been created
-		filePath = Application.persistentDataPath + "/gamecarddeck1.xml";
-		gcd.Save (filePath);
-		Debug.Log ("Wrote : " + filePath);
+        //Save the decks that have been created
+        filePath = Application.persistentDataPath + "/gamecarddeck1.xml";
+        gcd.Save(filePath);
+        Debug.Log("Wrote : " + filePath);
 
-		filePath = Application.persistentDataPath + "/gamecarddeckblue.xml";
-		gcdBlue.Save (filePath);
-		Debug.Log("Wrote : " + filePath);
+        filePath = Application.persistentDataPath + "/gamecarddeckblue.xml";
+        gcdBlue.Save(filePath);
+        Debug.Log("Wrote : " + filePath);
 
-		filePath = Application.persistentDataPath + "/gamecarddeckred.xml";
-		gcdRed.Save (filePath);
-		Debug.Log("Wrote : " + filePath);
-	}
+        filePath = Application.persistentDataPath + "/gamecarddeckred.xml";
+        gcdRed.Save(filePath);
+        Debug.Log("Wrote : " + filePath);
+    }
 
-	private void UpdateDeck(string cardID)
-	{
-		GameCard gc = new GameCard ();
-		for (int playerCnt = 0; playerCnt < clients.Count; playerCnt++)
-		{
-			for (int cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
-			{
-				if (gcd.gameCards [playerCnt * CS.CSCARDHANDDIM + cardNum].cardID == cardID)
-				{
-					//create a new card
-					gc = makeCard (playerCnt);
+    private void UpdateDeck(string cardID)
+    {
+        var gc = new GameCard();
+        for (var playerCnt = 0; playerCnt < clients.Count; playerCnt++)
+        for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
+            if (gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum].cardID == cardID)
+            {
+                //create a new card
+                gc = makeCard(playerCnt);
 
-					//update deck, replacing old card with new card
-					gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum] = gc;
-				}
-			}
-		}
-	}
+                //update card as having been played, <START HERE> NEED TO DEAL JUST ONE NEW CARD ON NEXT TURN, perhaps just replace a slot that is open in BuildDeck
+                gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum].cardRevealed = CS.CAR_REVEAL_SHOWN;
 
-	private GameCard makeCard (int playerCnt)
-	{
-		//create a card
-		GameCard gc = new GameCard ();
-		gc.cardID = System.Guid.NewGuid ().ToString ();
-		gc.cardPlayerNum = playerCnt.ToString ();
-		gc.cardClientID = clients [playerCnt].clientID;
-		if (clients [playerCnt].isRedTeam)
-		{
-			gc.cardSuit = CS.RED_TEAM;
-			gc.cardLocation = CS.CAR_LOCATION_RED_DECK;
-		}
-		else
-			if (!(clients [playerCnt].isRedTeam))
-			{
-				gc.cardSuit = CS.BLUE_TEAM;
-				gc.cardLocation = CS.CAR_LOCATION_BLUE_DECK;
-			}
-		gc.cardRevealed = CS.CAR_REVEAL_HIDDEN;
-		//add CardWhenPlayable element to card 
-		CardWhenPlayable cwp = new CardWhenPlayable ();
-		cwp.turnStage = CS.CWP_PLAY_PLAYER_TURN;
-		cwp.numTimes = 1;
-		gc.cardWhenPlayable.Add (cwp);
-		//add CardEffectPlayable element to card 
-		CardEffectPlayable cep = new CardEffectPlayable ();
-		//randomly choose an effect
-		int rnd = UnityEngine.Random.Range (0, CS.CEP_EFFECTS.Length);
-		cep.effectName = CS.CEP_EFFECTS [rnd];
-		cep.affectWhat = CS.CEP_AFFECT_GAMEBOARD;
-		cep.numTimes = 1;
-		gc.cardEffectPlayable.Add (cep);
-		return gc;
-	}
+                //update deck, replacing old card with new card
+                //gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum] = gc;
+
+            }
+    }
+
+    private GameCard makeCard(int playerCnt)
+    {
+        //create a card
+        var gc = new GameCard();
+        gc.cardID = Guid.NewGuid().ToString();
+        gc.cardPlayerNum = playerCnt.ToString();
+        gc.cardClientID = clients[playerCnt].clientID;
+        if (clients[playerCnt].isRedTeam)
+        {
+            gc.cardSuit = CS.RED_TEAM;
+            gc.cardLocation = CS.CAR_LOCATION_RED_DECK;
+        }
+        else if (!clients[playerCnt].isRedTeam)
+        {
+            gc.cardSuit = CS.BLUE_TEAM;
+            gc.cardLocation = CS.CAR_LOCATION_BLUE_DECK;
+        }
+
+        gc.cardRevealed = CS.CAR_REVEAL_HIDDEN;
+        //add CardWhenPlayable element to card 
+        var cwp = new CardWhenPlayable();
+        cwp.turnStage = CS.CWP_PLAY_PLAYER_TURN;
+        cwp.numTimes = 1;
+        gc.cardWhenPlayable.Add(cwp);
+        //add CardEffectPlayable element to card 
+        var cep = new CardEffectPlayable();
+        //randomly choose an effect
+        var rnd = Random.Range(0, CS.CEP_EFFECTS.Length);
+        cep.effectName = CS.CEP_EFFECTS[rnd];
+        cep.affectWhat = CS.CEP_AFFECT_GAMEBOARD;
+        cep.numTimes = 1;
+        gc.cardEffectPlayable.Add(cep);
+        return gc;
+    }
 }
 
 public class ServerClient
 {
-	public string clientName;
-	public TcpClient tcp;
-	public bool isHost;
-	public bool isPlayer;
-	public bool isRedTeam;
-	public string clientID;
+    public string clientID;
+    public string clientName;
+    public bool isHost;
+    public bool isPlayer;
+    public bool isRedTeam;
+    public TcpClient tcp;
 
-	public ServerClient(TcpClient tcp)
-	{
-		this.tcp = tcp;
-	}
+    public ServerClient(TcpClient tcp)
+    {
+        this.tcp = tcp;
+    }
 }

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$PROJECT_DIR$" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets/Editor" t="Include">
+        <e p="BuildOptions.cs" t="Include" />
+        <e p="MultiplayersBuildAndRun.cs" t="Include" />
+      </e>
+      <e p="Assets/Fabric" t="Include">
+        <e p="Editor" t="Include">
+          <e p="CommonBuild" t="Include">
+            <e p="FabricCommonBuild.cs" t="Include" />
+          </e>
+          <e p="FabricSetup.cs" t="Include" />
+          <e p="FabricUtils.cs" t="Include" />
+          <e p="GUI" t="Include">
+            <e p="API" t="Include">
+              <e p="AsyncV1.cs" t="Include" />
+              <e p="Parser.cs" t="Include" />
+              <e p="V1.cs" t="Include" />
+            </e>
+            <e p="Controller" t="Include">
+              <e p="KitController.cs" t="Include" />
+              <e p="KitInstallationChecker.cs" t="Include" />
+              <e p="KitUtils.cs" t="Include" />
+              <e p="PluginController.cs" t="Include" />
+            </e>
+            <e p="Detail" t="Include">
+              <e p="AsyncTaskRunner.cs" t="Include" />
+              <e p="AsyncTaskRunnerBuilder.cs" t="Include" />
+              <e p="Runner.cs" t="Include" />
+              <e p="Strings.cs" t="Include" />
+              <e p="TimeUtils.cs" t="Include" />
+            </e>
+            <e p="Editor.cs" t="Include" />
+            <e p="Images" t="Include">
+              <e p="Loader.cs" t="Include" />
+            </e>
+            <e p="Model" t="Include">
+              <e p="App.cs" t="Include" />
+              <e p="ImportedKit.cs" t="Include" />
+              <e p="KitStatus.cs" t="Include" />
+              <e p="Organization.cs" t="Include" />
+              <e p="Settings.cs" t="Include" />
+            </e>
+            <e p="Net" t="Include">
+              <e p="Constants.cs" t="Include" />
+              <e p="OAuth" t="Include">
+                <e p="Client.cs" t="Include" />
+              </e>
+              <e p="Utils.cs" t="Include" />
+            </e>
+            <e p="Resources" t="Include">
+              <e p="Manager.cs" t="Include" />
+            </e>
+            <e p="View" t="Include">
+              <e p="Animation" t="Include">
+                <e p="Driver.cs" t="Include" />
+              </e>
+              <e p="ConflictResolutionPage.cs" t="Include" />
+              <e p="KitSelectionPage.cs" t="Include" />
+              <e p="LoginPage.cs" t="Include" />
+              <e p="ManualInitializationPage.cs" t="Include" />
+              <e p="OrganizationsPage.cs" t="Include" />
+              <e p="Page.cs" t="Include" />
+              <e p="Render.cs" t="Include" />
+              <e p="Templates" t="Include">
+                <e p="InstructionsPage.cs" t="Include" />
+                <e p="PrefabPage.cs" t="Include" />
+              </e>
+              <e p="UpdatePage.cs" t="Include" />
+              <e p="ValidationPage.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Info.cs" t="Include" />
+          <e p="Postbuild" t="Include">
+            <e p="FabricBuildEventAndroid.cs" t="Include" />
+            <e p="FabricPostBuildiOS.cs" t="Include" />
+            <e p="PostBuildiOS.cs" t="Include" />
+          </e>
+          <e p="Prebuild" t="Include">
+            <e p="AndroidBuildPropertiesManager.cs" t="Include" />
+            <e p="FabricAndroidPrebuild.cs" t="Include" />
+            <e p="PropertiesWriter.cs" t="Include" />
+          </e>
+          <e p="ThirdParty" t="Include">
+            <e p="xcodeapi" t="Include">
+              <e p="AssetCatalog.cs" t="Include" />
+              <e p="JsonParser.cs" t="Include" />
+              <e p="PBX" t="Include">
+                <e p="Elements.cs" t="Include" />
+                <e p="Lexer.cs" t="Include" />
+                <e p="Objects.cs" t="Include" />
+                <e p="Parser.cs" t="Include" />
+                <e p="Sections.cs" t="Include" />
+                <e p="Serializer.cs" t="Include" />
+                <e p="Utils.cs" t="Include" />
+              </e>
+              <e p="PBXProject.cs" t="Include" />
+              <e p="PBXProjectData.cs" t="Include" />
+              <e p="PlistParser.cs" t="Include" />
+              <e p="Properties" t="Include">
+                <e p="AssemblyInfo.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="Update" t="Include">
+            <e p="Custodian.cs" t="Include" />
+            <e p="Dependency" t="Include">
+              <e p="DependencyGraphLegacy.cs" t="Include" />
+              <e p="DependencyGraphManager.cs" t="Include" />
+              <e p="DependencyGraphObject.cs" t="Include" />
+              <e p="DependencyGraphResolver.cs" t="Include" />
+            </e>
+            <e p="FabricInstaller.cs" t="Include" />
+            <e p="FileUtils.cs" t="Include" />
+            <e p="PeriodicAnalyticsPinger.cs" t="Include" />
+            <e p="PeriodicUpdateChecker.cs" t="Include" />
+            <e p="PeriodicUpdateManager.cs" t="Include" />
+            <e p="TimeoutWebClient.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Kits" t="Include">
+          <e p="Answers" t="Include">
+            <e p="Runtime" t="Include">
+              <e p="Answers.cs" t="Include" />
+              <e p="Internal" t="Include">
+                <e p="AnswersAndroidImplementation.cs" t="Include" />
+                <e p="AnswersAppleImplementation.cs" t="Include" />
+                <e p="AnswersStubImplementation.cs" t="Include" />
+                <e p="IAnswers.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="Crashlytics" t="Include">
+            <e p="Editor" t="Include">
+              <e p="CrashlyticsSetup.cs" t="Include" />
+              <e p="GUI" t="Include">
+                <e p="Controller" t="Include">
+                  <e p="Controller.cs" t="Include" />
+                </e>
+                <e p="CrashlyticsMenuItems.cs" t="Include" />
+                <e p="View" t="Include">
+                  <e p="DashboardPage.cs" t="Include" />
+                </e>
+              </e>
+              <e p="Info.cs" t="Include" />
+              <e p="Postbuild" t="Include">
+                <e p="CrashlyticsPostBuildiOS.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Runtime" t="Include">
+              <e p="Crashlytics.cs" t="Include" />
+              <e p="CrashlyticsInit.cs" t="Include" />
+              <e p="Internal" t="Include">
+                <e p="AndroidImpl.cs" t="Include" />
+                <e p="Impl.cs" t="Include" />
+                <e p="IOSImpl.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
+        <e p="NOTICE.txt" t="Include" />
+        <e p="Runtime" t="Include">
+          <e p="Fabric.cs" t="Include" />
+          <e p="FabricInit.cs" t="Include" />
+          <e p="FabricUtils.cs" t="Include" />
+          <e p="Internal" t="Include">
+            <e p="AndroidImpl.cs" t="Include" />
+            <e p="Impl.cs" t="Include" />
+            <e p="IOSImpl.cs" t="Include" />
+          </e>
+        </e>
+        <e p="ThirdParty" t="Include">
+          <e p="MiniJSON.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Assets/Nested Prefabs" t="Include">
+        <e p="Editor" t="Include">
+          <e p="CustomBuildPipeline.cs" t="Include" />
+          <e p="NestedPrefabsBuildProcessor.cs" t="Include" />
+          <e p="NestedPrefabsCloudBuildProcessor.cs" t="Include" />
+          <e p="NestedPrefabsPreferences.cs" t="Include" />
+        </e>
+        <e p="readme.txt" t="Include" />
+      </e>
+      <e p="Assets/Resources" t="Include">
+        <e p="nounlist.txt" t="Include" />
+      </e>
+      <e p="Assets/Script" t="Include">
+        <e p="CameraHandler.cs" t="Include" />
+        <e p="Card.cs" t="Include" />
+        <e p="Client.cs" t="Include" />
+        <e p="GameBoard.cs" t="Include" />
+        <e p="GameCard.cs" t="Include" />
+        <e p="GameCardDeck.cs" t="Include" />
+        <e p="GameConstants.cs" t="Include" />
+        <e p="GameManager.cs" t="Include" />
+        <e p="GameMenu.cs" t="Include" />
+        <e p="HeadlessServer.cs" t="Include" />
+        <e p="Lobby.cs" t="Include" />
+        <e p="LobbyLineItem.cs" t="Include" />
+        <e p="Server.cs" t="Include" />
+        <e p="TurnIndicator.cs" t="Include" />
+        <e p="WordDictionary.cs" t="Include" />
+      </e>
+      <e p="Assets/Shaders" t="Include">
+        <e p="GUI3D Text Shader - Cull Back.shader" t="Include" />
+        <e p="MyShaders - ChangeMaterial.shader" t="Include" />
+      </e>
+      <e p="Assets/StreamingAssets" t="Include">
+        <e p="Vuforia" t="Include">
+          <e p="VuforiaMars_Images.xml" t="Include" />
+          <e p="VuforiaMars_ModelTarget.xml" t="Include" />
+          <e p="VuforiaMars_Object_OT.xml" t="Include" />
+          <e p="VuforiaMars_VuMark.xml" t="Include" />
+        </e>
+      </e>
+      <e p="Library" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="SuperWordLink.sln" t="IncludeFlat" />
+      <e p="Temp" t="ExcludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+      </e>
+    </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2018.2/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2018.2/resharper-host/local/Transient/ReSharperHost/v182/SolutionCaches/_SuperWordLink.327655816.00" t="ExcludeRecursive" />
+  </component>
+</project>
