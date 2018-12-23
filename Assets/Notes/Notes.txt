@@ -1,0 +1,18 @@
+buildDeck(new, update, round)
+@ start of game -> New Deck (determined by no cards played?)
+
+@ end of turn update based on current round
+GameBoard.cs EndTurn()
+ -> client.GetGameCardDeck()
+  -> Send (CPCI)
+
+	Server.cs
+	 -> case CPCI
+	  -> BuildDeck()
+	   ->  gcd.gameCards.Clear();
+	       gcdBlue.gameCards.Clear();
+	       gcdRed.gameCards.Clear();
+	  -> Broadcast(gcd.SaveToText().Replace(Environment.NewLine, ""), clients);
+
+@ on click of a card
+updateDeck is only used when a CHAN is sent, it is used to communicate to all players that a card is played
