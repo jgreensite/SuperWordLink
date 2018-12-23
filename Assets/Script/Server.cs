@@ -241,7 +241,7 @@ public class Server : MonoBehaviour
                 );
                 break;
             case "CHAN":
-                //Update the server copy of the deck replacing the card with a new card
+                //Update the server copy of the deck marking the card as having been played
                 UpdateDeck(aData[2]);
 //			Broadcast (gcd.SaveToText ().Replace (System.Environment.NewLine, ""), clients);
                 Broadcast(
@@ -371,14 +371,14 @@ public class Server : MonoBehaviour
         var gc = new GameCard();
 
         for (var playerCnt = 0; playerCnt < clients.Count; playerCnt++)
-        for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
-        {
-            //create new card
-            gc = makeCard(playerCnt);
-
-            //add Card to deck
-            gcd.gameCards.Add(gc);
-        }
+            for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
+            {
+                //create new card
+                gc = makeCard(playerCnt);
+    
+                //add Card to deck
+                gcd.gameCards.Add(gc);
+            }
 
         //Populate the Red and Blue Decks
         var lastItem = gcd.gameCards.Count;
