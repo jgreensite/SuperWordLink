@@ -1,5 +1,5 @@
 {
-    "version":"0.2.5",
+    "version":"0.2.6",
     "plugin": {
 	"version":"1.3.0",
 	"manifest":"Fabric/Manifest",
@@ -11,11 +11,11 @@
 	"kits":[
 	    {
 		"name":"Crashlytics",
-		"version":"1.3.0",
-		"packageUrl":"https://fabric.io/unity-fabric/crashlytics/1.3.0/Crashlytics.unitypackage",
+		"version":"1.3.1",
+		"packageUrl":"https://fabric.io/unity-fabric/crashlytics/1.3.1/Crashlytics.unitypackage",
 		"packageName":"Crashlytics.unitypackage",
 		"manifest":"Fabric/Kits/Crashlytics/Manifest",
-		"releaseNotesUrl":"https://fabric.io/unity-fabric/crashlytics/1.3.0/Crashlytics.releasenotes",
+		"releaseNotesUrl":"https://fabric.io/unity-fabric/crashlytics/1.3.1/Crashlytics.releasenotes",
 		"dependsOn":[
 				"Crashlytics-Android",
 				"Crashlytics-iOS",
@@ -28,7 +28,7 @@
 	"transitiveDependencies":[
 		{
 		"name":"Answers-Android",
-		"version":"1.4.3",
+		"version":"1.4.5",
 		"dependsOn":["Crashlytics-Core-Android"]
 	    },
 		{
@@ -38,17 +38,17 @@
 	    },
 		{
 		"name":"Fabric-Android",
-		"version":"1.4.4",
+		"version":"1.4.6",
 		"dependsOn":[]
 	    },
 		{
 		"name":"Fabric-iOS",
-		"version":"1.7.11",
+		"version":"1.9.0",
 		"dependsOn":[]
 	    },
 		{
 		"name":"Crashlytics-Android",
-		"version":"2.9.5",
+		"version":"2.9.7",
 		"dependsOn":[
 				"Crashlytics-Core-Android",
 				"Answers-Android",
@@ -57,7 +57,7 @@
 		},
 		{
 		"name":"Crashlytics-iOS",
-		"version":"3.10.7",
+		"version":"3.12.0",
 		"dependsOn":[]
 		},
 		{
@@ -72,7 +72,7 @@
 		},
 		{
 		"name":"Crashlytics-Core-Android",
-		"version":"2.6.4",
+		"version":"2.6.6",
 		"dependsOn":["Fabric-Android"]
 		}
 	],
