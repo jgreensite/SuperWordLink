@@ -1,3 +1,7 @@
+@ start of game
+GameBoard.cs
+- Send (CDIC)
+
 buildDeck(new, update, round)
 @ start of game -> New Deck (determined by no cards played?)
 
@@ -16,3 +20,8 @@ GameBoard.cs EndTurn()
 
 @ on click of a card
 updateDeck is only used when a CHAN is sent, it is used to communicate to all players that a card is played
+
+GameBoard - isRedTurn
+373 
+479
+486

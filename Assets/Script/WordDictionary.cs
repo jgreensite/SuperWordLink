@@ -79,15 +79,12 @@ public class WordDictionary : MonoBehaviour
         Debug.Log("Word list " + wordString);
         return wordList;
     }
-
-    public string[] AssignWords()
+    
+    public string[] AssignWords(out string isRedStart)
     {
-        //TODO - Add in the code that enables us at random to decide if Red or Blue goes first
-        //it is currently in the Start() of GameBoard class
-
         //TODO - Don't hardcode or repeat the grid dimensions
-        var gridXDim = 5;
-        var gridZDim = 5;
+        var gridXDim = CS.CSGRIDXDIM;
+        var gridZDim = CS.CSGRIDZDIM;
         var gridSize = gridXDim * gridZDim;
 
         string cardType = null;
@@ -97,7 +94,7 @@ public class WordDictionary : MonoBehaviour
         int cntBlueCards;
         int cntCivilCards;
         int cntDeathCards;
-
+     
         //decide at random who goes first and how many of each card is needed
         var rndExtraRed = Random.Range(0, 2);
         cntRedCards = cntBlueCards = cntCivilCards = Mathf.Abs(gridSize / 3);
@@ -107,12 +104,14 @@ public class WordDictionary : MonoBehaviour
         {
             cntBlueCards = cntRedCards + 1;
             cntCivilCards = cntRedCards - 1;
+            isRedStart = "0";
         }
         else
             //Red goes first
         {
             cntRedCards = cntBlueCards + 1;
             cntCivilCards = cntBlueCards - 1;
+            isRedStart = "1";
         }
 
         cntDeathCards = gridSize - (cntRedCards + cntBlueCards + cntCivilCards);
@@ -218,7 +217,7 @@ public class WordDictionary : MonoBehaviour
             }
         }
 
-        return cardTypes;
+        return (cardTypes);
     }
 
     // Update is called once per frame

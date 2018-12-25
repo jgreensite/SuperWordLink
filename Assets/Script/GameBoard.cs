@@ -373,7 +373,7 @@ public class GameBoard : MonoBehaviour
                 isRedTurn = !isRedTurn;
 
                 //Get the latest set of Gamecards
-                client.GetGameCardDeck();
+                client.GetGameCardDeck(CS.END);
 
                 if (turnIndicator.GetComponent<Renderer>().material.color == Color.blue)
                     turnIndicatorScript.setColour("red");
@@ -469,21 +469,15 @@ public class GameBoard : MonoBehaviour
                     break;
             }
 
-            GenerateGameBoardCard(x, z, ref go, words[x + z * 5], populate[x + z * 5]);
+            GenerateGameBoardCard(x, z, ref go, words[x + z * CS.CSGRIDXDIM], populate[x + z * CS.CSGRIDXDIM]);
         }
 
         //Blue goes first
-        if (cntBlueCards > cntRedCards)
+        if (isRedStart == false)
         {
-            isRedStart = false;
-            isRedTurn = false;
             turnIndicatorScript.setColour("blue");
-        }
-        else
-            //Red goes first
-        {
-            isRedStart = true;
-            isRedTurn = true;
+        } else {
+        //Red goes first
             turnIndicatorScript.setColour("red");
         }
 
@@ -509,11 +503,14 @@ public class GameBoard : MonoBehaviour
         cntRedHandCards = 0;
         cntBlueHandCards = 0;
 
-        // reset the players hand
+        // reset the players hand, first destroy the gameobjects
         GameObject[] gameObjects;
         gameObjects = GameObject.FindGameObjectsWithTag(CS.OBJ_LOCATION_TAG_PLAYERHAND);
         for (var i = 0; i < gameObjects.Length; i++) Destroy(gameObjects[i]);
 
+        // now destroy the data structures
+        cardsPlayerHand.Clear();
+        
         for (var cnt = 0; cnt < client.gcd.gameCards.Count; cnt++)
         {
             //TO DO - This is limited to red and blue only and is based on team on owner of cards, add owner of cards to cards using playerID from server

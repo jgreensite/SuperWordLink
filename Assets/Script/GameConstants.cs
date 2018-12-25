@@ -68,6 +68,12 @@
         public const string BAD = "bad";
         public const string EMPTY = "empty";
         public const string ERROR = "error";
+        public const string CREATE = "create";
+        public const string READ = "read";
+        public const string UPDATE = "update";
+        public const string DELETE = "delete";
+        public const string END = "end";
+
 
         //UI Label constants
         public const string UILABELPANZOOM = "Pan/Zoom";

@@ -162,15 +162,18 @@ public class Client : MonoBehaviour
                     break;
 
                 case "SDIC":
-                    var wData = aData[1].Split(',');
+                    GameBoard.Instance.isRedTurn = aData[1] == "0" ? false: true;
+                    GameBoard.Instance.isRedStart = aData[1] == "0" ? false: true;
+
+                    var wData = aData[2].Split(',');
                     GameBoard.Instance.words = wData;
 
-                    var pData = aData[2].Split(',');
+                    var pData = aData[3].Split(',');
                     GameBoard.Instance.populate = pData;
 
                     GameBoard.Instance.GeneratePlayerGameboard();
 
-                    GetGameCardDeck();
+                    GetGameCardDeck(CS.CREATE);
                     break;
                 case "SKEY":
                 {
@@ -185,7 +188,7 @@ public class Client : MonoBehaviour
                         case "P":
                             GameBoard.Instance.SetCamera(aData[1]);
                             break;
-
+;
                         case "C":
                             GameBoard.Instance.SetCamera(aData[1]);
                             break;
@@ -275,10 +278,20 @@ public class Client : MonoBehaviour
         );
     }
 
-    public void GetGameCardDeck()
+    public void GetGameCardDeck(string action)
     {
+        string msg= "";
+        switch (action)
+        {
+            case CS.CREATE:
+                    msg = "CPCC";
+                break;
+            case CS.END:
+                    msg = "CPCU";
+                break;
+        }
         Send(
-            "CPCI" + "|"
+            msg + "|"
                    + clientName + '|'
                    + (isHost ? 1 : 0) + '|'
                    + (isPlayer ? 1 : 0) + '|'

@@ -242,7 +242,7 @@ public class Server : MonoBehaviour
                 break;
             case "CHAN":
                 //Update the server copy of the deck marking the card as having been played
-                UpdateDeck(aData[2]);
+                UpdateDeckCardStatus(aData[2]);
 //			Broadcast (gcd.SaveToText ().Replace (System.Environment.NewLine, ""), clients);
                 Broadcast(
                     "SHAN" + '|'
@@ -255,20 +255,22 @@ public class Server : MonoBehaviour
             case "CDIC":
                 //Generate the Wordlist and assignment
                 var worddictionary = FindObjectOfType<WordDictionary>();
-                words = worddictionary.GetWords();
-                populate = worddictionary.AssignWords();
-
                 var distWords = "";
                 var distPopulate = "";
+                string isRedStart = "";
+                
+                words = worddictionary.GetWords();
+                populate = worddictionary.AssignWords(out isRedStart);
+                
                 foreach (var tmpStr in words) distWords += tmpStr + ",";
-
-                foreach (var tmpStr in populate) distPopulate += tmpStr + ",";
-                Broadcast(
-                    "SDIC" + '|'
-                           + distWords + '|'
-                           + distPopulate,
-                    clients
-                );
+                    foreach (var tmpStr in populate) distPopulate += tmpStr + ",";
+                    Broadcast(
+                        "SDIC" + '|'
+                               + isRedStart + '|'
+                               + distWords + '|'
+                               + distPopulate,
+                        clients
+                    );
                 break;
             case "CKEY":
                 var tmpVal = aData[2].ToUpper();
@@ -298,10 +300,15 @@ public class Server : MonoBehaviour
                     clients
                 );
                 break;
-            case "CPCI":
-                BuildDeck();
+            case "CPCC":
+                BuildDeck(CS.CREATE);
                 Broadcast(gcd.SaveToText().Replace(Environment.NewLine, ""), clients);
                 break;
+            case "CPCU":
+                BuildDeck(CS.END);
+                Broadcast(gcd.SaveToText().Replace(Environment.NewLine, ""), clients);
+                break;
+            
         }
     }
 
@@ -353,33 +360,58 @@ public class Server : MonoBehaviour
         server.Stop();
     }
 
-    private void BuildDeck()
+    private void BuildDeck(string msg)
     {
-        var filePath = "";
+        var gc = new GameCard();
 
 //		//Demo loading data
 //		filePath = Application.persistentDataPath + "/gamecarddeck3.xml";
 //		gcd = GameCardDeck.Load (filePath);
 //		Debug.Log ("Loaded : " + filePath);
 
-        //<START HERE> The Server needs to determine if it is going to create a new card, change an existing one, or expire a card having been used
+        switch (msg)
+        {
+            //Build new player decks for a new game
+            case CS.CREATE:
+                //Clear the decks prior to rebuilding them
+                gcd.gameCards.Clear();
+                gcdBlue.gameCards.Clear();
+                gcdRed.gameCards.Clear();
 
-        //Clear the decks prior to rebuilding them
-        gcd.gameCards.Clear();
-        gcdBlue.gameCards.Clear();
-        gcdRed.gameCards.Clear();
-        var gc = new GameCard();
-
-        for (var playerCnt = 0; playerCnt < clients.Count; playerCnt++)
-            for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
-            {
-                //create new card
-                gc = makeCard(playerCnt);
+                for (var playerCnt = 0; playerCnt < clients.Count; playerCnt++)
+                   for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
+                   {
+                       //create new card
+                       gc = makeCard(playerCnt);
+                
+                       //add Card to deck
+                       gcd.gameCards.Add(gc);
+                   }
+            break;
+            
+            //update player decks at end of turn
+            case CS.END:
+                for (var playerCnt = 0; playerCnt < clients.Count; playerCnt++)
+                    for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
+                        if (gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum].cardRevealed == CS.CAR_REVEAL_SHOWN)
+                        {
+                            //create a new card
+                            gc = makeCard(playerCnt);
     
-                //add Card to deck
-                gcd.gameCards.Add(gc);
-            }
+                            //update deck, replacing old card with new card
+                            gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum] = gc;
+    
+                        }
+                break;
+        }
 
+        SaveDeck();
+    }
+
+    private void SaveDeck()
+    {
+        string filePath;
+        
         //Populate the Red and Blue Decks
         var lastItem = gcd.gameCards.Count;
         var drawnCard = new GameCard();
@@ -406,7 +438,7 @@ public class Server : MonoBehaviour
         Debug.Log("Wrote : " + filePath);
     }
 
-    private void UpdateDeck(string cardID)
+    private void UpdateDeckCardStatus(string cardID)
     {
         var gc = new GameCard();
         for (var playerCnt = 0; playerCnt < clients.Count; playerCnt++)
@@ -416,13 +448,10 @@ public class Server : MonoBehaviour
                 //create a new card
                 gc = makeCard(playerCnt);
 
-                //update card as having been played, <START HERE> NEED TO DEAL JUST ONE NEW CARD ON NEXT TURN, perhaps just replace a slot that is open in BuildDeck
+                //update card as having been played
                 gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum].cardRevealed = CS.CAR_REVEAL_SHOWN;
-
-                //update deck, replacing old card with new card
-                //gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum] = gc;
-
             }
+        SaveDeck();
     }
 
     private GameCard makeCard(int playerCnt)
