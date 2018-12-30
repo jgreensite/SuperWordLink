@@ -5,9 +5,20 @@ using UnityEngine;
 
 public class WordDictionary : MonoBehaviour
 {
+    private static int gridXDim = CS.CSGRIDXDIM;
+    private static int gridZDim = CS.CSGRIDZDIM;
+    private static int gridSize = gridXDim * gridZDim;
+    public Card[,] cardsPlayerGameBoard = new Card[gridXDim, gridZDim];
+    
+    private Dictionary<int, List<string>> words = new Dictionary<int, List<string>>();
+    public string[] wordList = new string[gridSize];
+    public string[] populate = new string[gridSize];
+    
     public int largeWordLength = 9;
     public int smallWordLength = 3;
 
+    public string isRedStart = "";
+    
     //Set in the editor
     public TextAsset txt;
 
@@ -27,14 +38,19 @@ public class WordDictionary : MonoBehaviour
                   " to donotdestroylist");
     }
 
+    public void buildGameboard()
+    {
+        GetWords();
+        GenerateWords();
+        AssignWords();
+    }
 
     // Use this to generate the words for the cards
-    public string[] GetWords()
+    private void GetWords()
     {
         //TextAsset txt = (TextAsset)Resources.Load("Words");
         var dict = txt.text.Split("\n"[0]); // Should probably check for null in txt, but it's just an example
 
-        var words = new Dictionary<int, List<string>>();
         for (var len = 3; len < 11; len++) words[len] = new List<string>();
 
         foreach (var word in dict)
@@ -46,19 +62,16 @@ public class WordDictionary : MonoBehaviour
                 l.Add(word);
             }
         }
-
-        return GenerateWords(words);
     }
 
-    private string[] GenerateWords(Dictionary<int, List<string>> words)
+    private void GenerateWords()
     {
         var rndWordLength = -1;
         var rndWordPosition = -1;
         var wordString = "";
         var keepSearching = true;
         var newWord = "";
-        var wordList = new string[25];
-        for (var x = 0; x < 25; x++)
+        for (var x = 0; x < (gridSize); x++)
         {
             while (keepSearching)
             {
@@ -72,21 +85,20 @@ public class WordDictionary : MonoBehaviour
             }
 
             wordList[x] = newWord;
+            
             wordString = wordString + ", " + wordList[x];
             keepSearching = true;
         }
 
         Debug.Log("Word list " + wordString);
-        return wordList;
     }
     
-    public string[] AssignWords(out string isRedStart)
+   
+    //public string[] AssignWords(out string isRedStart)
+    private void AssignWords()
     {
         //TODO - Don't hardcode or repeat the grid dimensions
-        var gridXDim = CS.CSGRIDXDIM;
-        var gridZDim = CS.CSGRIDZDIM;
-        var gridSize = gridXDim * gridZDim;
-
+     
         string cardType = null;
         var cardTypes = new string[gridSize];
 
@@ -133,7 +145,7 @@ public class WordDictionary : MonoBehaviour
                 var rndChoose = Random.Range(0, gridSize);
                 var rndSwitch = 0;
 
-                //randomly pick a Card according to the disrubtion of each card types total number of cards
+                //randomly pick a Card according to the distribution of each card types total number of cards
                 if (rndChoose >= gridSize - cntDeathCards) // deathcard possibilities
                     rndSwitch = 3;
                 else if (rndChoose > cntRedCards + cntCivilCards - 1 &&
@@ -213,11 +225,17 @@ public class WordDictionary : MonoBehaviour
                 }
 
                 //if the card is able to added then add it
-                if (validChoice) cardTypes[x + z * 5] = cardType;
+                //if (validChoice) cardTypes[x + z * 5] = cardType;
+                if (validChoice)
+                {
+                    cardsPlayerGameBoard[x, z].cardType = cardType;
+                    populate[x + z * 5] = cardType;
+                }
+ 
             }
         }
 
-        return (cardTypes);
+        //return (cardTypes);
     }
 
     // Update is called once per frame

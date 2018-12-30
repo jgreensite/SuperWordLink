@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 
 public class Server : MonoBehaviour
 {
+    
     private List<ServerClient> clients;
     private List<ServerClient> disconnectList;
 
@@ -26,9 +27,11 @@ public class Server : MonoBehaviour
     private bool serverStarted;
 
     //the list of words and their assignments
-
-    private string[] words = new string[25];
-
+    private string[,] words = new string[2,25];
+    
+    //which team's turn it is
+    private bool isRedTurn;
+    
     //makes class a singleton
     public static Server Instance { set; get; }
 
@@ -242,7 +245,7 @@ public class Server : MonoBehaviour
                 break;
             case "CHAN":
                 //Update the server copy of the deck marking the card as having been played
-                UpdateDeckCardStatus(aData[2]);
+                UpdateDeckCardStatus(aData[2], aData[3]);
 //			Broadcast (gcd.SaveToText ().Replace (System.Environment.NewLine, ""), clients);
                 Broadcast(
                     "SHAN" + '|'
@@ -257,20 +260,19 @@ public class Server : MonoBehaviour
                 var worddictionary = FindObjectOfType<WordDictionary>();
                 var distWords = "";
                 var distPopulate = "";
-                string isRedStart = "";
+                worddictionary.buildGameboard();
                 
-                words = worddictionary.GetWords();
-                populate = worddictionary.AssignWords(out isRedStart);
+                isRedTurn = (worddictionary.isRedStart =="0"?false:true);
                 
-                foreach (var tmpStr in words) distWords += tmpStr + ",";
-                    foreach (var tmpStr in populate) distPopulate += tmpStr + ",";
-                    Broadcast(
-                        "SDIC" + '|'
-                               + isRedStart + '|'
-                               + distWords + '|'
-                               + distPopulate,
-                        clients
-                    );
+                foreach (var tmpStr in worddictionary.wordList) distWords += tmpStr + ",";
+                foreach (var tmpStr in worddictionary.populate) distPopulate += tmpStr + ",";
+                Broadcast(
+                    "SDIC" + '|'
+                           + worddictionary.isRedStart + '|'
+                           + distWords + '|'
+                           + distPopulate,
+                    clients
+                );
                 break;
             case "CKEY":
                 var tmpVal = aData[2].ToUpper();
@@ -281,7 +283,7 @@ public class Server : MonoBehaviour
                 );
                 break;
             case "CBEG":
-                //Note that start at 2 not 1 becuase the name of the client is transmitted at position 1
+                //Note that start at 2 not 1 because the name of the client is transmitted at position 1
                 for (var i = 2; i < aData.Length; i++)
                 {
                     var bData = aData[i].Split(',');
@@ -363,6 +365,7 @@ public class Server : MonoBehaviour
     private void BuildDeck(string msg)
     {
         var gc = new GameCard();
+        var pc = new GameCard(); 
 
 //		//Demo loading data
 //		filePath = Application.persistentDataPath + "/gamecarddeck3.xml";
@@ -392,19 +395,26 @@ public class Server : MonoBehaviour
             //update player decks at end of turn
             case CS.END:
                 for (var playerCnt = 0; playerCnt < clients.Count; playerCnt++)
-                    for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
-                        if (gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum].cardRevealed == CS.CAR_REVEAL_SHOWN)
-                        {
-                            //create a new card
-                            gc = makeCard(playerCnt);
-    
-                            //update deck, replacing old card with new card
-                            gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum] = gc;
-    
-                        }
-                break;
-        }
+                for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
+                {
+                    pc = gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum];
+                    if (pc.cardRevealed == CS.CAR_REVEAL_SHOWN)
+                    {
+                        //reduce the played count
 
+
+                        //establish what card has been played
+
+                        //create a new card
+                        gc = makeCard(playerCnt);
+
+                        //update deck, replacing old card with new card
+                        gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum] = gc;
+
+                    }
+                }
+            break;
+        }
         SaveDeck();
     }
 
@@ -438,19 +448,82 @@ public class Server : MonoBehaviour
         Debug.Log("Wrote : " + filePath);
     }
 
-    private void UpdateDeckCardStatus(string cardID)
+    private void UpdateDeckCardStatus(string cardID, string clientID)
     {
+        var pc = new GameCard(); 
         var gc = new GameCard();
+        bool isPlayableCard = false;
         for (var playerCnt = 0; playerCnt < clients.Count; playerCnt++)
         for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
-            if (gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum].cardID == cardID)
+        {
+            pc = gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum];
+            
+            //Check to see if the cardID is correctly associated with the ClientID
+            //TODO - To make this more secure clients should only know their (and only their own) clientID
+            if ((pc.cardID == cardID) && (pc.cardClientID == clientID))
             {
-                //create a new card
-                gc = makeCard(playerCnt);
+                foreach (var cwp in pc.cardWhenPlayable)
+                {
+                    if ((cwp.turnStage == CS.CWP_PLAY_ANY_TURN)
+                        && (cwp.numTimes > 0))
+                    {
+                        isPlayableCard = true; cwp.numTimes--;
+                    }
 
-                //update card as having been played
+                    if ((cwp.turnStage == CS.CWP_PLAY_PLAYER_TURN)
+                        && isRedTurn
+                        && (pc.cardSuit == CS.RED_TEAM)
+                        && (cwp.numTimes > 0))
+                    {
+                        isPlayableCard = true; cwp.numTimes--;
+                    }
+
+                    if ((cwp.turnStage == CS.CWP_PLAY_PLAYER_TURN)
+                        && !isRedTurn
+                        && (pc.cardSuit == CS.BLUE_TEAM)
+                        && (cwp.numTimes > 0))
+                    {
+                        isPlayableCard = true; cwp.numTimes--;
+                    }
+                }
+
+                if (isPlayableCard)
+                {
+                    foreach (var cep in pc.cardEffectPlayable)
+                    {
+                        if (cep.affectWhat == CS.CEP_AFFECT_GAMEBOARD)
+                        {
+                            if ((cep.effectName == CS.CEP_EFFECT_REVEAL_CARD)
+                                && (cep.numTimes > 0))
+                            {
+                                Debug.Log("Played: " + CS.CEP_EFFECT_REVEAL_CARD);
+                                
+                            }
+
+                            if ((cep.effectName == CS.CEP_EFFECT_CHANGE_CARD)
+                                && (cep.numTimes > 0))
+                                
+                            {
+                                Debug.Log("Played: " + CS.CEP_EFFECT_CHANGE_CARD);
+                            }
+
+                            if ((cep.effectName == CS.CEP_EFFECT_REMOVE_CARD)
+                                && (cep.numTimes > 0))
+                            {
+                                Debug.Log("Played: " + CS.CEP_EFFECT_REMOVE_CARD);
+                            }
+                            if (cep.numTimes > 0) cep.numTimes--;
+                        }
+                    } 
+                }
+                
+                //create a new card
+                //gc = makeCard(playerCnt);
+
+                //now update card as having been played
                 gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum].cardRevealed = CS.CAR_REVEAL_SHOWN;
             }
+        }
         SaveDeck();
     }
 

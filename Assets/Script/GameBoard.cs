@@ -17,7 +17,7 @@ public class GameBoard : MonoBehaviour
     public Card[,] cardsCaller = new Card[gridXDim, gridZDim];
     private string cardSelectedLocation;
 
-    public Card[,] cardsPlayer = new Card[gridXDim, gridZDim];
+    public Card[,] cardsPlayerGameBoard = new Card[gridXDim, gridZDim];
 
     //TODO - Remove hardcoding for number of players and cards in each player's hand
     //public List<Card> cardsPlayerHand;
@@ -222,7 +222,7 @@ public class GameBoard : MonoBehaviour
             return;
         }
 
-        var c = cardsPlayer[x, z];
+        var c = cardsPlayerGameBoard[x, z];
         //cannot flip a card that has been flipped
         if (c != null && !c.isCardUp)
         {
@@ -285,7 +285,7 @@ public class GameBoard : MonoBehaviour
             {
                 case CS.GOOD:
                     //Flip the Card and keep on picking
-                    selectedCard = cardsPlayer[x, z];
+                    selectedCard = cardsPlayerGameBoard[x, z];
                     selectedCard.makeFaceUp(true, x, z, cardsCaller[x, z]);
                     //TODO - simplify this switch statement there is a lot of repeated elements in each case
                     //TODO - simplify EndTurn, checkVictory() and endGame(), think these could be one function
@@ -295,21 +295,21 @@ public class GameBoard : MonoBehaviour
 
                 case CS.BAD:
                     //flip the Card, end the turn
-                    selectedCard = cardsPlayer[x, z];
+                    selectedCard = cardsPlayerGameBoard[x, z];
                     selectedCard.makeFaceUp(true, x, z, cardsCaller[x, z]);
                     EndTurn(moveResult);
                     break;
 
                 case CS.DEATH_TEAM:
                     //flip the Card, end the game
-                    selectedCard = cardsPlayer[x, z];
+                    selectedCard = cardsPlayerGameBoard[x, z];
                     selectedCard.makeFaceUp(true, x, z, cardsCaller[x, z]);
                     EndTurn(moveResult);
                     break;
 
                 case CS.CIVIL_TEAM:
                     //flip the Card, end the turn
-                    selectedCard = cardsPlayer[x, z];
+                    selectedCard = cardsPlayerGameBoard[x, z];
                     selectedCard.makeFaceUp(true, x, z, cardsCaller[x, z]);
                     EndTurn(moveResult);
                     break;
@@ -403,10 +403,10 @@ public class GameBoard : MonoBehaviour
         var cntBlue = 8;
         for (var z = 0; z < 5; z++)
         for (var x = 0; x < 5; x++)
-            if (cardsPlayer[x, z].isCardUp)
+            if (cardsPlayerGameBoard[x, z].isCardUp)
             {
-                if (cardsPlayer[x, z].cardType == CS.BLUE_TEAM) cntBlue = cntBlue - 1;
-                if (cardsPlayer[x, z].cardType == CS.RED_TEAM) cntRed = cntRed - 1;
+                if (cardsPlayerGameBoard[x, z].cardType == CS.BLUE_TEAM) cntBlue = cntBlue - 1;
+                if (cardsPlayerGameBoard[x, z].cardType == CS.RED_TEAM) cntRed = cntRed - 1;
             }
 
         //Update counts
@@ -580,7 +580,7 @@ public class GameBoard : MonoBehaviour
         go.transform.Find("PlayingCardWordBack").GetComponent<TextMesh>().text = word;
         go.transform.Find("PlayingCardWordFront").GetComponent<TextMesh>().text = word;
 
-        cardsPlayer[x, z] = cardGameBoard;
+        cardsPlayerGameBoard[x, z] = cardGameBoard;
         Debug.Log(string.Concat(x, ",", z));
         MoveGameBoardCard(go, x, z);
 
