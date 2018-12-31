@@ -58,6 +58,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3085968a72e7d4099a9a8bf65ae54c4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wordList:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  populate:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   largeWordLength: 9
   smallWordLength: 3
+  isRedStart: 
   txt: {fileID: 4900000, guid: ac5426b4881a34d1db439177a1ba7e10, type: 3}
+  redPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
+  bluePfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
+  deathPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
+  civilPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}

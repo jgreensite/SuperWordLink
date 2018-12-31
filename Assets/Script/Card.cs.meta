@@ -4,10 +4,10 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - blueMaterial: {fileID: 2100000, guid: 017f60cf4bdf1429eb32344b3071c5a7, type: 2}
-  - civilMaterial: {fileID: 2100000, guid: 0563157bf985b41c5912c200cdc2a291, type: 2}
-  - deathMaterial: {fileID: 2100000, guid: bf9c57c50f74f43a68c8e994449bb1f6, type: 2}
-  - redMaterial: {fileID: 2100000, guid: b7ef262a2baba48c297951d04046a926, type: 2}
+  - blueMaterial: {instanceID: 0}
+  - civilMaterial: {instanceID: 0}
+  - deathMaterial: {instanceID: 0}
+  - redMaterial: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

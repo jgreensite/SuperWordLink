@@ -21,13 +21,11 @@ public class WordDictionary : MonoBehaviour
     
     //Set in the editor
     public TextAsset txt;
-    
-    /* - HELP
+
     public GameObject redPfb;
     public GameObject bluePfb;
     public GameObject deathPfb;
     public GameObject civilPfb;
-    */
 
     //makes class a singleton
     public static WordDictionary Instance { set; get; }
@@ -237,8 +235,9 @@ public class WordDictionary : MonoBehaviour
                 {
                     populate[x + z * 5] = cardType;
                     
-                    /* - HELP
+                    /*
                     GameObject go = null;
+                    
                     
                     switch (populate[x + z * 5])
                     {
