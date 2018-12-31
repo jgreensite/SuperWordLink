@@ -21,6 +21,13 @@ public class WordDictionary : MonoBehaviour
     
     //Set in the editor
     public TextAsset txt;
+    
+    /* - HELP
+    public GameObject redPfb;
+    public GameObject bluePfb;
+    public GameObject deathPfb;
+    public GameObject civilPfb;
+    */
 
     //makes class a singleton
     public static WordDictionary Instance { set; get; }
@@ -228,8 +235,34 @@ public class WordDictionary : MonoBehaviour
                 //if (validChoice) cardTypes[x + z * 5] = cardType;
                 if (validChoice)
                 {
-                    cardsPlayerGameBoard[x, z].cardType = cardType;
                     populate[x + z * 5] = cardType;
+                    
+                    /* - HELP
+                    GameObject go = null;
+                    
+                    switch (populate[x + z * 5])
+                    {
+                        case CS.RED_TEAM:
+                            go = Instantiate(redPfb);
+                            cntRedCards += 1;
+                            break;
+                        case CS.BLUE_TEAM:
+                            go = Instantiate(bluePfb);
+                            cntBlueCards += 1;
+                            break;
+                        case CS.CIVIL_TEAM:
+                            go = Instantiate(civilPfb);
+                            cntCivilCards += 1;
+                            break;
+                        case CS.DEATH_TEAM:
+                            go = Instantiate(deathPfb);
+                            cntDeathCards += 1;
+                            break;
+                    }
+                    var cardGameBoard =  go.AddComponent<Card>();
+                    cardsPlayerGameBoard[x, z].cardType = cardType;
+                    cardsPlayerGameBoard[x, z].isCardUp = false;
+                    */
                 }
  
             }

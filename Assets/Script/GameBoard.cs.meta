@@ -1,15 +1,19 @@
 fileFormatVersion: 2
 guid: c06ac34c83b404a0c90f238661ab264a
-timeCreated: 1514595958
-licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - redPfb: {instanceID: 0}
-  - bluePfb: {instanceID: 0}
-  - civilPfb: {instanceID: 0}
-  - deathPfb: {instanceID: 0}
+  - bluePfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
+  - callerCamera: {instanceID: 0}
+  - civilPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
+  - countTextBlue: {instanceID: 0}
+  - countTextRed: {instanceID: 0}
+  - currentCamera: {instanceID: 0}
+  - deathPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
+  - handPfb: {fileID: 1961720848236538, guid: 0094f291f843849f7ab03d2442f152ba, type: 3}
+  - playerCamera: {instanceID: 0}
+  - redPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
