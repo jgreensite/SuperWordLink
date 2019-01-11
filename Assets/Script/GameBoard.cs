@@ -80,6 +80,7 @@ public class GameBoard : MonoBehaviour
         //needed to make this a singleton
         Instance = this;
 
+        //TODO This is how to use FindObjectOfType
         client = FindObjectOfType<Client>();
 
         turnIndicator = GameObject.Find("Turn Indicator");
@@ -446,10 +447,10 @@ public class GameBoard : MonoBehaviour
         GameObject go = null;
         string cardType = null;
 
-        for (var z = 0; z < 5; z++)
-        for (var x = 0; x < 5; x++)
+        for (var z = 0; z < CS.CSGRIDZDIM; z++)
+        for (var x = 0; x < CS.CSGRIDXDIM; x++)
         {
-            switch (populate[x + z * 5])
+            switch (populate[x + z * CS.CSGRIDXDIM])
             {
                 case CS.RED_TEAM:
                     go = Instantiate(redPfb);

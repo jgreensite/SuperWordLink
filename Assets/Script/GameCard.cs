@@ -18,10 +18,14 @@ public class GameCard
     public string cardSuit { get; set; }
     public string cardLocation { get; set; }
     public string cardRevealed { get; set; }
+    public int cardXPos { get; set; }
+    public int cardZPos { get; set; }
+    public string cardWord { get; set; }
+
 }
 
 public class CardWhenPlayable
-    //Defines when the card is playable e.g. anytime, only on your tunr
+    //Defines when the card is playable e.g. anytime, only on your turn
 {
     public string turnStage { get; set; }
     public int numTimes { get; set; }

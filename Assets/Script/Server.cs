@@ -4,19 +4,20 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using AssemblyCSharp;
+using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Server : MonoBehaviour
 {
     
-    private List<ServerClient> clients;
-    private List<ServerClient> disconnectList;
+    public static List<ServerClient> clients;
+    private static List<ServerClient> disconnectList;
 
     //the decks that will be used in the game
-    private readonly GameCardDeck gcd = new GameCardDeck();
-    private readonly GameCardDeck gcdBlue = new GameCardDeck();
-    private readonly GameCardDeck gcdRed = new GameCardDeck();
+    private readonly GameHandDeck gcd = new GameHandDeck();
+    private readonly GameHandDeck gcdBlue = new GameHandDeck();
+    private readonly GameHandDeck gcdRed = new GameHandDeck();
     public int numParticipants;
     private string[] populate = new string[25];
 
@@ -35,11 +36,13 @@ public class Server : MonoBehaviour
     //makes class a singleton
     public static Server Instance { set; get; }
 
+
+
     public void Init()
     {
         //needed to make this a singleton
         Instance = this;
-
+    
         //needed to preserve game objects
         DontDestroyOnLoad(gameObject);
         GameManager.Instance.goDontDestroyList.Add(gameObject);
@@ -48,7 +51,7 @@ public class Server : MonoBehaviour
         //create lists of clients that need to be connected / disconnected
         clients = new List<ServerClient>();
         disconnectList = new List<ServerClient>();
-
+        
         try
         {
             //create a new listener and start it listening
@@ -189,6 +192,8 @@ public class Server : MonoBehaviour
     {
         Debug.Log("Server Receiving: " + data);
 
+        var gbs = FindObjectOfType<GameBoardState>();
+        
         //parse the incoming data stream
         var aData = data.Split('|');
 
@@ -234,6 +239,9 @@ public class Server : MonoBehaviour
                 Broadcast("SCNN" + GetStringOfAllClients(), clients);
                 break;
             case "CMOV":
+                //Send message to GameBoardState
+                gbs.Incoming(aData);
+   
                 Broadcast(
                     "SMOV" + '|'
                            + aData[1] + '|'
@@ -245,8 +253,12 @@ public class Server : MonoBehaviour
                 break;
             case "CHAN":
                 //Update the server copy of the deck marking the card as having been played
-                UpdateDeckCardStatus(aData[2], aData[3]);
-//			Broadcast (gcd.SaveToText ().Replace (System.Environment.NewLine, ""), clients);
+                //Send message to GameBoardState
+                gbs.Incoming(aData);
+                
+                //TODO - Remove me once have implemented above call
+                //UpdateDeckCardStatus(aData[2], aData[3]);
+               
                 Broadcast(
                     "SHAN" + '|'
                            + aData[1] + '|'
@@ -256,16 +268,22 @@ public class Server : MonoBehaviour
                 );
                 break;
             case "CDIC":
-                //Generate the Wordlist and assignment
-                var worddictionary = FindObjectOfType<WordDictionary>();
+                //Send message to GameBoardState, this will populate the WordList
+                gbs.Incoming(aData);
+                
                 var distWords = "";
                 var distPopulate = "";
-                worddictionary.buildGameboard();
+    
+                //Cannot use FindObjectOfType in the constructor, so have to assign in here    
+                var worddictionary = FindObjectOfType<WordDictionary>();
                 
-                isRedTurn = (worddictionary.isRedStart =="0"?false:true);
+                //worddictionary.buildGameboard();
                 
+
                 foreach (var tmpStr in worddictionary.wordList) distWords += tmpStr + ",";
                 foreach (var tmpStr in worddictionary.populate) distPopulate += tmpStr + ",";
+                
+                
                 Broadcast(
                     "SDIC" + '|'
                            + worddictionary.isRedStart + '|'
@@ -303,12 +321,16 @@ public class Server : MonoBehaviour
                 );
                 break;
             case "CPCC":
-                BuildDeck(CS.CREATE);
-                Broadcast(gcd.SaveToText().Replace(Environment.NewLine, ""), clients);
+                //Send message to GameBoardState
+                gbs.Incoming(aData);
+                //gbs.BuildHandDeck(CS.CREATE);
+                Broadcast(gbs.ghd.SaveToText().Replace(Environment.NewLine, ""), clients);
                 break;
             case "CPCU":
-                BuildDeck(CS.END);
-                Broadcast(gcd.SaveToText().Replace(Environment.NewLine, ""), clients);
+                //Send message to GameBoardState
+                gbs.Incoming(aData);
+                //gbs.BuildHandDeck(CS.END);
+                Broadcast(gbs.ghd.SaveToText().Replace(Environment.NewLine, ""), clients);
                 break;
             
         }
@@ -362,6 +384,7 @@ public class Server : MonoBehaviour
         server.Stop();
     }
 
+    /*
     private void BuildDeck(string msg)
     {
         var gc = new GameCard();
@@ -417,7 +440,8 @@ public class Server : MonoBehaviour
         }
         SaveDeck();
     }
-
+    */
+    /*
     private void SaveDeck()
     {
         string filePath;
@@ -447,7 +471,8 @@ public class Server : MonoBehaviour
         gcdRed.Save(filePath);
         Debug.Log("Wrote : " + filePath);
     }
-
+    */
+    /*
     private void UpdateDeckCardStatus(string cardID, string clientID)
     {
         var pc = new GameCard(); 
@@ -526,7 +551,8 @@ public class Server : MonoBehaviour
         }
         SaveDeck();
     }
-
+    */
+    /*
     private GameCard makeCard(int playerCnt)
     {
         //create a card
@@ -561,6 +587,7 @@ public class Server : MonoBehaviour
         gc.cardEffectPlayable.Add(cep);
         return gc;
     }
+    */
 }
 
 public class ServerClient

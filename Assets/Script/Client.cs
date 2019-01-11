@@ -11,10 +11,10 @@ public class Client : MonoBehaviour
     public string clientName;
 
     //the decks that will be used in the game
-    public GameCardDeck gcd = new GameCardDeck();
-    public GameCardDeck gcdBlue = new GameCardDeck();
-    public GameCardDeck gcdRed = new GameCardDeck();
-    private GameCardDeck gcdTemp = new GameCardDeck();
+    public GameHandDeck gcd = new GameHandDeck();
+    public GameHandDeck gcdBlue = new GameHandDeck();
+    public GameHandDeck gcdRed = new GameHandDeck();
+    private GameHandDeck gcdTemp = new GameHandDeck();
     public bool isHost;
     public bool isPlayer;
     public bool isRedTeam;
@@ -225,13 +225,13 @@ public class Client : MonoBehaviour
         else
         {
             //TODO - Assumes that the xml message is one to populate a game card deck
-            gcdTemp = GameCardDeck.LoadFromText(data);
+            gcdTemp = GameHandDeck.LoadFromText(data);
             if (!gcdTemp.SaveToText().Equals(gcd.SaveToText()))
             {
-                gcd = GameCardDeck.LoadFromText(data);
+                gcd = GameHandDeck.LoadFromText(data);
                 //TODO - Assumes only a red and blue deck
-                gcdRed = new GameCardDeck();
-                gcdBlue = new GameCardDeck();
+                gcdRed = new GameHandDeck();
+                gcdBlue = new GameHandDeck();
                 for (var cnt = 0; cnt < gcd.gameCards.Count; cnt++)
                 {
                     var gc = gcd.gameCards[cnt];

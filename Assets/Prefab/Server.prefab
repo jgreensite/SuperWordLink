@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4894272398095736}
   - component: {fileID: 114499410469808596}
   - component: {fileID: 114006749758195922}
+  - component: {fileID: 4831193046766201047}
   m_Layer: 0
   m_Name: Server
   m_TagString: Untagged
@@ -118,3 +119,16 @@ MonoBehaviour:
   bluePfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
   deathPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
   civilPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
+--- !u!114 &4831193046766201047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383401737153584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ae0d27233ff4e19a0c93a82070b88d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isRedTurn: 0
