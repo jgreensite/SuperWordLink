@@ -12,8 +12,10 @@ public class HeadlessServer : MonoBehaviour
     {
         try
         {
-            var s = Instantiate(serverPrefab).GetComponent<Server>();
-            s.Init();
+            //Create the Host's server first
+            var s = Instantiate(serverPrefab);
+            s.GetComponent<Server>().Init();
+            s.GetComponent<GameBoardState>().Init();
         }
         catch (Exception e)
         {

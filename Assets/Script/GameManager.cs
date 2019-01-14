@@ -77,8 +77,9 @@ public class GameManager : MonoBehaviour
             if (isHostLocal)
             {
                 //Create the Host's server first
-                var s = Instantiate(serverPrefab).GetComponent<Server>();
-                s.Init();
+                var s = Instantiate(serverPrefab);
+                s.GetComponent<Server>().Init();
+                s.GetComponent<GameBoardState>().Init();
             }
 
             var rnd = Random.Range(0, 99999);

@@ -8,7 +8,6 @@ using AssemblyCSharp;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-//public class GameBoardState
 public class GameBoardState : MonoBehaviour
 {
     //makes class a singleton
@@ -34,7 +33,6 @@ public class GameBoardState : MonoBehaviour
         
         //Establish whose turn it is
         var worddictionary = FindObjectOfType<WordDictionary>();
-        isRedTurn = (worddictionary.isRedStart =="1"? true: false);
     }
 
     private void Update()
@@ -63,7 +61,7 @@ public class GameBoardState : MonoBehaviour
                 for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
                    {
                        //create new card
-                      pc = MakeHandCard(playerCnt);
+                       pc = MakeHandCard(playerCnt);
                 
                        //add Card to deck
                        ghd.gameCards.Add(pc);
@@ -88,7 +86,8 @@ public class GameBoardState : MonoBehaviour
 
                         //update deck, replacing old card with new card
                         ghd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum] = pc;
-
+                        
+                        
                     }
                 }
             break;
@@ -129,7 +128,7 @@ public class GameBoardState : MonoBehaviour
             
             //Check to see if the cardID is correctly associated with the ClientID
             //TODO - To make this more secure clients should only know their (and only their own) clientID
-            if ((pc.cardID == cardID) && (pc.cardClientID == clientID))
+            if ((pc.cardID == cardID) && (pc.cardClientID == clientID) && (pc.cardRevealed == CS.CAR_REVEAL_HIDDEN))
             {
                 foreach (var cwp in pc.cardWhenPlayable)
                 {
@@ -165,7 +164,8 @@ public class GameBoardState : MonoBehaviour
                             if ((cep.effectName == CS.CEP_EFFECT_REVEAL_CARD)
                                 && (cep.numTimes > 0))
                             {
-                                Debug.Log("Played: " + CS.CEP_EFFECT_REVEAL_CARD);
+                                string tmpStr = "Played reveal " + CS.CEP_EFFECT_REVEAL_CARD;
+                                Debug.Log("Played reveal " + CS.CEP_EFFECT_REVEAL_CARD);
                                 
                             }
 
@@ -173,24 +173,22 @@ public class GameBoardState : MonoBehaviour
                                 && (cep.numTimes > 0))
                                 
                             {
-                                Debug.Log("Played: " + CS.CEP_EFFECT_CHANGE_CARD);
+                                string tmpStr = "Played reveal " + CS.CEP_EFFECT_CHANGE_CARD;
+                                Debug.Log("Played reveal " + CS.CEP_EFFECT_CHANGE_CARD);
                             }
 
                             if ((cep.effectName == CS.CEP_EFFECT_REMOVE_CARD)
                                 && (cep.numTimes > 0))
                             {
-                                Debug.Log("Played: " + CS.CEP_EFFECT_REMOVE_CARD);
+                                string tmpStr = "Played reveal " + CS.CEP_EFFECT_REMOVE_CARD;
+                                Debug.Log("Played reveal " + CS.CEP_EFFECT_REMOVE_CARD);
                             }
                             if (cep.numTimes > 0) cep.numTimes--;
+                            //TODO - This is not quite the right place to make the decision as to if the card is still playable
+                            if (cep.numTimes == 0) ghd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum].cardRevealed = CS.CAR_REVEAL_SHOWN;
                         }
                     } 
                 }
-                
-                //create a new card
-                //gc = makeCard(playerCnt);
-
-                //now update card as having been played
-                ghd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum].cardRevealed = CS.CAR_REVEAL_SHOWN;
             }
         }
         SaveDeck(ghd);
@@ -202,6 +200,7 @@ public class GameBoardState : MonoBehaviour
         var gc = new GameCard();
         gc.cardID = Guid.NewGuid().ToString();
         gc.cardPlayerNum = playerCnt.ToString();
+        gc.cardClientID = Server.clients[playerCnt].clientID;
         if (Server.clients[playerCnt].isRedTeam)
         {
             gc.cardSuit = CS.RED_TEAM;
@@ -251,6 +250,7 @@ public class GameBoardState : MonoBehaviour
                 var worddictionary = FindObjectOfType<WordDictionary>();
                 
                 worddictionary.buildGameboard();
+                isRedTurn = (worddictionary.isRedStart =="1"? true: false);
 
                 for (z = 0; z < CS.CSGRIDZDIM; z++)
                 for (x = 0; x < CS.CSGRIDXDIM; x++)
@@ -283,6 +283,9 @@ public class GameBoardState : MonoBehaviour
                 break;
             case "CPCU":
                 BuildHandDeck(CS.END);
+                
+                //Change turn indicator status
+                isRedTurn = !isRedTurn;
                 break;
         }
     }

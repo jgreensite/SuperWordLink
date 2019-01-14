@@ -10,7 +10,6 @@ using Random = UnityEngine.Random;
 
 public class Server : MonoBehaviour
 {
-    
     public static List<ServerClient> clients;
     private static List<ServerClient> disconnectList;
 
@@ -31,12 +30,10 @@ public class Server : MonoBehaviour
     private string[,] words = new string[2,25];
     
     //which team's turn it is
-    private bool isRedTurn;
+    //private bool isRedTurn;
     
     //makes class a singleton
     public static Server Instance { set; get; }
-
-
 
     public void Init()
     {
