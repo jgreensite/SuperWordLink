@@ -16,6 +16,8 @@ public class GameBoard : MonoBehaviour
     public GameObject callerCamera;
     public Card[,] cardsCaller = new Card[gridXDim, gridZDim];
     private string cardSelectedLocation;
+    public bool cardsPlayerHandForceUpdate = false;
+    public bool cardsGameboardForceUpdate = false;
 
     public Card[,] cardsPlayerGameBoard = new Card[gridXDim, gridZDim];
 
@@ -60,7 +62,7 @@ public class GameBoard : MonoBehaviour
 
     public GameObject playerCamera;
     private string playerhandCardIDOver;
-    public string[] populate = new string[25];
+    
 
     public GameObject redPfb;
 
@@ -70,8 +72,14 @@ public class GameBoard : MonoBehaviour
     private GameObject turnIndicator;
     private TurnIndicator turnIndicatorScript;
 
-    public string[] words = new string[25];
+    //used to pass data into the Gameboard
+    public string[] words = new string[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
+    public string[] populate = new string[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
+    public int[] xPos = new int[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
+    public int[] zPos = new int[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
+    public string[] reveal = new string[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
 
+    
     //makes class a singleton
     public static GameBoard Instance { set; get; }
 
@@ -166,6 +174,26 @@ public class GameBoard : MonoBehaviour
                                    + client.clientID
                         );
                     break;
+            }
+
+            if (cardsGameboardForceUpdate)
+            {
+                client.Send(
+                    "CGFU" + '|'
+                           + client.clientName + '|'
+                           + client.clientID
+                );
+                cardsGameboardForceUpdate = !cardsGameboardForceUpdate;
+            }
+
+            if (cardsPlayerHandForceUpdate)
+            {
+                client.Send(
+                    "CPFU" + '|'
+                           + client.clientName + '|'
+                           + client.clientID
+                );
+                cardsPlayerHandForceUpdate = !cardsPlayerHandForceUpdate;
             }
         }
     }
@@ -287,7 +315,7 @@ public class GameBoard : MonoBehaviour
                 case CS.GOOD:
                     //Flip the Card and keep on picking
                     selectedCard = cardsPlayerGameBoard[x, z];
-                    selectedCard.makeFaceUp(true, x, z, cardsCaller[x, z]);
+                    selectedCard.makeReveal(true);
                     //TODO - simplify this switch statement there is a lot of repeated elements in each case
                     //TODO - simplify EndTurn, checkVictory() and endGame(), think these could be one function
                     var winState = checkVictory();
@@ -297,21 +325,21 @@ public class GameBoard : MonoBehaviour
                 case CS.BAD:
                     //flip the Card, end the turn
                     selectedCard = cardsPlayerGameBoard[x, z];
-                    selectedCard.makeFaceUp(true, x, z, cardsCaller[x, z]);
+                    selectedCard.makeReveal(true);
                     EndTurn(moveResult);
                     break;
 
                 case CS.DEATH_TEAM:
                     //flip the Card, end the game
                     selectedCard = cardsPlayerGameBoard[x, z];
-                    selectedCard.makeFaceUp(true, x, z, cardsCaller[x, z]);
+                    selectedCard.makeReveal(true);
                     EndTurn(moveResult);
                     break;
 
                 case CS.CIVIL_TEAM:
                     //flip the Card, end the turn
                     selectedCard = cardsPlayerGameBoard[x, z];
-                    selectedCard.makeFaceUp(true, x, z, cardsCaller[x, z]);
+                    selectedCard.makeReveal(true);
                     EndTurn(moveResult);
                     break;
             }
@@ -331,21 +359,29 @@ public class GameBoard : MonoBehaviour
         //Select the card, note that it may not be this client that selected the card
 
         SelectPlayerHandCard(cardID);
-        //TODO <START HERE> Build the logic for selecting a card in the hand
+        
         if (selectedCard != null)
         {
-            moveResult = selectedCard.ValidMove(isRedTurn);
+            //TODO - Would like to put in a SERVER check to see if it is the correct player's turn but these is no guarantee that card on the board has not already flipped over ending the turn for the curent player
+            // FOR NOW FORCE POSITIVE SO CHECK ALWAYS PASSES
+            //moveResult = selectedCard.ValidMove(isRedTurn);
+            moveResult = CS.GOOD;
             switch (moveResult)
             {
                 case CS.GOOD:
                     //Flip the Card and keep on picking
                     selectedCard = cardsPlayerHand[cardID];
-                    //TODO <START HERE> this is not right selectedCard need not be passed into the function
+                    //TODO is this right? Does selectedCard need not be passed into the function?
                     selectedCard.makeUsedUp(true, selectedCard);
-                    //TODO - simplify this switch statement there is a lot of repeated elements in each case
-                    //TODO - simplify EndTurn, checkVictory() and endGame(), think these could be one function
+
                     var winState = checkVictory();
                     if (winState == CS.BLUEWIN || winState == CS.REDWIN) endGame();
+                    else
+                    {
+                        cardsGameboardForceUpdate = true;
+                    }
+
+                    ;
                     break;
                 default:
                 {
@@ -484,6 +520,18 @@ public class GameBoard : MonoBehaviour
 
         countTextRed.text = "Red Remaining " + cntRedCards;
         countTextBlue.text = "Blue Remaining " + cntBlueCards;
+    }
+    public void UpdatePlayerGameboard()
+    {
+        for (var z = 0; z < CS.CSGRIDZDIM; z++)
+        for (var x = 0; x < CS.CSGRIDXDIM; x++)
+        {
+            if (((cardsPlayerGameBoard[x, z].isCardUp) == true && (reveal[x + z * CS.CSGRIDXDIM] == CS.CAR_REVEAL_HIDDEN))
+                || ((cardsPlayerGameBoard[x, z].isCardUp) == false && (reveal[x + z * CS.CSGRIDXDIM] == CS.CAR_REVEAL_SHOWN)))
+            {
+                cardsPlayerGameBoard[x, z].makeFaceUp(!cardsPlayerGameBoard[x, z].isCardUp);
+            }
+        }
     }
 
     public void GeneratePlayerHand()

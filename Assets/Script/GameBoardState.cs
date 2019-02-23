@@ -82,10 +82,11 @@ public class GameBoardState : MonoBehaviour
                         //establish what card has been played
 
                         //create a new card
-                        pc = MakeHandCard(playerCnt);
+                        //pc = MakeHandCard(playerCnt);
 
                         //update deck, replacing old card with new card
-                        ghd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum] = pc;
+                        //TODO - This next line needs to be thought through more as messages are not delivered to the client in sequence expected
+                        //ghd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum] = pc;
                         
                         
                     }
@@ -118,6 +119,7 @@ public class GameBoardState : MonoBehaviour
 
     private void UpdateHandDeckCardStatus(string cardID, string clientID)
     {
+        var s = FindObjectOfType<Server>();
         var pc = new GameCard(); 
         var gc = new GameCard();
         bool isPlayableCard = false;
@@ -161,27 +163,43 @@ public class GameBoardState : MonoBehaviour
                     {
                         if (cep.affectWhat == CS.CEP_AFFECT_GAMEBOARD)
                         {
-                            if ((cep.effectName == CS.CEP_EFFECT_REVEAL_CARD)
+                            if ((cep.effectName == CS.CEP_EFFECT_RANDOM_REVEAL_CARD)
                                 && (cep.numTimes > 0))
                             {
-                                string tmpStr = "Played reveal " + CS.CEP_EFFECT_REVEAL_CARD;
-                                Debug.Log("Played reveal " + CS.CEP_EFFECT_REVEAL_CARD);
-                                
+                                Debug.Log("Played reveal " + CS.CEP_EFFECT_RANDOM_REVEAL_CARD);
+                                int x = 0;
+                                int z = 0;
+                                do
+                                {
+                                    x = Random.Range(0, CS.CSGRIDXDIM);
+                                    z = Random.Range(0, CS.CSGRIDZDIM);
+                                } while (gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed == CS.CAR_REVEAL_SHOWN);
+                
+                                string xStr = x.ToString();
+                                string zStr = z.ToString();
+                                string[] zData = {"CMOV", clientID, xStr, zStr, ""};
+                                Incoming(zData);
+                       
+                                /*string msg = 
+                                           zData[0] + "|"
+                                           + "SERVER" +"|"
+                                           + zData[2] + "|"
+                                           + zData[3] +"|"
+                                           + "SERVER_ID";
+                                Server.Instance.OnIncomingData(msg);*/                          
                             }
 
-                            if ((cep.effectName == CS.CEP_EFFECT_CHANGE_CARD)
+                            if ((cep.effectName == CS.CEP_EFFECT_RANDOM_CHANGE_CARD)
                                 && (cep.numTimes > 0))
                                 
                             {
-                                string tmpStr = "Played reveal " + CS.CEP_EFFECT_CHANGE_CARD;
-                                Debug.Log("Played reveal " + CS.CEP_EFFECT_CHANGE_CARD);
+                                Debug.Log("Played reveal " + CS.CEP_EFFECT_RANDOM_CHANGE_CARD);
                             }
 
-                            if ((cep.effectName == CS.CEP_EFFECT_REMOVE_CARD)
+                            if ((cep.effectName == CS.CEP_EFFECT_RANDOM_REMOVE_CARD)
                                 && (cep.numTimes > 0))
                             {
-                                string tmpStr = "Played reveal " + CS.CEP_EFFECT_REMOVE_CARD;
-                                Debug.Log("Played reveal " + CS.CEP_EFFECT_REMOVE_CARD);
+                                Debug.Log("Played reveal " + CS.CEP_EFFECT_RANDOM_REMOVE_CARD);
                             }
                             if (cep.numTimes > 0) cep.numTimes--;
                             //TODO - This is not quite the right place to make the decision as to if the card is still playable
@@ -243,6 +261,7 @@ public class GameBoardState : MonoBehaviour
     {
         int x = 0;
         int z = 0;
+        
         switch (aData[0])
         {
             case "CDIC":
@@ -268,6 +287,7 @@ public class GameBoardState : MonoBehaviour
                     gbd.gameCards[x + z * CS.CSGRIDXDIM].cardZPos = z;
                     gbd.gameCards[x + z * CS.CSGRIDXDIM].cardWord = worddictionary.wordList[x + z * CS.CSGRIDXDIM];
                     gbd.gameCards[x + z * CS.CSGRIDXDIM].cardSuit = worddictionary.populate[x + z * CS.CSGRIDXDIM];
+                    gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed = CS.CAR_REVEAL_HIDDEN;
                 }
                 break;
             case "CMOV":
@@ -287,6 +307,9 @@ public class GameBoardState : MonoBehaviour
                 //Change turn indicator status
                 isRedTurn = !isRedTurn;
                 break;
+            case "CGFU":
+                break;
+
         }
     }
 }

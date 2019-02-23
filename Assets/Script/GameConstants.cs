@@ -31,9 +31,9 @@
 
         //Card effect playable
         //Effects
-        public const string CEP_EFFECT_REVEAL_CARD = "reveals a specific card on the board";
-        public const string CEP_EFFECT_CHANGE_CARD = "randomly changes a card on the board";
-        public const string CEP_EFFECT_REMOVE_CARD = "randomly removes a card from the board";
+        public const string CEP_EFFECT_RANDOM_REVEAL_CARD = "randomly reveals a card on the board";
+        public const string CEP_EFFECT_RANDOM_CHANGE_CARD = "randomly changes a card on the board";
+        public const string CEP_EFFECT_RANDOM_REMOVE_CARD = "randomly removes a card from the board";
 
         //Affects
         public const string CEP_AFFECT_GAMEBOARD = "affects the game board";
@@ -104,6 +104,7 @@
         public const string IOSBUILDPLATFORM = "IOS";
 
         //Put all the Effects in here to make it is easy to ramdonly pick one
-        public static string[] CEP_EFFECTS = {CEP_EFFECT_REVEAL_CARD, CEP_EFFECT_CHANGE_CARD, CEP_EFFECT_REMOVE_CARD};
+        //public static string[] CEP_EFFECTS = {CEP_EFFECT_RANDOM_REVEAL_CARD, CEP_EFFECT_RANDOM_CHANGE_CARD, CEP_EFFECT_RANDOM_REMOVE_CARD};
+        public static string[] CEP_EFFECTS = {CEP_EFFECT_RANDOM_REVEAL_CARD, CEP_EFFECT_RANDOM_REVEAL_CARD, CEP_EFFECT_RANDOM_REVEAL_CARD};
     }
 }

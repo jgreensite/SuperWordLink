@@ -4,6 +4,8 @@ using System.IO;
 using System.Net.Sockets;
 using AssemblyCSharp;
 using UnityEngine;
+using System.Linq;
+
 
 public class Client : MonoBehaviour
 {
@@ -218,6 +220,27 @@ public class Client : MonoBehaviour
                     }
 
                     GameManager.Instance.StartGame();
+                    break;
+                case"SGFU":
+                    //Forced client update of Gameboard from server
+                    GameBoard.Instance.isRedTurn = aData[1] == "False" ? false: true;
+
+                    wData = aData[2].Split(',');
+                    GameBoard.Instance.words = wData;
+
+                    pData = aData[3].Split(',');
+                    GameBoard.Instance.populate = pData;
+
+                    var xData = aData[4].Split(',').Select(s => Int32.Parse(s)).ToArray();
+                    GameBoard.Instance.xPos = xData;
+                    
+                    var zData = aData[5].Split(',').Select(s => Int32.Parse(s)).ToArray();;
+                    GameBoard.Instance.zPos = zData;
+                    
+                    var rData = aData[6].Split(',');                   
+                    GameBoard.Instance.reveal = rData;
+
+                    GameBoard.Instance.UpdatePlayerGameboard();
                     break;
             }
         }

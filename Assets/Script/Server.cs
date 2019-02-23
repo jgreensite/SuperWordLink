@@ -91,7 +91,7 @@ public class Server : MonoBehaviour
                     var data = reader.ReadLine();
                     if (data != null)
                         // if there is data then read it
-                        OnIncomingData(c, data);
+                        OnIncomingData(data);
                 }
             }
 
@@ -185,7 +185,7 @@ public class Server : MonoBehaviour
     }
 
     //Server read
-    private void OnIncomingData(ServerClient c, string data)
+    public void OnIncomingData(string data)
     {
         Debug.Log("Server Receiving: " + data);
 
@@ -194,6 +194,15 @@ public class Server : MonoBehaviour
         //parse the incoming data stream
         var aData = data.Split('|');
 
+        int x = 0;
+        int z = 0;
+        
+        var distPosX = "";
+        var distPosZ = "";
+        var distWords = "";
+        var distPopulate = "";
+        var distReveal = "";
+        
         switch (aData[0])
         {
             case "CWHO":
@@ -268,8 +277,8 @@ public class Server : MonoBehaviour
                 //Send message to GameBoardState, this will populate the WordList
                 gbs.Incoming(aData);
                 
-                var distWords = "";
-                var distPopulate = "";
+                distWords = "";
+                distPopulate = "";
     
                 //Cannot use FindObjectOfType in the constructor, so have to assign in here    
                 var worddictionary = FindObjectOfType<WordDictionary>();
@@ -330,6 +339,38 @@ public class Server : MonoBehaviour
                 Broadcast(gbs.ghd.SaveToText().Replace(Environment.NewLine, ""), clients);
                 break;
             
+            //Hand Card Affects on the board
+            case "CGFU":
+
+                distPosX = "";
+                distPosZ = "";
+                distWords = "";
+                distPopulate = "";
+                distReveal = "";
+               
+                for (z = 0; z < CS.CSGRIDZDIM; z++)
+                for (x = 0; x < CS.CSGRIDXDIM; x++)
+                {
+
+                    //implement additional attributes
+                    distPosX += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardXPos + ",";
+                    distPosZ += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardZPos + ",";
+                    distWords += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardWord + ",";
+                    distPopulate += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardSuit +",";
+                    distReveal += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed +",";
+                }
+
+                Broadcast(
+                           "SGFU" + '|'
+                           + GameBoardState.isRedTurn + '|'
+                           + distWords.Remove(distWords.LastIndexOf(',')) + '|'
+                           + distPopulate.Remove(distPopulate.LastIndexOf(',')) + '|'
+                           + distPosX.Remove(distPosX.LastIndexOf(',')) + '|'
+                           + distPosZ.Remove(distPosZ.LastIndexOf(',')) + '|'
+                           + distReveal.Remove(distReveal.LastIndexOf(',')),
+                    clients
+                );
+                break;
         }
     }
 

@@ -101,11 +101,6 @@ public class Card : MonoBehaviour
             m_finalXValue = 180f;
             m_finalYValue = 0f;
             m_finalZValue = 0f;
-
-//			//This sets the desired rotation of the text on the card, the update function will then perform the rotation 
-//			m_finalTextXValue = 0f;
-//			m_finalTextYValue = 0f;
-//			m_finalTextZValue = 0f;
         }
         else if (flagUp == false)
         {
@@ -116,16 +111,11 @@ public class Card : MonoBehaviour
             m_finalXValue = 0f;
             m_finalYValue = 0f;
             m_finalZValue = 0f;
-
-//			//This sets the desired rotation of the text on the card, the update function will then perform the rotation 
-//			m_finalTextXValue = 0f;
-//			m_finalTextYValue = 0f;
-//			m_finalTextZValue = 0f;
         }
     }
 
     // Call this to start the rotation and highlight the card
-    public void makeFaceUp(bool flagUp, int x, int z, Card siblingCaller)
+    public void makeReveal(bool flagUp)
     {
         makeFaceUp(flagUp);
 
@@ -163,7 +153,7 @@ public class Card : MonoBehaviour
 
         // This sets the highlight
         ChangeHighlight();
-        siblingCaller.ChangeHighlight();
+        //siblingCaller.ChangeHighlight();
     }
 
 
