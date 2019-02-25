@@ -10,6 +10,7 @@ public class GameBoard : MonoBehaviour
     public static int gridXDim = CS.CSGRIDXDIM;
     public static int gridZDim = CS.CSGRIDZDIM;
     public static int cardHandDim = CS.CSCARDHANDDIM;
+    
     public GameObject bluePfb;
 
     private readonly Vector3 boardOffsetLeft = new Vector3(-1.00f, 1.0f, -1.00f);
@@ -21,26 +22,23 @@ public class GameBoard : MonoBehaviour
 
     public Card[,] cardsPlayerGameBoard = new Card[gridXDim, gridZDim];
 
+    private Client client;
     //TODO - Remove hardcoding for number of players and cards in each player's hand
-    //public List<Card> cardsPlayerHand;
+    //GameboardCards
     public Dictionary<string, Card> cardsPlayerHand = new Dictionary<string, Card>();
     public GameObject civilPfb;
-
-    private Client client;
     public int cntBlueCards;
+    public int cntRedCards;
     public int cntBlueHandCards;
+    public int cntRedHandCards;
     public int cntCivilCards;
     public int cntDeathCards;
-
-    //GameboardCards
-    public int cntRedCards;
-
-    //PlayerCards
-    public int cntRedHandCards;
     public Text countTextBlue;
-
     public Text countTextRed;
+    public int cntGoalBlueCards;
+    public int cntGoalRedCards;
 
+    
     public GameObject currentCamera;
     public GameObject deathPfb;
 
@@ -348,7 +346,7 @@ public class GameBoard : MonoBehaviour
 //		}
     }
 
-    public void TryHandMove(string cardID)
+    public void  TryHandMove(string cardID)
         //Need to build the TryHandMove Function to replicate the TryGameboardMove Function
     {
         string moveResult;
@@ -372,7 +370,7 @@ public class GameBoard : MonoBehaviour
                     //Flip the Card and keep on picking
                     selectedCard = cardsPlayerHand[cardID];
                     //TODO is this right? Does selectedCard need not be passed into the function?
-                    selectedCard.makeUsedUp(true, selectedCard);
+                    selectedCard.makeUsedUp(true);
 
                     var winState = checkVictory();
                     if (winState == CS.BLUEWIN || winState == CS.REDWIN) endGame();
@@ -436,24 +434,24 @@ public class GameBoard : MonoBehaviour
     {
         //iterate through cards looking for a win
         var retVal = "";
-        var cntRed = 9;
-        var cntBlue = 8;
-        for (var z = 0; z < 5; z++)
-        for (var x = 0; x < 5; x++)
+        cntBlueCards = 0;
+        cntRedCards = 0;
+        for (var z = 0; z < CS.CSGRIDZDIM; z++)
+        for (var x = 0; x < CS.CSGRIDXDIM; x++)
             if (cardsPlayerGameBoard[x, z].isCardUp)
             {
-                if (cardsPlayerGameBoard[x, z].cardType == CS.BLUE_TEAM) cntBlue = cntBlue - 1;
-                if (cardsPlayerGameBoard[x, z].cardType == CS.RED_TEAM) cntRed = cntRed - 1;
+                if (cardsPlayerGameBoard[x, z].cardType == CS.BLUE_TEAM) cntBlueCards++;
+                if (cardsPlayerGameBoard[x, z].cardType == CS.RED_TEAM) cntRedCards++;
             }
 
         //Update counts
-        countTextRed.text = "Red Remaining " + cntRed;
-        countTextBlue.text = "Blue Remaining " + cntBlue;
+        countTextRed.text = "Red Remaining " + (cntGoalRedCards - cntRedCards);
+        countTextBlue.text = "Blue Remaining " + (cntGoalBlueCards - cntBlueCards);
 
         //See if anyone has won
-        if (cntRed == 0)
+        if (cntRedCards == cntGoalRedCards)
             retVal = CS.REDWIN;
-        else if (cntBlue == 0)
+        else if (cntBlueCards == cntGoalBlueCards)
             retVal = CS.BLUEWIN;
         else
             retVal = CS.NONEWIN;
@@ -469,6 +467,8 @@ public class GameBoard : MonoBehaviour
 
     public void GeneratePlayerGameboard()
     {
+        cntGoalRedCards = 0;
+        cntGoalBlueCards = 0;
         if (client.isPlayer)
             SetCamera("P");
         else
@@ -490,11 +490,11 @@ public class GameBoard : MonoBehaviour
             {
                 case CS.RED_TEAM:
                     go = Instantiate(redPfb);
-                    cntRedCards += 1;
+                    cntGoalRedCards += 1;
                     break;
                 case CS.BLUE_TEAM:
                     go = Instantiate(bluePfb);
-                    cntBlueCards += 1;
+                    cntGoalBlueCards += 1;
                     break;
                 case CS.CIVIL_TEAM:
                     go = Instantiate(civilPfb);
@@ -518,8 +518,8 @@ public class GameBoard : MonoBehaviour
             turnIndicatorScript.setColour("red");
         }
 
-        countTextRed.text = "Red Remaining " + cntRedCards;
-        countTextBlue.text = "Blue Remaining " + cntBlueCards;
+        countTextRed.text = "Red Remaining " + cntGoalRedCards;
+        countTextBlue.text = "Blue Remaining " + cntGoalBlueCards;
     }
     public void UpdatePlayerGameboard()
     {
@@ -529,7 +529,8 @@ public class GameBoard : MonoBehaviour
             if (((cardsPlayerGameBoard[x, z].isCardUp) == true && (reveal[x + z * CS.CSGRIDXDIM] == CS.CAR_REVEAL_HIDDEN))
                 || ((cardsPlayerGameBoard[x, z].isCardUp) == false && (reveal[x + z * CS.CSGRIDXDIM] == CS.CAR_REVEAL_SHOWN)))
             {
-                cardsPlayerGameBoard[x, z].makeFaceUp(!cardsPlayerGameBoard[x, z].isCardUp);
+                cardsPlayerGameBoard[x, z].makeReveal(!cardsPlayerGameBoard[x, z].isCardUp);
+                TryGameboardMove(x, z);
             }
         }
     }
@@ -538,7 +539,7 @@ public class GameBoard : MonoBehaviour
     {
         if (client.isPlayer != true)
         {
-            //TODO - Callers may get a differrent view  START HERE
+            //TODO - Callers may get a differrent view
         }
 
         //reset counters for each of the card types
@@ -549,6 +550,7 @@ public class GameBoard : MonoBehaviour
         var cardID = "";
         var playerNum = 0;
         var cardNum = 0;
+        var usedUp = "";
         cntRedHandCards = 0;
         cntBlueHandCards = 0;
 
@@ -566,6 +568,8 @@ public class GameBoard : MonoBehaviour
             playerNum = Convert.ToInt32(client.gcd.gameCards[cnt].cardPlayerNum);
             clientID = client.gcd.gameCards[cnt].cardClientID;
             cardID = client.gcd.gameCards[cnt].cardID;
+            usedUp = client.gcd.gameCards[cnt].cardRevealed;
+            
             go = Instantiate(handPfb);
 
             if (client.gcd.gameCards[cnt].cardSuit == CS.RED_TEAM)
@@ -615,7 +619,7 @@ public class GameBoard : MonoBehaviour
                 cardType = CS.BLUE_TEAM;
             }
 
-            GeneratePlayerHandCard(playerNum, clientID, cardNum, cardID, ref go, cardInstructions, cardType);
+            GeneratePlayerHandCard(playerNum, clientID, cardNum, cardID, ref go, cardInstructions, cardType, usedUp);
         }
     }
 
@@ -659,7 +663,7 @@ public class GameBoard : MonoBehaviour
     }
 
     private void GeneratePlayerHandCard(int playerNum, string clientID, int cardNum, string cardID, ref GameObject go,
-        string word, string cardType)
+        string word, string cardType, string usedUp)
     {
         //TODO - the GenerateCard() class should be methods on the Card() class
         go.transform.SetParent(transform);
@@ -690,6 +694,9 @@ public class GameBoard : MonoBehaviour
 
         //Rotate the card
         cardPlayerHand.makeInHand();
+        
+        //if the card has been used up then make it such
+        if(usedUp == CS.CAR_REVEAL_SHOWN) cardPlayerHand.makeUsedUp(true);
     }
 
     private void MovePlayerHandCard(GameObject go, int playerNum, int cardNum)

@@ -63,6 +63,9 @@
         public const int IDCARDBACKMATERIAL = 0;
         public const int NUMCARDMATERIALS = 4;
 
+        //Turn constants
+        public const int TEP_NUM_DRAW = 1;
+        
         //Flow Control constants
         public const string GOOD = "good";
         public const string BAD = "bad";

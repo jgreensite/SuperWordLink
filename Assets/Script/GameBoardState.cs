@@ -70,25 +70,22 @@ public class GameBoardState : MonoBehaviour
             
             //update player decks at end of turn
             case CS.END:
+                int cntReplace = CS.TEP_NUM_DRAW;
                 for (var playerCnt = 0; playerCnt < Server.clients.Count; playerCnt++)
                 for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
                 {
                     pc = ghd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum];
-                    if (pc.cardRevealed == CS.CAR_REVEAL_SHOWN)
+                    if ((pc.cardRevealed == CS.CAR_REVEAL_SHOWN) && (cntReplace > 0));
                     {
-                        //reduce the played count
-
-
-                        //establish what card has been played
+                        //replace the correct # cards that have been played at the end of the turn
+                        cntReplace--;
 
                         //create a new card
-                        //pc = MakeHandCard(playerCnt);
+                        pc = MakeHandCard(playerCnt);
 
                         //update deck, replacing old card with new card
                         //TODO - This next line needs to be thought through more as messages are not delivered to the client in sequence expected
-                        //ghd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum] = pc;
-                        
-                        
+                        ghd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum] = pc;
                     }
                 }
             break;
@@ -117,8 +114,9 @@ public class GameBoardState : MonoBehaviour
         Debug.Log("Wrote : " + filePath);
    }
 
-    private void UpdateHandDeckCardStatus(string cardID, string clientID)
+    public bool UpdateHandDeckCardStatus(string cardID, string clientID)
     {
+        string strReponse = "";
         var s = FindObjectOfType<Server>();
         var pc = new GameCard(); 
         var gc = new GameCard();
@@ -179,14 +177,6 @@ public class GameBoardState : MonoBehaviour
                                 string zStr = z.ToString();
                                 string[] zData = {"CMOV", clientID, xStr, zStr, ""};
                                 Incoming(zData);
-                       
-                                /*string msg = 
-                                           zData[0] + "|"
-                                           + "SERVER" +"|"
-                                           + zData[2] + "|"
-                                           + zData[3] +"|"
-                                           + "SERVER_ID";
-                                Server.Instance.OnIncomingData(msg);*/                          
                             }
 
                             if ((cep.effectName == CS.CEP_EFFECT_RANDOM_CHANGE_CARD)
@@ -210,6 +200,7 @@ public class GameBoardState : MonoBehaviour
             }
         }
         SaveDeck(ghd);
+        return(isPlayableCard);
     }
 
     private GameCard MakeHandCard(int playerCnt)
@@ -295,21 +286,21 @@ public class GameBoardState : MonoBehaviour
                 z = int.Parse(aData[3]);
                 gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed = CS.CAR_REVEAL_SHOWN;
                 break;
-            case "CHAN":
-                UpdateHandDeckCardStatus(aData[2], aData[3]);
-                break;
             case "CPCC":
                 BuildHandDeck(CS.CREATE);
                 break;
             case "CPCU":
                 BuildHandDeck(CS.END);
                 
-                //Change turn indicator status
+                //Change turn indicator status at end of turn
                 isRedTurn = !isRedTurn;
                 break;
             case "CGFU":
                 break;
-
+            case "CKEY":
+                var tmpVal = aData[2].ToUpper();
+                if (tmpVal == "R") BuildHandDeck(CS.CREATE);
+                break;
         }
     }
 }

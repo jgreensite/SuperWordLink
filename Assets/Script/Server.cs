@@ -245,7 +245,7 @@ public class Server : MonoBehaviour
                 Broadcast("SCNN" + GetStringOfAllClients(), clients);
                 break;
             case "CMOV":
-                //Send message to GameBoardState
+                //Currently all validation for the gameboard move is done client side
                 gbs.Incoming(aData);
    
                 Broadcast(
@@ -260,16 +260,14 @@ public class Server : MonoBehaviour
             case "CHAN":
                 //Update the server copy of the deck marking the card as having been played
                 //Send message to GameBoardState
-                gbs.Incoming(aData);
-                
-                //TODO - Remove me once have implemented above call
-                //UpdateDeckCardStatus(aData[2], aData[3]);
-               
+
+                string strValidMove = gbs.UpdateHandDeckCardStatus(aData[2], aData[3]) ? "1" : "0";
                 Broadcast(
                     "SHAN" + '|'
                            + aData[1] + '|'
                            + aData[2] + '|'
-                           + aData[3],
+                           + aData[3] + '|'
+                           + strValidMove,
                     clients
                 );
                 break;
@@ -299,6 +297,7 @@ public class Server : MonoBehaviour
                 );
                 break;
             case "CKEY":
+                gbs.Incoming(aData);
                 var tmpVal = aData[2].ToUpper();
                 Broadcast(
                     "SKEY" + '|'
@@ -329,13 +328,11 @@ public class Server : MonoBehaviour
             case "CPCC":
                 //Send message to GameBoardState
                 gbs.Incoming(aData);
-                //gbs.BuildHandDeck(CS.CREATE);
                 Broadcast(gbs.ghd.SaveToText().Replace(Environment.NewLine, ""), clients);
                 break;
             case "CPCU":
                 //Send message to GameBoardState
                 gbs.Incoming(aData);
-                //gbs.BuildHandDeck(CS.END);
                 Broadcast(gbs.ghd.SaveToText().Replace(Environment.NewLine, ""), clients);
                 break;
             
@@ -421,211 +418,6 @@ public class Server : MonoBehaviour
 
         server.Stop();
     }
-
-    /*
-    private void BuildDeck(string msg)
-    {
-        var gc = new GameCard();
-        var pc = new GameCard(); 
-
-//		//Demo loading data
-//		filePath = Application.persistentDataPath + "/gamecarddeck3.xml";
-//		gcd = GameCardDeck.Load (filePath);
-//		Debug.Log ("Loaded : " + filePath);
-
-        switch (msg)
-        {
-            //Build new player decks for a new game
-            case CS.CREATE:
-                //Clear the decks prior to rebuilding them
-                gcd.gameCards.Clear();
-                gcdBlue.gameCards.Clear();
-                gcdRed.gameCards.Clear();
-
-                for (var playerCnt = 0; playerCnt < clients.Count; playerCnt++)
-                   for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
-                   {
-                       //create new card
-                       gc = makeCard(playerCnt);
-                
-                       //add Card to deck
-                       gcd.gameCards.Add(gc);
-                   }
-            break;
-            
-            //update player decks at end of turn
-            case CS.END:
-                for (var playerCnt = 0; playerCnt < clients.Count; playerCnt++)
-                for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
-                {
-                    pc = gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum];
-                    if (pc.cardRevealed == CS.CAR_REVEAL_SHOWN)
-                    {
-                        //reduce the played count
-
-
-                        //establish what card has been played
-
-                        //create a new card
-                        gc = makeCard(playerCnt);
-
-                        //update deck, replacing old card with new card
-                        gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum] = gc;
-
-                    }
-                }
-            break;
-        }
-        SaveDeck();
-    }
-    */
-    /*
-    private void SaveDeck()
-    {
-        string filePath;
-        
-        //Populate the Red and Blue Decks
-        var lastItem = gcd.gameCards.Count;
-        var drawnCard = new GameCard();
-
-        for (var cnt = 0; cnt <= lastItem - 1; cnt++)
-        {
-            drawnCard = gcd.gameCards[cnt];
-            if (drawnCard.cardLocation == CS.CAR_LOCATION_RED_DECK)
-                gcdRed.gameCards.Add(drawnCard);
-            else if (drawnCard.cardLocation == CS.CAR_LOCATION_BLUE_DECK) gcdBlue.gameCards.Add(drawnCard);
-        }
-
-        //Save the decks that have been created
-        filePath = Application.persistentDataPath + "/gamecarddeck1.xml";
-        gcd.Save(filePath);
-        Debug.Log("Wrote : " + filePath);
-
-        filePath = Application.persistentDataPath + "/gamecarddeckblue.xml";
-        gcdBlue.Save(filePath);
-        Debug.Log("Wrote : " + filePath);
-
-        filePath = Application.persistentDataPath + "/gamecarddeckred.xml";
-        gcdRed.Save(filePath);
-        Debug.Log("Wrote : " + filePath);
-    }
-    */
-    /*
-    private void UpdateDeckCardStatus(string cardID, string clientID)
-    {
-        var pc = new GameCard(); 
-        var gc = new GameCard();
-        bool isPlayableCard = false;
-        for (var playerCnt = 0; playerCnt < clients.Count; playerCnt++)
-        for (var cardNum = 0; cardNum < CS.CSCARDHANDDIM; cardNum++)
-        {
-            pc = gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum];
-            
-            //Check to see if the cardID is correctly associated with the ClientID
-            //TODO - To make this more secure clients should only know their (and only their own) clientID
-            if ((pc.cardID == cardID) && (pc.cardClientID == clientID))
-            {
-                foreach (var cwp in pc.cardWhenPlayable)
-                {
-                    if ((cwp.turnStage == CS.CWP_PLAY_ANY_TURN)
-                        && (cwp.numTimes > 0))
-                    {
-                        isPlayableCard = true; cwp.numTimes--;
-                    }
-
-                    if ((cwp.turnStage == CS.CWP_PLAY_PLAYER_TURN)
-                        && isRedTurn
-                        && (pc.cardSuit == CS.RED_TEAM)
-                        && (cwp.numTimes > 0))
-                    {
-                        isPlayableCard = true; cwp.numTimes--;
-                    }
-
-                    if ((cwp.turnStage == CS.CWP_PLAY_PLAYER_TURN)
-                        && !isRedTurn
-                        && (pc.cardSuit == CS.BLUE_TEAM)
-                        && (cwp.numTimes > 0))
-                    {
-                        isPlayableCard = true; cwp.numTimes--;
-                    }
-                }
-
-                if (isPlayableCard)
-                {
-                    foreach (var cep in pc.cardEffectPlayable)
-                    {
-                        if (cep.affectWhat == CS.CEP_AFFECT_GAMEBOARD)
-                        {
-                            if ((cep.effectName == CS.CEP_EFFECT_REVEAL_CARD)
-                                && (cep.numTimes > 0))
-                            {
-                                Debug.Log("Played: " + CS.CEP_EFFECT_REVEAL_CARD);
-                                
-                            }
-
-                            if ((cep.effectName == CS.CEP_EFFECT_CHANGE_CARD)
-                                && (cep.numTimes > 0))
-                                
-                            {
-                                Debug.Log("Played: " + CS.CEP_EFFECT_CHANGE_CARD);
-                            }
-
-                            if ((cep.effectName == CS.CEP_EFFECT_REMOVE_CARD)
-                                && (cep.numTimes > 0))
-                            {
-                                Debug.Log("Played: " + CS.CEP_EFFECT_REMOVE_CARD);
-                            }
-                            if (cep.numTimes > 0) cep.numTimes--;
-                        }
-                    } 
-                }
-                
-                //create a new card
-                //gc = makeCard(playerCnt);
-
-                //now update card as having been played
-                gcd.gameCards[playerCnt * CS.CSCARDHANDDIM + cardNum].cardRevealed = CS.CAR_REVEAL_SHOWN;
-            }
-        }
-        SaveDeck();
-    }
-    */
-    /*
-    private GameCard makeCard(int playerCnt)
-    {
-        //create a card
-        var gc = new GameCard();
-        gc.cardID = Guid.NewGuid().ToString();
-        gc.cardPlayerNum = playerCnt.ToString();
-        gc.cardClientID = clients[playerCnt].clientID;
-        if (clients[playerCnt].isRedTeam)
-        {
-            gc.cardSuit = CS.RED_TEAM;
-            gc.cardLocation = CS.CAR_LOCATION_RED_DECK;
-        }
-        else if (!clients[playerCnt].isRedTeam)
-        {
-            gc.cardSuit = CS.BLUE_TEAM;
-            gc.cardLocation = CS.CAR_LOCATION_BLUE_DECK;
-        }
-
-        gc.cardRevealed = CS.CAR_REVEAL_HIDDEN;
-        //add CardWhenPlayable element to card 
-        var cwp = new CardWhenPlayable();
-        cwp.turnStage = CS.CWP_PLAY_PLAYER_TURN;
-        cwp.numTimes = 1;
-        gc.cardWhenPlayable.Add(cwp);
-        //add CardEffectPlayable element to card 
-        var cep = new CardEffectPlayable();
-        //randomly choose an effect
-        var rnd = Random.Range(0, CS.CEP_EFFECTS.Length);
-        cep.effectName = CS.CEP_EFFECTS[rnd];
-        cep.affectWhat = CS.CEP_AFFECT_GAMEBOARD;
-        cep.numTimes = 1;
-        gc.cardEffectPlayable.Add(cep);
-        return gc;
-    }
-    */
 }
 
 public class ServerClient

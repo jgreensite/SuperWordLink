@@ -230,11 +230,10 @@ public class WordDictionary : MonoBehaviour
                 }
 
                 //if the card is able to added then add it
-                //if (validChoice) cardTypes[x + z * 5] = cardType;
                 if (validChoice)
                 {
-                    //populate[x + z * CS.CSGRIDXDIM] = cardType;
-                    populate[x + z * CS.CSGRIDXDIM] = CS.RED_TEAM;
+                    populate[x + z * CS.CSGRIDXDIM] = cardType;
+                    //populate[x + z * CS.CSGRIDXDIM] = CS.DEATH_TEAM;
                 }
  
             }

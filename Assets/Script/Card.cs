@@ -146,14 +146,13 @@ public class Card : MonoBehaviour
     }
 
     // Call this to highlight the card has been used and remove it from play
-    public void makeUsedUp(bool flagUp, Card siblingCaller)
+    public void makeUsedUp(bool flagUp)
     {
-        //TODO - Change what happends to a card when it gets used
+        //TODO - Change what happens to a card when it gets used
         makeFaceUp(flagUp);
 
         // This sets the highlight
         ChangeHighlight();
-        //siblingCaller.ChangeHighlight();
     }
 
 

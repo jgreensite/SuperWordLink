@@ -156,11 +156,17 @@ public class Client : MonoBehaviour
                     x = int.Parse(aData[2]);
                     z = int.Parse(aData[3]);
                     GameBoard.Instance.TryGameboardMove(x, z);
+                    //TODO - <START HERE> the above is not causing anything to check to see if the game is over, it needs to be adapted to be the same as what happens when a user clicks on a card
                     break;
 
                 case "SHAN":
                     cardID = aData[2];
-                    GameBoard.Instance.TryHandMove(cardID);
+                    if (aData[4] == "1")
+                    {
+                        GameBoard.Instance.TryHandMove(cardID);
+                    } else {
+                        Debug.Log("Invalid Move attempted by " + aData[1]);    
+                    }
                     break;
 
                 case "SDIC":
