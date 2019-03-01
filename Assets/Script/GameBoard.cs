@@ -251,15 +251,15 @@ public class GameBoard : MonoBehaviour
 
         var c = cardsPlayerGameBoard[x, z];
         //cannot flip a card that has been flipped
-        if (c != null && !c.isCardUp)
-        {
+//        if (c != null && !c.isCardUp)
+//        {
             selectedCard = c;
-            Debug.Log("Gameboard Card selected is at position x:" + x + " y:" + z);
-        }
-        else
-        {
-            Debug.Log("Error - Gameboard Card is either already selected or out of bounds");
-        }
+//            Debug.Log("Gameboard Card selected is at position x:" + x + " y:" + z);
+//        }
+//        else
+//        {
+//            Debug.Log("Error - Gameboard Card is either already selected or out of bounds");
+//        }
     }
 
     private void SelectPlayerHandCard(string cardID)
@@ -372,14 +372,14 @@ public class GameBoard : MonoBehaviour
                     //TODO is this right? Does selectedCard need not be passed into the function?
                     selectedCard.makeUsedUp(true);
 
-                    var winState = checkVictory();
-                    if (winState == CS.BLUEWIN || winState == CS.REDWIN) endGame();
-                    else
-                    {
+//                    var winState = checkVictory();
+//                    if (winState == CS.BLUEWIN || winState == CS.REDWIN) endGame();
+//                    else
+//                    {
                         cardsGameboardForceUpdate = true;
-                    }
-
-                    ;
+//                    }
+//
+//                    ;
                     break;
                 default:
                 {
@@ -529,8 +529,9 @@ public class GameBoard : MonoBehaviour
             if (((cardsPlayerGameBoard[x, z].isCardUp) == true && (reveal[x + z * CS.CSGRIDXDIM] == CS.CAR_REVEAL_HIDDEN))
                 || ((cardsPlayerGameBoard[x, z].isCardUp) == false && (reveal[x + z * CS.CSGRIDXDIM] == CS.CAR_REVEAL_SHOWN)))
             {
-                cardsPlayerGameBoard[x, z].makeReveal(!cardsPlayerGameBoard[x, z].isCardUp);
+                
                 TryGameboardMove(x, z);
+                //cardsPlayerGameBoard[x, z].makeReveal(!cardsPlayerGameBoard[x, z].isCardUp); 
             }
         }
     }
