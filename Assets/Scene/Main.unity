@@ -140,7 +140,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 91295153}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 3.325}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 2.45, y: 0.01, z: 2.325}
   m_Children: []
   m_Father: {fileID: 1228773183}
@@ -795,25 +795,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06ac34c83b404a0c90f238661ab264a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bluePfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
   callerCamera: {fileID: 1881793706}
+  cardsPlayerHandForceUpdate: 0
+  cardsGameboardForceUpdate: 0
   civilPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
+  deathPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
+  bluePfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
+  redPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
   cntBlueCards: 0
+  cntRedCards: 0
   cntBlueHandCards: 0
+  cntRedHandCards: 0
   cntCivilCards: 0
   cntDeathCards: 1
-  cntRedCards: 0
-  cntRedHandCards: 0
   countTextBlue: {fileID: 687487343}
   countTextRed: {fileID: 810964242}
+  cntGoalBlueCards: 0
+  cntGoalRedCards: 0
   currentCamera: {fileID: 0}
-  deathPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
+  gameBoardCaller: {fileID: 0}
+  gameBoardPlayer: {fileID: 0}
   handPfb: {fileID: 1961720848236538, guid: 0094f291f843849f7ab03d2442f152ba, type: 3}
   isGameover: 0
   isRedStart: 0
   isRedTurn: 1
   isRestart: 0
   playerCamera: {fileID: 2009509327}
+  words:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   populate:
   - 
   - 
@@ -840,8 +873,9 @@ MonoBehaviour:
   - 
   - 
   - 
-  redPfb: {fileID: 1696012980909068, guid: 2fabdc99bce1d4eff9b41a3b6f177f16, type: 3}
-  words:
+  xPos: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  zPos: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  reveal:
   - 
   - 
   - 
@@ -1280,6 +1314,8 @@ MonoBehaviour:
   BoundsZ:
   - 0.85
   - 1.85
+  playerCam: {fileID: 2009509330}
+  callerCam: {fileID: 1881793709}
   isPanZoom: 0
   ZoomBounds:
   - 13
@@ -1589,6 +1625,8 @@ MonoBehaviour:
   BoundsZ:
   - -2.5
   - -1.5
+  playerCam: {fileID: 2009509330}
+  callerCam: {fileID: 1881793709}
   isPanZoom: 0
   ZoomBounds:
   - 13

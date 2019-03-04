@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 //code heavily influenced by the following
 //https://kylewbanks.com/blog/unity3d-panning-and-pinch-to-zoom-camera-with-touch-and-mouse-input
@@ -18,7 +20,9 @@ public class CameraHandler : MonoBehaviour
 //	public float[] BoundsZ = new float[]{-2.5f, -1.5f};
 //	public float[] ZoomBounds = new float[]{13f, 37f};
 
-    private Camera cam;
+    private Camera myCam;
+    public Camera playerCam;
+    public Camera callerCam;
 
     public bool isPanZoom;
 
@@ -28,14 +32,45 @@ public class CameraHandler : MonoBehaviour
 
     private bool wasZoomingLastFrame; // Touch mode only
     public float[] ZoomBounds = new float[2];
-
-    private void Awake()
+    private List<GameObject> allObjectsInScene;
+    
+    private void Start()
     {
-        cam = GetComponent<Camera>();
+        myCam = GetComponent<Camera>();
+        allObjectsInScene = Helper.GetAllObjectsInScene();
+        switch (myCam.name)
+        {
+            case "Player Camera":
+                myCam.transform.LookAt(GameBoard.Instance.gameBoardPlayer.transform);
+                break;
+            case "Caller Camera":
+                myCam.CopyFrom((playerCam));
+                //myCam.CopyFrom((allObjectsInScene.First(x => x.name == "Player Camera").GetComponent<Camera>()));
+                //cam.CopyFrom(GameObject.Find("Player Camera").GetComponent<Camera>());
+                myCam.transform.position += GameBoard.Instance.callerCardOffset;
+                myCam.transform.LookAt(GameBoard.Instance.gameBoardCaller.transform);
+                break;
+            default:
+                Debug.Log("Error - unknown Camera " + myCam.name);
+                break;
+        } 
     }
 
     private void Update()
     {
+        switch (myCam.name)
+        {
+            case "Player Camera":
+                myCam.transform.LookAt(GameBoard.Instance.gameBoardPlayer.transform);
+                break;
+            case "Caller Camera":
+                myCam.transform.LookAt(GameBoard.Instance.gameBoardCaller.transform);
+                break;
+            default:
+                Debug.Log("Error - unknown Camera " + myCam.name);
+                break;
+        }
+        
         if (isPanZoom)
         {
             if (Input.touchSupported && Application.platform != RuntimePlatform.WebGLPlayer)
@@ -111,7 +146,7 @@ public class CameraHandler : MonoBehaviour
     private void PanCamera(Vector3 newPanPosition)
     {
         // Determine how much to move the camera
-        var offset = cam.ScreenToViewportPoint(lastPanPosition - newPanPosition);
+        var offset = myCam.ScreenToViewportPoint(lastPanPosition - newPanPosition);
         var move = new Vector3(offset.x * PanSpeed, 0, offset.y * PanSpeed);
 
         // Perform the movement
@@ -132,6 +167,6 @@ public class CameraHandler : MonoBehaviour
     {
         if (offset == 0) return;
 
-        cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - offset * speed, ZoomBounds[0], ZoomBounds[1]);
+        myCam.fieldOfView = Mathf.Clamp(myCam.fieldOfView - offset * speed, ZoomBounds[0], ZoomBounds[1]);
     }
 }

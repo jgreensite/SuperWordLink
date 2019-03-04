@@ -11,9 +11,11 @@ public class GameBoard : MonoBehaviour
     public static int gridZDim = CS.CSGRIDZDIM;
     public static int cardHandDim = CS.CSCARDHANDDIM;
     
-    public GameObject bluePfb;
-
+    
+    //used to position the gameboards in space
     private readonly Vector3 boardOffsetLeft = new Vector3(-1.00f, 1.0f, -1.00f);
+    public readonly Vector3 callerCardOffset = 12.35f * Vector3.forward;
+    
     public GameObject callerCamera;
     public Card[,] cardsCaller = new Card[gridXDim, gridZDim];
     private string cardSelectedLocation;
@@ -26,7 +28,13 @@ public class GameBoard : MonoBehaviour
     //TODO - Remove hardcoding for number of players and cards in each player's hand
     //GameboardCards
     public Dictionary<string, Card> cardsPlayerHand = new Dictionary<string, Card>();
+    
     public GameObject civilPfb;
+    public GameObject deathPfb;
+    public GameObject bluePfb;
+    public GameObject redPfb;
+
+    
     public int cntBlueCards;
     public int cntRedCards;
     public int cntBlueHandCards;
@@ -38,15 +46,16 @@ public class GameBoard : MonoBehaviour
     public int cntGoalBlueCards;
     public int cntGoalRedCards;
 
+  
     
-    public GameObject currentCamera;
-    public GameObject deathPfb;
-
-    private GameObject gameBoardCaller;
+    public GameObject currentCamera; 
+    
+    public GameObject gameBoardCaller;
+    public GameObject gameBoardPlayer;
 
     //TODO - The vectors are referenced using "x" and "y" properties, better to use arrays with more relevant property names, see how "hand is different to board"
     private Vector2 gameboardCardOver;
-    private GameObject gameBoardPlayer;
+   
 
     //TODO - Remove hardcoding for number of players, this will only work with 3 cards in the hand
     private readonly Vector3 handOffsetLeft = new Vector3(0.0f, 0.0f, -0.5f);
@@ -61,9 +70,6 @@ public class GameBoard : MonoBehaviour
     public GameObject playerCamera;
     private string playerhandCardIDOver;
     
-
-    public GameObject redPfb;
-
     //used to track selection of board and player cards
     private Card selectedCard;
 
@@ -94,6 +100,9 @@ public class GameBoard : MonoBehaviour
 
         gameBoardCaller = GameObject.Find("Game Board Caller");
         gameBoardPlayer = GameObject.Find("Game Board Player");
+        
+        //Move the Caller Gameboard to the correct place relative to the Player Gameboard, then move the camera to focus on it
+        gameBoardCaller.transform.position = callerCardOffset;
 
         isRestart = false;
         isGameover = false;
@@ -251,15 +260,15 @@ public class GameBoard : MonoBehaviour
 
         var c = cardsPlayerGameBoard[x, z];
         //cannot flip a card that has been flipped
-//        if (c != null && !c.isCardUp)
-//        {
+        if (c != null && !c.isCardUp)
+        {
             selectedCard = c;
-//            Debug.Log("Gameboard Card selected is at position x:" + x + " y:" + z);
-//        }
-//        else
-//        {
-//            Debug.Log("Error - Gameboard Card is either already selected or out of bounds");
-//        }
+            Debug.Log("Gameboard Card selected is at positions x:" + x + " y:" + z);
+        }
+        else
+        {
+            Debug.Log("Error - Gameboard Card is either already selected or out of bounds");
+        }
     }
 
     private void SelectPlayerHandCard(string cardID)
@@ -565,18 +574,29 @@ public class GameBoard : MonoBehaviour
         
         for (var cnt = 0; cnt < client.gcd.gameCards.Count; cnt++)
         {
-            //TO DO - This is limited to red and blue only and is based on team on owner of cards, add owner of cards to cards using playerID from server
             playerNum = Convert.ToInt32(client.gcd.gameCards[cnt].cardPlayerNum);
             clientID = client.gcd.gameCards[cnt].cardClientID;
             cardID = client.gcd.gameCards[cnt].cardID;
             usedUp = client.gcd.gameCards[cnt].cardRevealed;
-            
-            go = Instantiate(handPfb);
-
-            if (client.gcd.gameCards[cnt].cardSuit == CS.RED_TEAM)
+            if (clientID == client.clientID)
             {
-                cardNum = cntRedHandCards;
-                cntRedHandCards += 1;
+                //TO DO - This is limited to red and blue only and is based on team on owner of cards, add owner of cards to cards using playerID from server
+                go = Instantiate(handPfb);
+    
+                if (client.gcd.gameCards[cnt].cardSuit == CS.RED_TEAM)
+                {
+                    cardNum = cntRedHandCards;
+                    cntRedHandCards += 1;
+                    cardType = CS.RED_TEAM;
+                }
+                else if (client.gcd.gameCards[cnt].cardSuit == CS.BLUE_TEAM)
+                {
+                    cardNum = cntBlueHandCards;
+                    cntBlueHandCards += 1;
+                    cardType = CS.BLUE_TEAM;
+                }
+                
+                //Instructions are regardless of suit
                 cardInstructions =
                     client.gcd.gameCards[cnt].cardSuit +
                     Environment.NewLine + string.Join(" ", new[]
@@ -594,33 +614,10 @@ public class GameBoard : MonoBehaviour
                             client.gcd.gameCards[cnt].cardEffectPlayable[0].numTimes.ToString(), "time"
                         }
                     );
-                cardType = CS.RED_TEAM;
+                //Generate the card in the UX 
+                
+                GeneratePlayerHandCard(playerNum, clientID, cardNum, cardID, ref go, cardInstructions, cardType, usedUp);
             }
-            else if (client.gcd.gameCards[cnt].cardSuit == CS.BLUE_TEAM)
-            {
-                cardNum = cntBlueHandCards;
-                cntBlueHandCards += 1;
-                cardInstructions =
-                    client.gcd.gameCards[cnt].cardSuit +
-                    Environment.NewLine + string.Join(" ", new[]
-                        {
-                            client.gcd.gameCards[cnt].cardWhenPlayable[0].turnStage,
-                            "can be played",
-                            client.gcd.gameCards[cnt].cardWhenPlayable[0].numTimes.ToString(), "time"
-                        }
-                    ) +
-                    Environment.NewLine + string.Join(" ", new[]
-                        {
-                            client.gcd.gameCards[cnt].cardEffectPlayable[0].effectName,
-                            client.gcd.gameCards[cnt].cardEffectPlayable[0].affectWhat,
-                            "can be played",
-                            client.gcd.gameCards[cnt].cardEffectPlayable[0].numTimes.ToString(), "time"
-                        }
-                    );
-                cardType = CS.BLUE_TEAM;
-            }
-
-            GeneratePlayerHandCard(playerNum, clientID, cardNum, cardID, ref go, cardInstructions, cardType, usedUp);
         }
     }
 
@@ -650,7 +647,7 @@ public class GameBoard : MonoBehaviour
 
         //Populate Caller Gameboard
         //copy the card for the Caller gameboard
-        var cardCaller = Instantiate(cardGameBoard, 3.35f * Vector3.forward + cardGameBoard.transform.position,
+        var cardCaller = Instantiate(cardGameBoard, callerCardOffset + cardGameBoard.transform.position,
             Quaternion.identity);
         cardsCaller[x, z] = cardCaller;
 
@@ -678,17 +675,35 @@ public class GameBoard : MonoBehaviour
         cardPlayerHand.playerNum = playerNum;
         cardPlayerHand.cardNum = cardNum;
         cardPlayerHand.cardID = cardID;
-
         cardsPlayerHand.Add(cardID, cardPlayerHand);
 
         Debug.Log(string.Concat("cardPlayerHand:", playerNum, ",", cardNum));
+
+        //Place the card against the correct place in the gameboard
         MovePlayerHandCard(go, playerNum, cardNum);
 
+        //Make the card the same suit as the player
         cardPlayerHand.ChangeMaterial(cardType);
 
         //Requires an empty object of uniform scale to preserve the scale of the card and allow it to rotate without distortion
         var emptyObjectCard = new GameObject();
-        emptyObjectCard.transform.parent = gameBoardPlayer.transform;
+
+        //Establish if the card is one for a caller or a player
+        for (var cnt = 0; cnt < client.players.Count; cnt++)
+        {
+            if (string.Equals(client.players[cnt].clientID, clientID))
+            {
+                if (client.players[cnt].isPlayer)
+                {
+                    emptyObjectCard.transform.parent = gameBoardPlayer.transform;
+                }
+                else
+                {
+                    emptyObjectCard.transform.parent = gameBoardCaller.transform;
+                }
+            }
+        }
+
         cardPlayerHand.transform.parent = emptyObjectCard.transform;
         emptyObjectCard.tag = CS.OBJ_LOCATION_TAG_PLAYERHAND;
         emptyObjectCard.name = CS.OBJ_NAME_ROOT_CARD;
@@ -703,11 +718,16 @@ public class GameBoard : MonoBehaviour
     private void MovePlayerHandCard(GameObject go, int playerNum, int cardNum)
     {
         var cardPos = new Vector3(-1.5f, 1.25f, 0.5F * cardNum);
-        //TODO - remove hardcoding for number of players only being 2, the else statement will not work with only 2 players
+        //TODO - need to find a way to visual the cards of other players 
         if (client.players[playerNum].clientID == client.clientID)
             cardPos += handOffsetLeft;
         else
             cardPos += handOffsetRight;
+        if (client.isPlayer != true)
+        {
+            cardPos += callerCardOffset;
+        }
+      
         Debug.Log(cardPos);
         go.transform.position = cardPos;
     }

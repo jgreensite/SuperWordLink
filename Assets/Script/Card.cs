@@ -138,11 +138,6 @@ public class Card : MonoBehaviour
         //This sets the Layer
         //TODO - Consider using something like the following to set recursievely the layer and do this on the. Array.ForEach(gameObject.GetComponentsInChildren<Transform>(), (entry) => entry.gameObject.layer = LayerMask.NameToLayer("MyLayer"));
         gameObject.transform.Find("Card").gameObject.layer = LayerMask.NameToLayer(CS.OBJ_LOCATION_LAYER_PLAYERHAND);
-
-//		//This sets the desired rotation of the text on the card, the update function will then perform the rotation 
-//		m_finalTextXValue = 0f;
-//		m_finalTextYValue = 0f;
-//		m_finalTextZValue = 0f;
     }
 
     // Call this to highlight the card has been used and remove it from play
