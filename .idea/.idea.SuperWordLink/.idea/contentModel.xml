@@ -197,7 +197,6 @@
           <e p="GameManager.cs" t="Include" />
           <e p="GameMenu.cs" t="Include" />
           <e p="HeadlessServer.cs" t="Include" />
-          <e p="Helper.cs" t="Include" />
           <e p="Lobby.cs" t="Include" />
           <e p="LobbyLineItem.cs" t="Include" />
           <e p="Server.cs" t="Include" />

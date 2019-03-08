@@ -1,4 +1,6 @@
-﻿namespace AssemblyCSharp
+﻿using System.Runtime.InteropServices;
+
+namespace AssemblyCSharp
 {
     public class CS
     {
@@ -88,7 +90,9 @@
         public const string UILABELHOSTREMOTE = "Host Remote";
         public const string UILABELCONNECT = "Connect";
 
-
+        //Gamecard Offsets
+        public const float CALLERCARDOFFSET = 12.35f;
+        
         //Networking constants
         public const string GAMESERVERLOCALADDRESS = "127.0.0.1";
 

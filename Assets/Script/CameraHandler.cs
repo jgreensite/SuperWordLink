@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using AssemblyCSharp;
 
 //code heavily influenced by the following
 //https://kylewbanks.com/blog/unity3d-panning-and-pinch-to-zoom-camera-with-touch-and-mouse-input
@@ -32,19 +33,19 @@ public class CameraHandler : MonoBehaviour
 
     private bool wasZoomingLastFrame; // Touch mode only
     public float[] ZoomBounds = new float[2];
-    private List<GameObject> allObjectsInScene;
+    //private List<GameObject> allObjectsInScene;
     
     private void Start()
     {
         myCam = GetComponent<Camera>();
-        allObjectsInScene = Helper.GetAllObjectsInScene();
+        //allObjectsInScene = Helper.GetAllObjectsInScene();
         switch (myCam.name)
         {
             case "Player Camera":
                 myCam.transform.LookAt(GameBoard.Instance.gameBoardPlayer.transform);
                 break;
             case "Caller Camera":
-                myCam.CopyFrom((playerCam));
+                myCam.CopyFrom(playerCam);
                 //myCam.CopyFrom((allObjectsInScene.First(x => x.name == "Player Camera").GetComponent<Camera>()));
                 //cam.CopyFrom(GameObject.Find("Player Camera").GetComponent<Camera>());
                 myCam.transform.position += GameBoard.Instance.callerCardOffset;
@@ -155,7 +156,8 @@ public class CameraHandler : MonoBehaviour
         // Ensure the camera remains within bounds.
         var pos = transform.position;
         pos.x = Mathf.Clamp(transform.position.x, BoundsX[0], BoundsX[1]);
-        pos.z = Mathf.Clamp(transform.position.z, BoundsZ[0], BoundsZ[1]);
+        if (myCam.name == "Player Camera") pos.z = Mathf.Clamp(transform.position.z, BoundsZ[0], BoundsZ[1]);
+            else if (myCam.name == "Caller Camera") pos.z = Mathf.Clamp(transform.position.z, BoundsZ[0]+CS.CALLERCARDOFFSET, BoundsZ[1]+CS.CALLERCARDOFFSET);
         transform.position = pos;
         Debug.Log("x:" + pos.x + " " + "z:" + pos.z);
 

@@ -14,7 +14,7 @@ public class GameBoard : MonoBehaviour
     
     //used to position the gameboards in space
     private readonly Vector3 boardOffsetLeft = new Vector3(-1.00f, 1.0f, -1.00f);
-    public readonly Vector3 callerCardOffset = 12.35f * Vector3.forward;
+    public readonly Vector3 callerCardOffset = CS.CALLERCARDOFFSET * Vector3.forward;
     
     public GameObject callerCamera;
     public Card[,] cardsCaller = new Card[gridXDim, gridZDim];
