@@ -69,6 +69,7 @@ public class GameBoard : MonoBehaviour
 
     public GameObject playerCamera;
     private string playerhandCardIDOver;
+    private string gameboardCardIDOver;
     
     //used to track selection of board and player cards
     private Card selectedCard;
@@ -161,6 +162,7 @@ public class GameBoard : MonoBehaviour
                                    + client.clientName + '|'
                                    + x + '|'
                                    + z + '|'
+                                   + gameboardCardIDOver + '|'
                                    + client.clientID
                         );
                     break;
@@ -216,7 +218,7 @@ public class GameBoard : MonoBehaviour
             return;
         }
 
-        RaycastHit hitGameBoard;
+        RaycastHit hitGameBoardCard;
         RaycastHit hitPlayerCard;
 
         //Check if clicked on a card in the hand
@@ -230,20 +232,22 @@ public class GameBoard : MonoBehaviour
         }
         //check if clicked on a card on the deck
         else if (Physics.Raycast(currentCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition),
-            out hitGameBoard, 25.0f, LayerMask.GetMask(CS.OBJ_LOCATION_LAYER_GAMEBOARD)))
+            out hitGameBoardCard, 25.0f, LayerMask.GetMask(CS.OBJ_LOCATION_LAYER_GAMEBOARD)))
         {
             //TODO - the offset of 1.2 used here are hard coded based on the size of the box collider "real-world" numbers, it should be calculated
             cardSelectedLocation = CS.OBJ_LOCATION_LAYER_GAMEBOARD;
             var gameboardDimx = transform.Find("Game Board Player").localScale.x;
             var gameboardDimz = transform.Find("Game Board Player").localScale.z;
-            gameboardCardOver.x = (int) ((hitGameBoard.point.x + gameboardDimx / 2) / (2.45 / gridXDim));
-            gameboardCardOver.y = (int) ((hitGameBoard.point.z + gameboardDimz / 2) / (2.35 / gridZDim));
+            gameboardCardOver.x = (int) ((hitGameBoardCard.point.x + gameboardDimx / 2) / (2.45 / gridXDim));
+            gameboardCardOver.y = (int) ((hitGameBoardCard.point.z + gameboardDimz / 2) / (2.35 / gridZDim));
+            gameboardCardIDOver = hitPlayerCard.collider.gameObject.GetComponent<Card>().cardID;
         }
         else
         {
             gameboardCardOver.x = -1;
             gameboardCardOver.y = -1;
             playerhandCardIDOver = "";
+            gameboardCardIDOver = "";
             cardSelectedLocation = "";
         }
     }
@@ -297,7 +301,7 @@ public class GameBoard : MonoBehaviour
         }
     }
 
-    public void TryGameboardMove(int x, int z)
+    public void TryGameboardMove(int x, int z, string cardID)
     {
         string moveResult;
 
@@ -307,13 +311,6 @@ public class GameBoard : MonoBehaviour
         //Select the card, note that it may not be this client that selected the card
         SelectGameBoardCard(x, z);
 
-//		//Check if we are out of bounds
-//		if ((x < 0) || (x > (gridXDim-1)) || (z < 0) || (z > (gridZDim-1)))
-//		{
-//			selectedCard = null;
-//		}
-//		else
-//		{
         if (selectedCard != null)
         {
             moveResult = selectedCard.ValidMove(isRedTurn);

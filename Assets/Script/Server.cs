@@ -247,13 +247,17 @@ public class Server : MonoBehaviour
             case "CMOV":
                 //Currently all validation for the gameboard move is done client side
                 gbs.Incoming(aData);
-   
+                
+                string strValidGameboardMove = gbs.UpdateGameboardDeckCardStatus(aData[4], aData[5]) ? "1" : "0";
+                
                 Broadcast(
                     "SMOV" + '|'
                            + aData[1] + '|'
                            + aData[2] + '|'
                            + aData[3] + '|'
-                           + aData[4],
+                           + aData[4] + '|'
+                           + aData[5] + "|"
+                           + strValidGameboardMove,
                     clients
                 );
                 break;
@@ -261,13 +265,13 @@ public class Server : MonoBehaviour
                 //Update the server copy of the deck marking the card as having been played
                 //Send message to GameBoardState
 
-                string strValidMove = gbs.UpdateHandDeckCardStatus(aData[2], aData[3]) ? "1" : "0";
+                string strValidHandMove = gbs.UpdateHandDeckCardStatus(aData[2], aData[3]) ? "1" : "0";
                 Broadcast(
                     "SHAN" + '|'
                            + aData[1] + '|'
                            + aData[2] + '|'
                            + aData[3] + '|'
-                           + strValidMove,
+                           + strValidHandMove,
                     clients
                 );
                 break;

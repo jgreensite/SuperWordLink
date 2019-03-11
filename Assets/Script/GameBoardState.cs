@@ -167,15 +167,17 @@ public class GameBoardState : MonoBehaviour
                                 Debug.Log("Played reveal " + CS.CEP_EFFECT_RANDOM_REVEAL_CARD);
                                 int x = 0;
                                 int z = 0;
+                                string cardGameboardID = "";
                                 do
                                 {
                                     x = Random.Range(0, CS.CSGRIDXDIM);
                                     z = Random.Range(0, CS.CSGRIDZDIM);
+                                    cardID = gbd.gameCards[x + z * CS.CSGRIDXDIM].cardID;
                                 } while (gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed == CS.CAR_REVEAL_SHOWN);
                 
                                 string xStr = x.ToString();
                                 string zStr = z.ToString();
-                                string[] zData = {"CMOV", clientID, xStr, zStr, ""};
+                                string[] zData = {"CMOV", clientID, xStr, zStr, cardGameboardID, ""};
                                 Incoming(zData);
                             }
 
@@ -203,6 +205,84 @@ public class GameBoardState : MonoBehaviour
         return(isPlayableCard);
     }
 
+        public bool UpdateGameboardDeckCardStatus(string cardID, string clientID)
+    {
+        string strReponse = "";
+        var s = FindObjectOfType<Server>();
+        var bc = new GameCard(); 
+        var gc = new GameCard();
+        bool isPlayableCard = false;
+
+        int z;
+        int x;
+        
+        for (z = 0; z < CS.CSGRIDZDIM; z++)
+        for (x = 0; x < CS.CSGRIDXDIM; x++)
+        {
+            bc = gbd.gameCards[x + z * CS.CSGRIDXDIM];
+        }
+
+        //Check to see if the cardID is correct and the card ha not been played ClientID
+        //TODO - To make this more secure clients should only know their (and only their own) clientID
+        //TODO - cep and cwp are not currently attributes of board cards but there is no reason they should not be
+        if ((bc.cardID == cardID) && (bc.cardRevealed == CS.CAR_REVEAL_HIDDEN))
+        {
+
+            isPlayableCard = true;
+
+        }
+
+        if (isPlayableCard)
+        {
+            bc.cardRevealed = CS.CAR_REVEAL_SHOWN;
+            gbd.gameCards[x + z * CS.CSGRIDXDIM] = bc;
+            Debug.Log("Played reveal card:" + cardID + "at x:" +x.ToString() + "z:" +z.ToString());
+            
+            //Select the card, note that it may not be this client that selected the card
+
+            //START HERE - You have copied the following from Gameboard.TryGameboardMove()
+            //START HERE - You are trying to get the gameboard state managed on the server
+            //START HERE - The issue you are battling with is that ValidMove is a method on Card.cs not GameCard.cs
+            
+            moveResult = bc.ValidMove(isRedTurn);
+            switch (moveResult)
+            {
+                case CS.GOOD:
+                    //Flip the Card and keep on picking
+                    selectedCard = cardsPlayerGameBoard[x, z];
+                    selectedCard.makeReveal(true);
+                    //TODO - simplify this switch statement there is a lot of repeated elements in each case
+                    //TODO - simplify EndTurn, checkVictory() and endGame(), think these could be one function
+                    var winState = checkVictory();
+                    if (winState == CS.BLUEWIN || winState == CS.REDWIN) endGame();
+                    break;
+
+                case CS.BAD:
+                    //flip the Card, end the turn
+                    selectedCard = cardsPlayerGameBoard[x, z];
+                    selectedCard.makeReveal(true);
+                    EndTurn(moveResult);
+                    break;
+
+                case CS.DEATH_TEAM:
+                    //flip the Card, end the game
+                    selectedCard = cardsPlayerGameBoard[x, z];
+                    selectedCard.makeReveal(true);
+                    EndTurn(moveResult);
+                    break;
+
+                case CS.CIVIL_TEAM:
+                    //flip the Card, end the turn
+                    selectedCard = cardsPlayerGameBoard[x, z];
+                    selectedCard.makeReveal(true);
+                    EndTurn(moveResult);
+                    break;
+            }
+        } else Debug.Log("invalid selection of card:" + cardID);
+        SaveDeck(gbd);
+        return(isPlayableCard);
+    }
+    
     private GameCard MakeHandCard(int playerCnt)
     {
         //create a card
