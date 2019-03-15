@@ -202,6 +202,7 @@ public class Server : MonoBehaviour
         var distWords = "";
         var distPopulate = "";
         var distReveal = "";
+        var distCardID = "";
         
         switch (aData[0])
         {
@@ -281,6 +282,7 @@ public class Server : MonoBehaviour
                 
                 distWords = "";
                 distPopulate = "";
+                distCardID = "";
     
                 //Cannot use FindObjectOfType in the constructor, so have to assign in here    
                 var worddictionary = FindObjectOfType<WordDictionary>();
@@ -290,13 +292,15 @@ public class Server : MonoBehaviour
 
                 foreach (var tmpStr in worddictionary.wordList) distWords += tmpStr + ",";
                 foreach (var tmpStr in worddictionary.populate) distPopulate += tmpStr + ",";
+                foreach (var tmpStr in worddictionary.cardID) distCardID += tmpStr + ",";
                 
                 
                 Broadcast(
                     "SDIC" + '|'
                            + worddictionary.isRedStart + '|'
                            + distWords + '|'
-                           + distPopulate,
+                           + distPopulate + '|'
+                           + distCardID,
                     clients
                 );
                 break;
@@ -359,6 +363,7 @@ public class Server : MonoBehaviour
                     distWords += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardWord + ",";
                     distPopulate += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardSuit +",";
                     distReveal += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed +",";
+                    distCardID += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardID + ",";
                 }
 
                 Broadcast(
@@ -368,7 +373,8 @@ public class Server : MonoBehaviour
                            + distPopulate.Remove(distPopulate.LastIndexOf(',')) + '|'
                            + distPosX.Remove(distPosX.LastIndexOf(',')) + '|'
                            + distPosZ.Remove(distPosZ.LastIndexOf(',')) + '|'
-                           + distReveal.Remove(distReveal.LastIndexOf(',')),
+                           + distReveal.Remove(distReveal.LastIndexOf(',')) +'|'
+                           + distCardID.Remove(distCardID.LastIndexOf(',')),
                     clients
                 );
                 break;

@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AssemblyCSharp;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class WordDictionary : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class WordDictionary : MonoBehaviour
     private Dictionary<int, List<string>> words = new Dictionary<int, List<string>>();
     public string[] wordList = new string[gridSize];
     public string[] populate = new string[gridSize];
+    public string[] cardID = new string[gridSize];
     
     public int largeWordLength = 9;
     public int smallWordLength = 3;
@@ -90,6 +93,7 @@ public class WordDictionary : MonoBehaviour
             }
 
             wordList[x] = newWord;
+            cardID[x] = Guid.NewGuid().ToString();
             
             wordString = wordString + ", " + wordList[x];
             keepSearching = true;

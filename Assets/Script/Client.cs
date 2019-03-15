@@ -184,6 +184,9 @@ public class Client : MonoBehaviour
                     var pData = aData[3].Split(',');
                     GameBoard.Instance.populate = pData;
 
+                    var iData = aData[4].Split(',');
+                    GameBoard.Instance.cardids = iData;
+                    
                     GameBoard.Instance.GeneratePlayerGameboard();
 
                     GetGameCardDeck(CS.CREATE);

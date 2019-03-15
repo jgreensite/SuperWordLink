@@ -21,6 +21,17 @@ public class GameBoardState : MonoBehaviour
     
     public GameHandDeck ghd = new GameHandDeck();
 
+    public int cntBlueCards;
+    public int cntRedCards;
+    public int cntBlueHandCards;
+    public int cntRedHandCards;
+    public int cntCivilCards;
+    public int cntDeathCards;
+    public int cntGoalRedCards;
+    public int cntGoalBlueCards;
+    public bool isGameover;
+
+    
     public void Init()
     {
         //needed to make this a singleton
@@ -40,6 +51,11 @@ public class GameBoardState : MonoBehaviour
       
     }
 
+    private void start()
+    {
+        isGameover = false;
+    }
+    
     public void BuildHandDeck(string msg)
     {
         var pc = new GameCard();
@@ -112,7 +128,7 @@ public class GameBoardState : MonoBehaviour
         }
 
         Debug.Log("Wrote : " + filePath);
-   }
+    }
 
     public bool UpdateHandDeckCardStatus(string cardID, string clientID)
     {
@@ -177,7 +193,7 @@ public class GameBoardState : MonoBehaviour
                 
                                 string xStr = x.ToString();
                                 string zStr = z.ToString();
-                                string[] zData = {"CMOV", clientID, xStr, zStr, cardGameboardID, ""};
+                                string[] zData = {"CMOV", clientID, xStr, zStr, cardGameboardID, cardID};
                                 Incoming(zData);
                             }
 
@@ -212,9 +228,10 @@ public class GameBoardState : MonoBehaviour
         var bc = new GameCard(); 
         var gc = new GameCard();
         bool isPlayableCard = false;
+        string moveResult;
 
-        int z;
-        int x;
+        int z = 0;
+        int x = 0;
         
         for (z = 0; z < CS.CSGRIDZDIM; z++)
         for (x = 0; x < CS.CSGRIDXDIM; x++)
@@ -243,38 +260,28 @@ public class GameBoardState : MonoBehaviour
             //START HERE - You have copied the following from Gameboard.TryGameboardMove()
             //START HERE - You are trying to get the gameboard state managed on the server
             //START HERE - The issue you are battling with is that ValidMove is a method on Card.cs not GameCard.cs
-            
+
             moveResult = bc.ValidMove(isRedTurn);
             switch (moveResult)
             {
                 case CS.GOOD:
                     //Flip the Card and keep on picking
-                    selectedCard = cardsPlayerGameBoard[x, z];
-                    selectedCard.makeReveal(true);
-                    //TODO - simplify this switch statement there is a lot of repeated elements in each case
-                    //TODO - simplify EndTurn, checkVictory() and endGame(), think these could be one function
                     var winState = checkVictory();
                     if (winState == CS.BLUEWIN || winState == CS.REDWIN) endGame();
                     break;
 
                 case CS.BAD:
                     //flip the Card, end the turn
-                    selectedCard = cardsPlayerGameBoard[x, z];
-                    selectedCard.makeReveal(true);
                     EndTurn(moveResult);
                     break;
 
                 case CS.DEATH_TEAM:
                     //flip the Card, end the game
-                    selectedCard = cardsPlayerGameBoard[x, z];
-                    selectedCard.makeReveal(true);
                     EndTurn(moveResult);
                     break;
 
                 case CS.CIVIL_TEAM:
                     //flip the Card, end the turn
-                    selectedCard = cardsPlayerGameBoard[x, z];
-                    selectedCard.makeReveal(true);
                     EndTurn(moveResult);
                     break;
             }
@@ -283,6 +290,77 @@ public class GameBoardState : MonoBehaviour
         return(isPlayableCard);
     }
     
+    private void EndTurn(string moveResult)
+    {
+        var winState = checkVictory();
+        Debug.Log(winState);
+        // If Death card is drawn end the game
+        if (moveResult == CS.DEATH_TEAM)
+        {
+            endGame();
+            // Otherwise continue to see if a victory has occured
+        }
+        else
+        {
+            if (winState == CS.NONEWIN)
+            {
+                //switch which team is picking
+                isRedTurn = !isRedTurn;
+            }
+            // Victory may have occured
+            else if (winState == CS.BLUEWIN || winState == CS.REDWIN)
+            {
+                endGame();
+            }
+            else
+            {
+                Debug.Log("Error - Winstate is " + winState);
+            }
+        }
+    }
+
+    private string checkVictory()
+    {
+        //iterate through cards looking for a win
+        var retVal = "";
+        var bc = new GameCard();
+        int z = 0;
+        int x = 0;
+        cntBlueCards = 0;
+        cntRedCards = 0;
+        for (z = 0; z < CS.CSGRIDZDIM; z++)
+        for (x = 0; x < CS.CSGRIDXDIM; x++)
+            bc = gbd.gameCards[x + z * CS.CSGRIDXDIM];
+            if (bc.cardRevealed == CS.CAR_REVEAL_SHOWN)
+            {
+                if (bc.cardSuit == CS.BLUE_TEAM) cntBlueCards++;
+                if (bc.cardSuit == CS.RED_TEAM) cntRedCards++;
+            }
+        
+        for (z = 0; z < CS.CSGRIDZDIM; z++)
+        for (x = 0; x < CS.CSGRIDXDIM; x++)
+        {
+            bc = gbd.gameCards[x + z * CS.CSGRIDXDIM];
+        }
+        
+        //See if anyone has won
+        if (cntRedCards == cntGoalRedCards)
+            retVal = CS.REDWIN;
+        else if (cntBlueCards == cntGoalBlueCards)
+            retVal = CS.BLUEWIN;
+        else
+            retVal = CS.NONEWIN;
+        return retVal;
+    }
+
+    private bool endGame()
+    {
+        Debug.Log("Game Over !!! - Press R to restart");
+        isGameover = true;
+        return true;
+    }
+        
+        
     private GameCard MakeHandCard(int playerCnt)
     {
         //create a card

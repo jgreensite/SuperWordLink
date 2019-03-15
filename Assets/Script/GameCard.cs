@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
+using AssemblyCSharp;
 
-
-//namespace AssemblyCSharp
-//{
 [XmlRoot("GameCard")]
 public class GameCard
 {
@@ -21,7 +19,42 @@ public class GameCard
     public int cardXPos { get; set; }
     public int cardZPos { get; set; }
     public string cardWord { get; set; }
+    
+    public string ValidMove(bool isRedTurn)
+    // Check move is valid
+    {
+        var retVal = CS.ERROR;
+        switch (cardSuit)
+        {
+            case CS.RED_TEAM:
+                if (isRedTurn)
+                    retVal = CS.GOOD;
+                else
+                    retVal = CS.BAD;
+                break;
 
+            case CS.BLUE_TEAM:
+                if (!isRedTurn)
+                    retVal = CS.GOOD;
+                else
+                    retVal = CS.BAD;
+                break;
+
+            case CS.DEATH_TEAM:
+                retVal = CS.DEATH_TEAM;
+                break;
+
+            case CS.CIVIL_TEAM:
+                retVal = CS.CIVIL_TEAM;
+                break;
+
+            default:
+                retVal = CS.ERROR;
+                break;
+        }
+
+        return retVal;
+    }
 }
 
 public class CardWhenPlayable
@@ -38,4 +71,3 @@ public class CardEffectPlayable
     public string affectWhat { get; set; }
     public int numTimes { get; set; }
 }
-//}

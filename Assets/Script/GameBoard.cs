@@ -80,6 +80,7 @@ public class GameBoard : MonoBehaviour
     //used to pass data into the Gameboard
     public string[] words = new string[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
     public string[] populate = new string[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
+    public string[] cardids = new string[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
     public int[] xPos = new int[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
     public int[] zPos = new int[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
     public string[] reveal = new string[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
@@ -240,7 +241,8 @@ public class GameBoard : MonoBehaviour
             var gameboardDimz = transform.Find("Game Board Player").localScale.z;
             gameboardCardOver.x = (int) ((hitGameBoardCard.point.x + gameboardDimx / 2) / (2.45 / gridXDim));
             gameboardCardOver.y = (int) ((hitGameBoardCard.point.z + gameboardDimz / 2) / (2.35 / gridZDim));
-            gameboardCardIDOver = hitPlayerCard.collider.gameObject.GetComponent<Card>().cardID;
+            //gameboardCardIDOver = hitGameBoardCard.collider.gameObject.GetComponent<Card>().cardID;
+            gameboardCardIDOver = cardsPlayerGameBoard[(int)gameboardCardOver.x, (int)gameboardCardOver.y].cardID;
         }
         else
         {
@@ -313,7 +315,7 @@ public class GameBoard : MonoBehaviour
 
         if (selectedCard != null)
         {
-            moveResult = selectedCard.ValidMove(isRedTurn);
+            moveResult = selectedCard.ValidCardMove(isRedTurn);
             switch (moveResult)
             {
                 case CS.GOOD:
@@ -353,13 +355,12 @@ public class GameBoard : MonoBehaviour
     }
 
     public void  TryHandMove(string cardID)
-        //Need to build the TryHandMove Function to replicate the TryGameboardMove Function
+        //TOD0 - Need to build the TryHandMove Function to replicate the TryGameboardMove Function
     {
         string moveResult;
 
         //Multiplayer support
         //Note that we need to create local variables as if it is not your turn you may not have a selected card defined
-
         //Select the card, note that it may not be this client that selected the card
 
         SelectPlayerHandCard(cardID);
@@ -368,7 +369,6 @@ public class GameBoard : MonoBehaviour
         {
             //TODO - Would like to put in a SERVER check to see if it is the correct player's turn but these is no guarantee that card on the board has not already flipped over ending the turn for the curent player
             // FOR NOW FORCE POSITIVE SO CHECK ALWAYS PASSES
-            //moveResult = selectedCard.ValidMove(isRedTurn);
             moveResult = CS.GOOD;
             switch (moveResult)
             {
@@ -377,15 +377,7 @@ public class GameBoard : MonoBehaviour
                     selectedCard = cardsPlayerHand[cardID];
                     //TODO is this right? Does selectedCard need not be passed into the function?
                     selectedCard.makeUsedUp(true);
-
-//                    var winState = checkVictory();
-//                    if (winState == CS.BLUEWIN || winState == CS.REDWIN) endGame();
-//                    else
-//                    {
-                        cardsGameboardForceUpdate = true;
-//                    }
-//
-//                    ;
+                    cardsGameboardForceUpdate = true;
                     break;
                 default:
                 {
@@ -512,7 +504,7 @@ public class GameBoard : MonoBehaviour
                     break;
             }
 
-            GenerateGameBoardCard(x, z, ref go, words[x + z * CS.CSGRIDXDIM], populate[x + z * CS.CSGRIDXDIM]);
+            GenerateGameBoardCard(x, z, ref go, words[x + z * CS.CSGRIDXDIM], populate[x + z * CS.CSGRIDXDIM], cardids[x + z * CS.CSGRIDXDIM]);
         }
 
         //Blue goes first
@@ -536,7 +528,7 @@ public class GameBoard : MonoBehaviour
                 || ((cardsPlayerGameBoard[x, z].isCardUp) == false && (reveal[x + z * CS.CSGRIDXDIM] == CS.CAR_REVEAL_SHOWN)))
             {
                 
-                TryGameboardMove(x, z);
+                TryGameboardMove(x, z, cardsPlayerGameBoard[x, z].cardID);
                 //cardsPlayerGameBoard[x, z].makeReveal(!cardsPlayerGameBoard[x, z].isCardUp); 
             }
         }
@@ -618,7 +610,7 @@ public class GameBoard : MonoBehaviour
         }
     }
 
-    private void GenerateGameBoardCard(int x, int z, ref GameObject go, string word, string cardType)
+    private void GenerateGameBoardCard(int x, int z, ref GameObject go, string word, string cardType, string cardID)
     {
         //TODO - the GenerateCard() class should be methods on the Card() class
         go.transform.SetParent(transform);
@@ -639,9 +631,12 @@ public class GameBoard : MonoBehaviour
         emptyObjectCard.transform.parent = gameBoardPlayer.transform;
         cardGameBoard.transform.parent = emptyObjectCard.transform;
 
+        //Populate the CardID
+        cardGameBoard.cardID = cardID;
+        
         //Rotate the card
         cardGameBoard.makeFaceUp(false);
-
+        
         //Populate Caller Gameboard
         //copy the card for the Caller gameboard
         var cardCaller = Instantiate(cardGameBoard, callerCardOffset + cardGameBoard.transform.position,

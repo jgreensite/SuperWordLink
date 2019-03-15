@@ -53,8 +53,9 @@ public class Card : MonoBehaviour
 
     public string tmpStr = CS.EMPTY;
 
+    public string ValidCardMove(bool isRedTurn)
     // Check move is valid
-    public string ValidMove(bool isRedTurn)
+    //TODO - Should not be using this method, should instead be using the method on GameCard.cs called ValidMove()
     {
         var retVal = CS.ERROR;
         switch (cardType)
