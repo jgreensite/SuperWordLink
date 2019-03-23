@@ -232,21 +232,28 @@ public class GameBoardState : MonoBehaviour
 
         int z = 0;
         int x = 0;
-        
-        for (z = 0; z < CS.CSGRIDZDIM; z++)
-        for (x = 0; x < CS.CSGRIDXDIM; x++)
-        {
-            bc = gbd.gameCards[x + z * CS.CSGRIDXDIM];
-       
 
-            //Check to see if the cardID is correct and the card ha not been played ClientID
-            //TODO - To make this more secure clients should only know their (and only their own) clientID
-            //TODO - cep and cwp are not currently attributes of board cards but there is no reason they should not be
-            if ((bc.cardID == cardID) && (bc.cardRevealed == CS.CAR_REVEAL_HIDDEN))
+        while ((z < CS.CSGRIDZDIM) && (isPlayableCard == false))
+        {
+            while ((x < CS.CSGRIDXDIM) && (isPlayableCard == false))
             {
-    
-                isPlayableCard = true;
-    
+                bc = gbd.gameCards[x + z * CS.CSGRIDXDIM];
+                //Check to see if the cardID is correct and the card ha not been played ClientID
+                //TODO - To make this more secure clients should only know their (and only their own) clientID
+                //TODO - cep and cwp are not currently attributes of board cards but there is no reason they should not be
+                if ((bc.cardID == cardID) && (bc.cardRevealed == CS.CAR_REVEAL_HIDDEN))
+                {
+
+                    isPlayableCard = true;
+
+                }
+                if (isPlayableCard == false) x++;
+            }
+
+            if (isPlayableCard == false)
+            {
+                x = 0;
+                z++;
             }
         }
 

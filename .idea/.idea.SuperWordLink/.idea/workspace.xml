@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1437e589-671a-4957-a669-82a5eb0bb141" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Editor/JetBrains/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Editor/JetBrains/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scene/Menu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scene/Menu.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Client.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Client.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Server.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Server.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/WordDictionary.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/WordDictionary.cs" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -190,8 +184,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/Script/Server.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="86">
-              <caret line="257" column="33" lean-forward="true" selection-start-line="257" selection-start-column="33" selection-end-line="257" selection-end-column="33" />
+            <state relative-caret-position="-4">
+              <caret line="251" column="16" selection-start-line="251" selection-start-column="16" selection-end-line="251" selection-end-column="16" />
               <folding>
                 <marker date="1553037762862" expanded="false" signature="6:239" ph="..." />
                 <marker date="1553037762862" expanded="true" signature="276:16162" ph="{...}" />
@@ -280,61 +274,63 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="238" column="20" selection-start-line="238" selection-start-column="17" selection-end-line="238" selection-end-column="20" />
+            <state relative-caret-position="271">
+              <caret line="257" selection-start-line="257" selection-end-line="257" />
               <folding>
-                <marker date="1553193573484" expanded="false" signature="6:207" ph="..." />
-                <marker date="1553193573484" expanded="true" signature="252:16624" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="869:1336" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="1363:1382" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="1408:1448" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="1495:3525" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="1535:1745" ph="/* var pc = new GameCard(); ... */" />
-                <marker date="1553193573484" expanded="true" signature="1767:3496" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="2120:2361" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="2681:3467" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="3150:3343" ph="/* update deck, replacing old card with new card ... */" />
-                <marker date="1553193573484" expanded="true" signature="3564:4022" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="3738:3837" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="3874:3973" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="4096:8294" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="4430:8233" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="4538:4715" ph="/* Check to see if the cardID is correctly associated with the ClientID ... */" />
-                <marker date="1553193573484" expanded="true" signature="4832:8223" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="4903:5789" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="5032:5139" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="5347:5454" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="5664:5771" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="5826:8209" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="5907:8190" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="6000:8168" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="6166:7180" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="7354:7510" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="7651:7807" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="8377:10880" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="8726:9290" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="8813:9119" ph="/* Check to see if the cardID is correct and the card ha not been played ClientID ... */" />
-                <marker date="1553193573484" expanded="true" signature="9203:9280" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="9319:10764" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="9561:9937" ph="/* Select the card, note that it may not be this client that selected the card ... */" />
-                <marker date="1553193573484" expanded="true" signature="10020:10754" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="10929:11666" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="11091:11200" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="11213:11660" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="11263:11378" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="11488:11543" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="11560:11650" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="11701:12707" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="12103:12259" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="12356:12431" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="12735:12852" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="12919:14103" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="13189:13304" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="13359:13476" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="14140:14329" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="14443:16622" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="14522:16616" ph="{...}" />
-                <marker date="1553193573484" expanded="true" signature="14977:15860" ph="{...}" />
+                <marker date="1553375145855" expanded="false" signature="6:207" ph="..." />
+                <marker date="1553375145855" expanded="true" signature="252:16869" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="869:1336" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="1363:1382" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="1408:1448" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="1495:3525" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="1535:1745" ph="/* var pc = new GameCard(); ... */" />
+                <marker date="1553375145855" expanded="true" signature="1767:3496" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="2120:2361" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="2681:3467" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="3150:3343" ph="/* update deck, replacing old card with new card ... */" />
+                <marker date="1553375145855" expanded="true" signature="3564:4022" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="3738:3837" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="3874:3973" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="4096:8294" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="4430:8233" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="4538:4715" ph="/* Check to see if the cardID is correctly associated with the ClientID ... */" />
+                <marker date="1553375145855" expanded="true" signature="4832:8223" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="4903:5789" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="5032:5139" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="5347:5454" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="5664:5771" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="5826:8209" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="5907:8190" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="6000:8168" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="6166:7180" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="7354:7510" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="7651:7807" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="8377:11125" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="8695:9535" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="8774:9411" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="8864:9178" ph="/* Check to see if the cardID is correct and the card ha not been played ClientID ... */" />
+                <marker date="1553375145855" expanded="true" signature="9266:9347" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="9453:9525" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="9564:11009" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="9806:10182" ph="/* Select the card, note that it may not be this client that selected the card ... */" />
+                <marker date="1553375145855" expanded="true" signature="10265:10999" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="11174:11911" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="11336:11445" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="11458:11905" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="11508:11623" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="11733:11788" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="11805:11895" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="11946:12952" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="12348:12504" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="12601:12676" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="12980:13097" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="13164:14348" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="13434:13549" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="13604:13721" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="14385:14574" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="14688:16867" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="14767:16861" ph="{...}" />
+                <marker date="1553375145855" expanded="true" signature="15222:16105" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -365,7 +361,7 @@
         <entry file="file://$PROJECT_DIR$/Assets/Script/GameCard.cs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="120">
-              <caret line="17" column="24" lean-forward="true" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
+              <caret line="17" column="24" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
               <folding>
                 <marker date="1552695082818" expanded="false" signature="6:87" ph="..." />
                 <marker date="1552695082818" expanded="true" signature="132:1584" ph="{...}" />
@@ -635,7 +631,7 @@
       <workItem from="1552379778698" duration="14309000" />
       <workItem from="1552695228504" duration="303000" />
       <workItem from="1552984225695" duration="8010000" />
-      <workItem from="1553157051302" duration="3644000" />
+      <workItem from="1553157051302" duration="5985000" />
     </task>
     <task id="LOCAL-00001" summary="Testing commit with Rider">
       <created>1545559485773</created>
@@ -683,7 +679,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="270400000" />
+    <option name="totallyTimeSpent" value="272741000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -705,10 +701,10 @@
       <window_info id="Capture Tool" order="4" />
       <window_info id="Captures" order="5" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" sideWeight="0.46638054" visible="true" weight="0.5260197" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.46638054" weight="0.5260197" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Unity" order="3" sideWeight="0.6502146" weight="0.32166892" />
-      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.73462087" weight="0.34599155" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.7331903" weight="0.34599155" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" sideWeight="0.4985694" weight="0.32819074" />
@@ -718,8 +714,8 @@
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Unit Tests" order="12" />
       <window_info anchor="bottom" id="Terminal" order="13" sideWeight="0.49785408" weight="0.32911393" />
-      <window_info anchor="bottom" id="Event Log" order="14" sideWeight="0.53361946" side_tool="true" visible="true" weight="0.5260197" />
-      <window_info anchor="bottom" id="Build" order="15" sideWeight="0.44921315" weight="0.21518987" />
+      <window_info anchor="bottom" id="Event Log" order="14" sideWeight="0.5522174" side_tool="true" visible="true" weight="0.21518987" />
+      <window_info active="true" anchor="bottom" id="Build" order="15" sideWeight="0.44778255" visible="true" weight="0.21518987" />
       <window_info anchor="bottom" id="Android Profiler" order="16" show_stripe_button="false" />
       <window_info anchor="bottom" id="Logcat" order="17" sideWeight="0.49928468" weight="0.32928476" />
       <window_info anchor="bottom" id="Stacktrace" order="18" sideWeight="0.49928468" weight="0.32876712" />
@@ -808,81 +804,29 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
-          <line>252</line>
+          <line>259</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="252">
             <startOffsets>
-              <option value="9300" />
+              <option value="9545" />
             </startOffsets>
             <endOffsets>
-              <option value="9319" />
+              <option value="9564" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
-          <line>250</line>
-          <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="250">
-            <startOffsets>
-              <option value="9289" />
-            </startOffsets>
-            <endOffsets>
-              <option value="9290" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
-          <line>264</line>
+          <line>271</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="264">
             <startOffsets>
-              <option value="9951" />
+              <option value="10196" />
             </startOffsets>
             <endOffsets>
-              <option value="9988" />
+              <option value="10233" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
-          <line>238</line>
-          <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="238">
-            <startOffsets>
-              <option value="8749" />
-            </startOffsets>
-            <endOffsets>
-              <option value="8791" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
-          <line>244</line>
-          <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="244">
-            <startOffsets>
-              <option value="9132" />
-            </startOffsets>
-            <endOffsets>
-              <option value="9203" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
-          <line>247</line>
-          <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="247">
-            <startOffsets>
-              <option value="9239" />
-            </startOffsets>
-            <endOffsets>
-              <option value="9261" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
@@ -899,16 +843,29 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
-          <line>254</line>
+          <line>261</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="254">
             <startOffsets>
-              <option value="9342" />
+              <option value="9587" />
             </startOffsets>
             <endOffsets>
-              <option value="9380" />
+              <option value="9625" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
+          <line>262</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="255">
+            <startOffsets>
+              <option value="9638" />
+            </startOffsets>
+            <endOffsets>
+              <option value="9680" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -1339,59 +1296,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Script/Server.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="86">
-          <caret line="257" column="33" lean-forward="true" selection-start-line="257" selection-start-column="33" selection-end-line="257" selection-end-column="33" />
-          <folding>
-            <marker date="1553037762862" expanded="false" signature="6:239" ph="..." />
-            <marker date="1553037762862" expanded="true" signature="276:16162" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="915:1005" ph="/* which team's turn it is ... */" />
-            <marker date="1553037762862" expanded="true" signature="1077:1975" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="1612:1842" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="1870:1950" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="2242:3427" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="2454:2552" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="2633:3174" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="2824:3160" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="3234:3421" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="3462:3686" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="3737:4790" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="4833:5338" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="4851:5169" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="4930:5132" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="5192:5332" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="5420:5901" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="5473:5778" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="5810:5895" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="6080:6166" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="6229:14487" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="6679:14481" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="6731:6932" ph="/* See if the number of participants is greater than zero, if it is then it must have been sent ... */" />
-            <marker date="1553037762862" expanded="true" signature="6984:7896" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="7627:7787" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="8456:8639" ph="/* get a list of all the users that are connected, do this after adding the new client's details to this list ... */" />
-            <marker date="1553037762862" expanded="true" signature="9472:9596" ph="/* Update the server copy of the deck marking the card as having been played ... */" />
-            <marker date="1553037762862" expanded="true" signature="11628:12191" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="11772:11906" ph="/* TODO - improve matching, should not be matching on client name it's brittle ... */" />
-            <marker date="1553037762862" expanded="true" signature="11972:12173" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="13159:13793" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="14531:15583" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="14617:15546" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="14991:15322" ph="/* TODO - Change this it is not the easiest to understand code ... */" />
-            <marker date="1553037762862" expanded="true" signature="15611:16160" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="15785:15883" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="15943:16130" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="16189:16430" ph="{...}" />
-            <marker date="1553037762862" expanded="true" signature="16392:16428" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Script/GameCard.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
-          <caret line="17" column="24" lean-forward="true" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
+          <caret line="17" column="24" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
           <folding>
             <marker date="1552695082818" expanded="false" signature="6:87" ph="..." />
             <marker date="1552695082818" expanded="true" signature="132:1584" ph="{...}" />
@@ -1507,63 +1415,114 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Script/Server.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4">
+          <caret line="251" column="16" selection-start-line="251" selection-start-column="16" selection-end-line="251" selection-end-column="16" />
+          <folding>
+            <marker date="1553037762862" expanded="false" signature="6:239" ph="..." />
+            <marker date="1553037762862" expanded="true" signature="276:16162" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="915:1005" ph="/* which team's turn it is ... */" />
+            <marker date="1553037762862" expanded="true" signature="1077:1975" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="1612:1842" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="1870:1950" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="2242:3427" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="2454:2552" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="2633:3174" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="2824:3160" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="3234:3421" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="3462:3686" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="3737:4790" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="4833:5338" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="4851:5169" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="4930:5132" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="5192:5332" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="5420:5901" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="5473:5778" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="5810:5895" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="6080:6166" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="6229:14487" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="6679:14481" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="6731:6932" ph="/* See if the number of participants is greater than zero, if it is then it must have been sent ... */" />
+            <marker date="1553037762862" expanded="true" signature="6984:7896" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="7627:7787" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="8456:8639" ph="/* get a list of all the users that are connected, do this after adding the new client's details to this list ... */" />
+            <marker date="1553037762862" expanded="true" signature="9472:9596" ph="/* Update the server copy of the deck marking the card as having been played ... */" />
+            <marker date="1553037762862" expanded="true" signature="11628:12191" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="11772:11906" ph="/* TODO - improve matching, should not be matching on client name it's brittle ... */" />
+            <marker date="1553037762862" expanded="true" signature="11972:12173" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="13159:13793" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="14531:15583" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="14617:15546" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="14991:15322" ph="/* TODO - Change this it is not the easiest to understand code ... */" />
+            <marker date="1553037762862" expanded="true" signature="15611:16160" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="15785:15883" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="15943:16130" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="16189:16430" ph="{...}" />
+            <marker date="1553037762862" expanded="true" signature="16392:16428" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="238" column="20" selection-start-line="238" selection-start-column="17" selection-end-line="238" selection-end-column="20" />
+        <state relative-caret-position="271">
+          <caret line="257" selection-start-line="257" selection-end-line="257" />
           <folding>
-            <marker date="1553193573484" expanded="false" signature="6:207" ph="..." />
-            <marker date="1553193573484" expanded="true" signature="252:16624" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="869:1336" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="1363:1382" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="1408:1448" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="1495:3525" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="1535:1745" ph="/* var pc = new GameCard(); ... */" />
-            <marker date="1553193573484" expanded="true" signature="1767:3496" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="2120:2361" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="2681:3467" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="3150:3343" ph="/* update deck, replacing old card with new card ... */" />
-            <marker date="1553193573484" expanded="true" signature="3564:4022" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="3738:3837" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="3874:3973" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="4096:8294" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="4430:8233" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="4538:4715" ph="/* Check to see if the cardID is correctly associated with the ClientID ... */" />
-            <marker date="1553193573484" expanded="true" signature="4832:8223" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="4903:5789" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="5032:5139" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="5347:5454" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="5664:5771" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="5826:8209" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="5907:8190" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="6000:8168" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="6166:7180" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="7354:7510" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="7651:7807" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="8377:10880" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="8726:9290" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="8813:9119" ph="/* Check to see if the cardID is correct and the card ha not been played ClientID ... */" />
-            <marker date="1553193573484" expanded="true" signature="9203:9280" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="9319:10764" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="9561:9937" ph="/* Select the card, note that it may not be this client that selected the card ... */" />
-            <marker date="1553193573484" expanded="true" signature="10020:10754" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="10929:11666" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="11091:11200" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="11213:11660" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="11263:11378" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="11488:11543" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="11560:11650" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="11701:12707" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="12103:12259" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="12356:12431" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="12735:12852" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="12919:14103" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="13189:13304" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="13359:13476" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="14140:14329" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="14443:16622" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="14522:16616" ph="{...}" />
-            <marker date="1553193573484" expanded="true" signature="14977:15860" ph="{...}" />
+            <marker date="1553375145855" expanded="false" signature="6:207" ph="..." />
+            <marker date="1553375145855" expanded="true" signature="252:16869" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="869:1336" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="1363:1382" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="1408:1448" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="1495:3525" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="1535:1745" ph="/* var pc = new GameCard(); ... */" />
+            <marker date="1553375145855" expanded="true" signature="1767:3496" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="2120:2361" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="2681:3467" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="3150:3343" ph="/* update deck, replacing old card with new card ... */" />
+            <marker date="1553375145855" expanded="true" signature="3564:4022" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="3738:3837" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="3874:3973" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="4096:8294" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="4430:8233" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="4538:4715" ph="/* Check to see if the cardID is correctly associated with the ClientID ... */" />
+            <marker date="1553375145855" expanded="true" signature="4832:8223" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="4903:5789" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="5032:5139" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="5347:5454" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="5664:5771" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="5826:8209" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="5907:8190" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="6000:8168" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="6166:7180" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="7354:7510" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="7651:7807" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="8377:11125" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="8695:9535" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="8774:9411" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="8864:9178" ph="/* Check to see if the cardID is correct and the card ha not been played ClientID ... */" />
+            <marker date="1553375145855" expanded="true" signature="9266:9347" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="9453:9525" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="9564:11009" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="9806:10182" ph="/* Select the card, note that it may not be this client that selected the card ... */" />
+            <marker date="1553375145855" expanded="true" signature="10265:10999" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="11174:11911" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="11336:11445" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="11458:11905" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="11508:11623" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="11733:11788" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="11805:11895" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="11946:12952" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="12348:12504" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="12601:12676" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="12980:13097" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="13164:14348" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="13434:13549" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="13604:13721" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="14385:14574" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="14688:16867" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="14767:16861" ph="{...}" />
+            <marker date="1553375145855" expanded="true" signature="15222:16105" ph="{...}" />
           </folding>
         </state>
       </provider>
