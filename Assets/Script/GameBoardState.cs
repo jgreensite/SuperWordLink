@@ -237,16 +237,17 @@ public class GameBoardState : MonoBehaviour
         for (x = 0; x < CS.CSGRIDXDIM; x++)
         {
             bc = gbd.gameCards[x + z * CS.CSGRIDXDIM];
-        }
+       
 
-        //Check to see if the cardID is correct and the card ha not been played ClientID
-        //TODO - To make this more secure clients should only know their (and only their own) clientID
-        //TODO - cep and cwp are not currently attributes of board cards but there is no reason they should not be
-        if ((bc.cardID == cardID) && (bc.cardRevealed == CS.CAR_REVEAL_HIDDEN))
-        {
-
-            isPlayableCard = true;
-
+            //Check to see if the cardID is correct and the card ha not been played ClientID
+            //TODO - To make this more secure clients should only know their (and only their own) clientID
+            //TODO - cep and cwp are not currently attributes of board cards but there is no reason they should not be
+            if ((bc.cardID == cardID) && (bc.cardRevealed == CS.CAR_REVEAL_HIDDEN))
+            {
+    
+                isPlayableCard = true;
+    
+            }
         }
 
         if (isPlayableCard)
@@ -399,7 +400,6 @@ public class GameBoardState : MonoBehaviour
     {
         //create a card
         var gc = new GameCard();
-        gc.cardID = Guid.NewGuid().ToString();
         gc.cardLocation = CS.CAR_LOCATION_GAMEBOARD;
         gc.cardRevealed = CS.CAR_REVEAL_HIDDEN;
         return gc;
@@ -417,17 +417,15 @@ public class GameBoardState : MonoBehaviour
                 //Cannot use FindObjectOfType in the constructor, so have to assign in here    
                 var worddictionary = FindObjectOfType<WordDictionary>();
                 
-                worddictionary.buildGameboard();
+                worddictionary.buildGameboardData();
                 isRedTurn = (worddictionary.isRedStart =="1"? true: false);
 
                 for (z = 0; z < CS.CSGRIDZDIM; z++)
                 for (x = 0; x < CS.CSGRIDXDIM; x++)
                 {
+                    //create new card
                     GameCard gc = MakeBoardCard();
                     
-                    //create new card
-                    gc = MakeBoardCard();
-                
                     //add Card to deck
                     gbd.gameCards.Add(gc);
                     
@@ -436,13 +434,14 @@ public class GameBoardState : MonoBehaviour
                     gbd.gameCards[x + z * CS.CSGRIDXDIM].cardZPos = z;
                     gbd.gameCards[x + z * CS.CSGRIDXDIM].cardWord = worddictionary.wordList[x + z * CS.CSGRIDXDIM];
                     gbd.gameCards[x + z * CS.CSGRIDXDIM].cardSuit = worddictionary.populate[x + z * CS.CSGRIDXDIM];
+                    gbd.gameCards[x + z * CS.CSGRIDXDIM].cardID = worddictionary.cardid[x + z * CS.CSGRIDXDIM];
                     gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed = CS.CAR_REVEAL_HIDDEN;
                 }
                 break;
             case "CMOV":
                 x = int.Parse(aData[2]);
                 z = int.Parse(aData[3]);
-                gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed = CS.CAR_REVEAL_SHOWN;
+                //gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed = CS.CAR_REVEAL_SHOWN;
                 break;
             case "CPCC":
                 BuildHandDeck(CS.CREATE);

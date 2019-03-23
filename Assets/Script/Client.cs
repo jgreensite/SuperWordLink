@@ -156,7 +156,7 @@ public class Client : MonoBehaviour
                     x = int.Parse(aData[2]);
                     z = int.Parse(aData[3]);
                     cardID = aData[4];
-                    if (aData[5] == "1")
+                    if (aData[6] == "1")
                     {
                         GameBoard.Instance.TryGameboardMove(x, z, cardID);
                     } else{

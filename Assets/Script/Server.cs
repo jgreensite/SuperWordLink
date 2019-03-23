@@ -292,7 +292,7 @@ public class Server : MonoBehaviour
 
                 foreach (var tmpStr in worddictionary.wordList) distWords += tmpStr + ",";
                 foreach (var tmpStr in worddictionary.populate) distPopulate += tmpStr + ",";
-                foreach (var tmpStr in worddictionary.cardID) distCardID += tmpStr + ",";
+                foreach (var tmpStr in worddictionary.cardid) distCardID += tmpStr + ",";
                 
                 
                 Broadcast(

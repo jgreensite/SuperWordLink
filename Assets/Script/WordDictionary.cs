@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AssemblyCSharp;
 using UnityEngine;
+using UnityEngine.Experimental.PlayerLoop;
 using Random = UnityEngine.Random;
 
 public class WordDictionary : MonoBehaviour
@@ -15,7 +16,7 @@ public class WordDictionary : MonoBehaviour
     private Dictionary<int, List<string>> words = new Dictionary<int, List<string>>();
     public string[] wordList = new string[gridSize];
     public string[] populate = new string[gridSize];
-    public string[] cardID = new string[gridSize];
+    public string[] cardid = new string[gridSize];
     
     public int largeWordLength = 9;
     public int smallWordLength = 3;
@@ -46,8 +47,13 @@ public class WordDictionary : MonoBehaviour
                   " to donotdestroylist");
     }
 
-    public void buildGameboard()
+    public void buildGameboardData()
     {
+        //Clear Arrays
+        Array.Clear(wordList, 0, wordList.Length);
+        Array.Clear(populate, 0, wordList.Length);
+        Array.Clear(cardid, 0, wordList.Length);
+        
         GetWords();
         GenerateWords();
         AssignWords();
@@ -93,7 +99,7 @@ public class WordDictionary : MonoBehaviour
             }
 
             wordList[x] = newWord;
-            cardID[x] = Guid.NewGuid().ToString();
+            cardid[x] = Guid.NewGuid().ToString();
             
             wordString = wordString + ", " + wordList[x];
             keepSearching = true;
@@ -237,7 +243,6 @@ public class WordDictionary : MonoBehaviour
                 if (validChoice)
                 {
                     populate[x + z * CS.CSGRIDXDIM] = cardType;
-                    //populate[x + z * CS.CSGRIDXDIM] = CS.DEATH_TEAM;
                 }
  
             }
