@@ -104,7 +104,7 @@ public class GameBoard : MonoBehaviour
         gameBoardPlayer = GameObject.Find("Game Board Player");
         
         //Move the Caller Gameboard to the correct place relative to the Player Gameboard, then move the camera to focus on it
-        gameBoardCaller.transform.position = callerCardOffset;
+        gameBoardCaller.transform.position = callerCardOffset + gameBoardPlayer.transform.position;
 
         isRestart = false;
         isGameover = false;
@@ -613,7 +613,7 @@ public class GameBoard : MonoBehaviour
     private void GenerateGameBoardCard(int x, int z, ref GameObject go, string word, string cardType, string cardID)
     {
         //TODO - the GenerateCard() class should be methods on the Card() class
-        go.transform.SetParent(transform);
+        go.transform.SetParent(gameBoardPlayer.transform);
         var cardGameBoard = go.GetComponent<Card>();
 
         //Add the word to the card
@@ -637,16 +637,18 @@ public class GameBoard : MonoBehaviour
         //Rotate the card
         cardGameBoard.makeFaceUp(false);
         
-        //Populate Caller Gameboard
-        //copy the card for the Caller gameboard
-        var cardCaller = Instantiate(cardGameBoard, callerCardOffset + cardGameBoard.transform.position,
-            Quaternion.identity);
-        cardsCaller[x, z] = cardCaller;
-
+        //Now Populate Caller Gameboard
+        
         //Requires an empty object of uniform scale to preserve the scale of the card and allow it to rotate without distortion
         var emptyObjectCardCaller = new GameObject();
+        emptyObjectCardCaller.transform.position = callerCardOffset;
         emptyObjectCardCaller.transform.parent = gameBoardCaller.transform;
-        cardCaller.transform.parent = emptyObjectCardCaller.transform;
+        //cardCaller.transform.parent = emptyObjectCardCaller.transform;
+        
+        //copy the card used for the Player gameboard to the Caller gameboard 
+        var cardCaller = Instantiate(cardGameBoard, callerCardOffset + cardGameBoard.transform.position,
+            Quaternion.identity, emptyObjectCardCaller.transform);
+        cardsCaller[x, z] = cardCaller;
 
         //Rotate the card
         cardCaller.makeFaceUp(true);
