@@ -10,7 +10,11 @@ namespace AssemblyCSharp
         //Layers
         public const string OBJ_LOCATION_LAYER_GAMEBOARD = "Board";
         public const string OBJ_LOCATION_LAYER_PLAYERHAND = "Hand";
-
+        
+        //Owners
+        public const string OBJ_OWNER_PLAYER = "Player";
+        public const string OBJ_OWNER_CALLER = "Caller";
+        
         //Tag make the same as layers, note that these must be set in the editor
         public const string OBJ_LOCATION_TAG_GAMEBOARD = OBJ_LOCATION_LAYER_GAMEBOARD;
         public const string OBJ_LOCATION_TAG_PLAYERHAND = OBJ_LOCATION_LAYER_PLAYERHAND;
@@ -48,8 +52,8 @@ namespace AssemblyCSharp
         public const int CSCARDHANDDIM = 3;
 
         //Gameboard dimensions
-        public const int CSGRIDXDIM = 5;
-        public const int CSGRIDZDIM = 5;
+        public const int CSGRIDXDIM = 3;
+        public const int CSGRIDZDIM = 3;
 
         //Game Winstates
         public const string NONEWIN = "nonewin";

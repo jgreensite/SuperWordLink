@@ -18,7 +18,7 @@ public class Server : MonoBehaviour
     private readonly GameHandDeck gcdBlue = new GameHandDeck();
     private readonly GameHandDeck gcdRed = new GameHandDeck();
     public int numParticipants;
-    private string[] populate = new string[25];
+    private string[] populate = new string[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
 
     public int port = 6321;
 
@@ -27,7 +27,7 @@ public class Server : MonoBehaviour
     private bool serverStarted;
 
     //the list of words and their assignments
-    private string[,] words = new string[2,25];
+    private string[,] words = new string[2,CS.CSGRIDXDIM * CS.CSGRIDZDIM];
     
     //which team's turn it is
     //private bool isRedTurn;
@@ -288,13 +288,15 @@ public class Server : MonoBehaviour
                 var worddictionary = FindObjectOfType<WordDictionary>();
                 
                 //worddictionary.buildGameboard();
-                
 
-                foreach (var tmpStr in worddictionary.wordList) distWords += tmpStr + ",";
-                foreach (var tmpStr in worddictionary.populate) distPopulate += tmpStr + ",";
-                foreach (var tmpStr in worddictionary.cardid) distCardID += tmpStr + ",";
-                
-                
+
+                foreach (var pair in worddictionary.gameBoardCardData)
+                {
+                    distWords += pair.Value.wordList + ",";
+                    distPopulate += pair.Value.populate + ",";
+                    distCardID += pair.Value.cardid + ",";
+                }
+                    
                 Broadcast(
                     "SDIC" + '|'
                            + worddictionary.isRedStart + '|'

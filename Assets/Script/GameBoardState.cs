@@ -439,9 +439,9 @@ public class GameBoardState : MonoBehaviour
                     //implement additional attributes
                     gbd.gameCards[x + z * CS.CSGRIDXDIM].cardXPos = x;
                     gbd.gameCards[x + z * CS.CSGRIDXDIM].cardZPos = z;
-                    gbd.gameCards[x + z * CS.CSGRIDXDIM].cardWord = worddictionary.wordList[x + z * CS.CSGRIDXDIM];
-                    gbd.gameCards[x + z * CS.CSGRIDXDIM].cardSuit = worddictionary.populate[x + z * CS.CSGRIDXDIM];
-                    gbd.gameCards[x + z * CS.CSGRIDXDIM].cardID = worddictionary.cardid[x + z * CS.CSGRIDXDIM];
+                    gbd.gameCards[x + z * CS.CSGRIDXDIM].cardWord = worddictionary.gameBoardCardData[x + z * CS.CSGRIDXDIM].wordList;
+                    gbd.gameCards[x + z * CS.CSGRIDXDIM].cardSuit = worddictionary.gameBoardCardData[x + z * CS.CSGRIDXDIM].populate;
+                    gbd.gameCards[x + z * CS.CSGRIDXDIM].cardID = worddictionary.gameBoardCardData[x + z * CS.CSGRIDXDIM].cardid;
                     gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed = CS.CAR_REVEAL_HIDDEN;
                 }
                 break;

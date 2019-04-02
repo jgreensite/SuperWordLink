@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using AssemblyCSharp;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -613,7 +614,7 @@ public class GameBoard : MonoBehaviour
     private void GenerateGameBoardCard(int x, int z, ref GameObject go, string word, string cardType, string cardID)
     {
         //TODO - the GenerateCard() class should be methods on the Card() class
-        go.transform.SetParent(gameBoardPlayer.transform);
+        //go.transform.SetParent(gameBoardPlayer.transform);
         var cardGameBoard = go.GetComponent<Card>();
 
         //Add the word to the card
@@ -628,11 +629,14 @@ public class GameBoard : MonoBehaviour
 
         //Requires an empty object of uniform scale to preserve the scale of the card and allow it to rotate without distortion
         var emptyObjectCard = new GameObject();
+        emptyObjectCard.name = String.Concat(CS.OBJ_NAME_ROOT_CARD,"_",CS.OBJ_OWNER_PLAYER,"_",x.ToString(),"_",z.ToString()," [",word,"]");
+        emptyObjectCard.tag = CS.OBJ_LOCATION_TAG_GAMEBOARD;
         emptyObjectCard.transform.parent = gameBoardPlayer.transform;
         cardGameBoard.transform.parent = emptyObjectCard.transform;
 
         //Populate the CardID
         cardGameBoard.cardID = cardID;
+        cardGameBoard.name = cardID;
         
         //Rotate the card
         cardGameBoard.makeFaceUp(false);
@@ -640,14 +644,22 @@ public class GameBoard : MonoBehaviour
         //Now Populate Caller Gameboard
         
         //Requires an empty object of uniform scale to preserve the scale of the card and allow it to rotate without distortion
-        var emptyObjectCardCaller = new GameObject();
-        emptyObjectCardCaller.transform.position = callerCardOffset;
-        emptyObjectCardCaller.transform.parent = gameBoardCaller.transform;
+        var emptyObjectCardCaller = Instantiate(new GameObject(),callerCardOffset,
+            Quaternion.identity, gameBoardCaller.transform);
+        emptyObjectCardCaller.name = String.Concat(CS.OBJ_NAME_ROOT_CARD,"_",CS.OBJ_OWNER_CALLER,"_",x.ToString(),"_",z.ToString()," [",word,"]");
+        emptyObjectCardCaller.tag = CS.OBJ_LOCATION_TAG_GAMEBOARD;
+        
+        //var emptyObjectCardCaller = new GameObject();
+        //emptyObjectCardCaller.transform.position = callerCardOffset;
+        //emptyObjectCardCaller.transform.parent = gameBoardCaller.transform;
+        
         //cardCaller.transform.parent = emptyObjectCardCaller.transform;
         
         //copy the card used for the Player gameboard to the Caller gameboard 
         var cardCaller = Instantiate(cardGameBoard, callerCardOffset + cardGameBoard.transform.position,
             Quaternion.identity, emptyObjectCardCaller.transform);
+        cardCaller.name = cardID;
+        
         cardsCaller[x, z] = cardCaller;
 
         //Rotate the card
@@ -681,6 +693,8 @@ public class GameBoard : MonoBehaviour
 
         //Requires an empty object of uniform scale to preserve the scale of the card and allow it to rotate without distortion
         var emptyObjectCard = new GameObject();
+        emptyObjectCard.name = String.Concat(CS.OBJ_NAME_ROOT_CARD,"_",CS.OBJ_LOCATION_TAG_PLAYERHAND,"_",cardNum.ToString()," [",cardType,"]");
+        emptyObjectCard.tag = CS.OBJ_LOCATION_TAG_PLAYERHAND;
 
         //Establish if the card is one for a caller or a player
         for (var cnt = 0; cnt < client.players.Count; cnt++)
@@ -699,8 +713,7 @@ public class GameBoard : MonoBehaviour
         }
 
         cardPlayerHand.transform.parent = emptyObjectCard.transform;
-        emptyObjectCard.tag = CS.OBJ_LOCATION_TAG_PLAYERHAND;
-        emptyObjectCard.name = CS.OBJ_NAME_ROOT_CARD;
+        cardPlayerHand.name = cardID;
 
         //Rotate the card
         cardPlayerHand.makeInHand();

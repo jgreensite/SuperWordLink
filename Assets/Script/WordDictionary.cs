@@ -14,9 +14,10 @@ public class WordDictionary : MonoBehaviour
     public Card[,] cardsPlayerGameBoard = new Card[gridXDim, gridZDim];
     
     private Dictionary<int, List<string>> words = new Dictionary<int, List<string>>();
-    public string[] wordList = new string[gridSize];
-    public string[] populate = new string[gridSize];
-    public string[] cardid = new string[gridSize];
+    public Dictionary<int, GameWords> gameBoardCardData = new Dictionary<int, GameWords>();
+    //public string[] wordList = new string[gridSize];
+    //public string[] populate = new string[gridSize];
+    //public string[] cardid = new string[gridSize];
     
     public int largeWordLength = 9;
     public int smallWordLength = 3;
@@ -50,9 +51,10 @@ public class WordDictionary : MonoBehaviour
     public void buildGameboardData()
     {
         //Clear Arrays
-        Array.Clear(wordList, 0, wordList.Length);
-        Array.Clear(populate, 0, wordList.Length);
-        Array.Clear(cardid, 0, wordList.Length);
+        // Array.Clear(wordList, 0, wordList.Length);
+        //Array.Clear(populate, 0, populate.Length);
+        //Array.Clear(cardid, 0, cardid.Length);
+        gameBoardCardData.Clear();
         
         GetWords();
         GenerateWords();
@@ -83,26 +85,34 @@ public class WordDictionary : MonoBehaviour
         var rndWordLength = -1;
         var rndWordPosition = -1;
         var wordString = "";
-        var keepSearching = true;
+        var cntDuplicateWord = 1;
         var newWord = "";
         for (var x = 0; x < (gridSize); x++)
         {
-            while (keepSearching)
+            while (cntDuplicateWord >0)
             {
+                cntDuplicateWord = 0;
                 rndWordLength = Random.Range(smallWordLength, largeWordLength);
                 rndWordPosition = Random.Range(1, words[rndWordLength].Count);
                 newWord = words[rndWordLength][rndWordPosition];
-                if (!string.IsNullOrEmpty(wordList[0]))
-                    keepSearching = wordList.Contains(newWord);
-                else
-                    keepSearching = false;
+                foreach(var pair in gameBoardCardData)
+                {
+                    if (pair.Value.wordList == newWord)
+                    {
+                        cntDuplicateWord += 1;
+                    }
+                }
             }
 
-            wordList[x] = newWord;
-            cardid[x] = Guid.NewGuid().ToString();
+            gameBoardCardData.Add(x, new GameWords
+            {
+                wordList = newWord,
+                populate = "",
+                cardid =Guid.NewGuid().ToString()
+            });
             
-            wordString = wordString + ", " + wordList[x];
-            keepSearching = true;
+            wordString = wordString + ", " + gameBoardCardData[x].wordList;
+            cntDuplicateWord = 1;
         }
 
         Debug.Log("Word list " + wordString);
@@ -242,7 +252,7 @@ public class WordDictionary : MonoBehaviour
                 //if the card is able to added then add it
                 if (validChoice)
                 {
-                    populate[x + z * CS.CSGRIDXDIM] = cardType;
+                    gameBoardCardData[x + z * CS.CSGRIDXDIM].populate = cardType;
                 }
  
             }
