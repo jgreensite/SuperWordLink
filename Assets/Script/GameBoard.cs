@@ -646,18 +646,20 @@ public class GameBoard : MonoBehaviour
         //Requires an empty object of uniform scale to preserve the scale of the card and allow it to rotate without distortion
         var emptyObjectCardCaller = Instantiate(new GameObject(),callerCardOffset,
             Quaternion.identity, gameBoardCaller.transform);
+        
+        //TODO - Copy requires manually copying the local scale, don't know why
+        emptyObjectCardCaller.transform.localScale = emptyObjectCard.transform.localScale;
+     
         emptyObjectCardCaller.name = String.Concat(CS.OBJ_NAME_ROOT_CARD,"_",CS.OBJ_OWNER_CALLER,"_",x.ToString(),"_",z.ToString()," [",word,"]");
         emptyObjectCardCaller.tag = CS.OBJ_LOCATION_TAG_GAMEBOARD;
-        
-        //var emptyObjectCardCaller = new GameObject();
-        //emptyObjectCardCaller.transform.position = callerCardOffset;
-        //emptyObjectCardCaller.transform.parent = gameBoardCaller.transform;
-        
-        //cardCaller.transform.parent = emptyObjectCardCaller.transform;
         
         //copy the card used for the Player gameboard to the Caller gameboard 
         var cardCaller = Instantiate(cardGameBoard, callerCardOffset + cardGameBoard.transform.position,
             Quaternion.identity, emptyObjectCardCaller.transform);
+        
+        //TODO - copy requires manually copying the local scale, don't know why
+        emptyObjectCardCaller.transform.localPosition = emptyObjectCard.transform.localPosition;
+        
         cardCaller.name = cardID;
         
         cardsCaller[x, z] = cardCaller;

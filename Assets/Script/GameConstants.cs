@@ -52,8 +52,8 @@ namespace AssemblyCSharp
         public const int CSCARDHANDDIM = 3;
 
         //Gameboard dimensions
-        public const int CSGRIDXDIM = 3;
-        public const int CSGRIDZDIM = 3;
+        public const int CSGRIDXDIM = 6;
+        public const int CSGRIDZDIM = 6;
 
         //Game Winstates
         public const string NONEWIN = "nonewin";
