@@ -19,48 +19,51 @@ using System.Xml.Serialization;
 //	Address XmlData = (Address)obj;
 //	reader.Close();
 //}
-
-[XmlRoot("GameCardDeck")]
-public class GameHandDeck
+namespace Script
 {
-    [XmlArray("GameCards")] [XmlArrayItem("GameCard")]
-    public List<GameCard> gameCards = new List<GameCard>();
 
-    public void Save(string path)
+    [XmlRoot("GameCardDeck")]
+    public class GameHandDeck
     {
-        var serializer = new XmlSerializer(typeof(GameHandDeck));
-        using (var stream = new FileStream(path, FileMode.Create))
+        [XmlArray("GameCards")] [XmlArrayItem("GameCard")]
+        public List<GameCard> gameCards = new List<GameCard>();
+
+        public void Save(string path)
         {
-            serializer.Serialize(stream, this);
+            var serializer = new XmlSerializer(typeof(GameHandDeck));
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                serializer.Serialize(stream, this);
+            }
         }
-    }
 
 
-    public string SaveToText()
-    {
-        var xmlSerializer = new XmlSerializer(typeof(GameHandDeck));
-
-        using (var textWriter = new StringWriter())
+        public string SaveToText()
         {
-            xmlSerializer.Serialize(textWriter, this);
-            return textWriter.ToString();
+            var xmlSerializer = new XmlSerializer(typeof(GameHandDeck));
+
+            using (var textWriter = new StringWriter())
+            {
+                xmlSerializer.Serialize(textWriter, this);
+                return textWriter.ToString();
+            }
         }
-    }
 
 
-    public static GameHandDeck Load(string path)
-    {
-        var serializer = new XmlSerializer(typeof(GameHandDeck));
-        using (var stream = new FileStream(path, FileMode.Open))
+        public static GameHandDeck Load(string path)
         {
-            return serializer.Deserialize(stream) as GameHandDeck;
+            var serializer = new XmlSerializer(typeof(GameHandDeck));
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                return serializer.Deserialize(stream) as GameHandDeck;
+            }
         }
-    }
 
-    //Loads the xml directly from the given string. Useful in combination with www.text.
-    public static GameHandDeck LoadFromText(string text)
-    {
-        var serializer = new XmlSerializer(typeof(GameHandDeck));
-        return serializer.Deserialize(new StringReader(text)) as GameHandDeck;
+        //Loads the xml directly from the given string. Useful in combination with www.text.
+        public static GameHandDeck LoadFromText(string text)
+        {
+            var serializer = new XmlSerializer(typeof(GameHandDeck));
+            return serializer.Deserialize(new StringReader(text)) as GameHandDeck;
+        }
     }
 }

@@ -272,7 +272,7 @@ GameObject:
   - component: {fileID: 4103506223680654}
   - component: {fileID: 114615881911691372}
   - component: {fileID: 65928037640681242}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: CardInHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,5 +336,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 0.1, z: 2}
+  m_Size: {x: 2.75, y: 0.1, z: 2}
   m_Center: {x: 0, y: 0, z: 0}

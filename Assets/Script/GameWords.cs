@@ -1,4 +1,4 @@
-namespace AssemblyCSharp
+namespace Script
 {
     public class GameWords
     {

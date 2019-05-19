@@ -1,4 +1,6 @@
-﻿namespace Fabric.Internal.Editor.API
+﻿using Script;
+
+namespace Fabric.Internal.Editor.API
 {
 	using Fabric.Internal.Editor.Net.OAuth;
 	using Fabric.Internal.Editor.Model;
