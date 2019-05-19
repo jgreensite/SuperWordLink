@@ -1,30 +1,35 @@
 ﻿using System;
+using Script;
 using UnityEngine;
 
-public class HeadlessServer : MonoBehaviour
+namespace Script
 {
-    public GameObject serverPrefab;
 
-    public static HeadlessServer Instance { set; get; }
-
-    // Use this for initialization
-    private void Start()
+    public class HeadlessServer : MonoBehaviour
     {
-        try
-        {
-            //Create the Host's server first
-            var s = Instantiate(serverPrefab);
-            s.GetComponent<Server>().Init();
-            s.GetComponent<GameBoardState>().Init();
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.Message);
-        }
-    }
+        public GameObject serverPrefab;
 
-    // Update is called once per frame
-    private void Update()
-    {
+        public static HeadlessServer Instance { set; get; }
+
+        // Use this for initialization
+        private void Start()
+        {
+            try
+            {
+                //Create the Host's server first
+                var s = Instantiate(serverPrefab);
+                s.GetComponent<Server>().Init();
+                s.GetComponent<GameBoardState>().Init();
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);
+            }
+        }
+
+        // Update is called once per frame
+        private void Update()
+        {
+        }
     }
 }

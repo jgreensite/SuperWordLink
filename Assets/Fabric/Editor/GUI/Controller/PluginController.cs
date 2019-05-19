@@ -1,4 +1,6 @@
-﻿namespace Fabric.Internal.Editor.Controller
+﻿using Script;
+
+namespace Fabric.Internal.Editor.Controller
 {
 	using UnityEngine;
 	using UnityEditor;

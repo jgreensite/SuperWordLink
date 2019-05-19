@@ -1,3 +1,5 @@
+using Script;
+
 namespace Fabric.Internal.Editor.Model
 {
 	using UnityEngine;

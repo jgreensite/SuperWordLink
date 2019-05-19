@@ -1,27 +1,30 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Lobby : MonoBehaviour
+namespace Script
 {
-    public GameObject lobbyLineItemPrefab;
-    public List<LobbyLineItem> LobbyLineItems = new List<LobbyLineItem>();
-
-    // Use this for initialization
-    private void Start()
+    public class Lobby : MonoBehaviour
     {
-        var client = FindObjectOfType<Client>();
-        //Create each LineItem and them to the List of LineItems
-        foreach (var gc in client.players)
+        public GameObject lobbyLineItemPrefab;
+        public List<LobbyLineItem> LobbyLineItems = new List<LobbyLineItem>();
+
+        // Use this for initialization
+        private void Start()
         {
-            var line = Instantiate(lobbyLineItemPrefab).GetComponent<LobbyLineItem>();
-            LobbyLineItems.Add(line);
-            line.transform.SetParent(transform, false);
-            line.SetLobbyLineItem(gc);
+            var client = FindObjectOfType<Client>();
+            //Create each LineItem and them to the List of LineItems
+            foreach (var gc in client.players)
+            {
+                var line = Instantiate(lobbyLineItemPrefab).GetComponent<LobbyLineItem>();
+                LobbyLineItems.Add(line);
+                line.transform.SetParent(transform, false);
+                line.SetLobbyLineItem(gc);
+            }
         }
-    }
 
-    // Update is called once per frame
-    private void Update()
-    {
+        // Update is called once per frame
+        private void Update()
+        {
+        }
     }
 }

@@ -1,29 +1,32 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class GameMenu : MonoBehaviour
+namespace Script
 {
-    public Button buttonPanZoom;
-
-    // Use this for initialization
-    private void Start()
+    public class GameMenu : MonoBehaviour
     {
-    }
+        public Button buttonPanZoom;
 
-    // Update is called once per frame
-    private void Update()
-    {
-    }
+        // Use this for initialization
+        private void Start()
+        {
+        }
 
-    public void BackButton()
-    {
-        Debug.Log("Game HUD Back button pressed");
-        GameManager.Instance.RestartAll();
-    }
+        // Update is called once per frame
+        private void Update()
+        {
+        }
 
-    public void PanZoomButton()
-    {
-        Debug.Log("Game HUD Pan/Zoom button pressed");
-        GameManager.Instance.PanZoomButton(buttonPanZoom);
+        public void BackButton()
+        {
+            Debug.Log("Game HUD Back button pressed");
+            GameManager.Instance.RestartAll();
+        }
+
+        public void PanZoomButton()
+        {
+            Debug.Log("Game HUD Pan/Zoom button pressed");
+            GameManager.Instance.PanZoomButton(buttonPanZoom);
+        }
     }
 }
