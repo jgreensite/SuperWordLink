@@ -189,7 +189,7 @@ namespace Script
                 
                                     string xStr = x.ToString();
                                     string zStr = z.ToString();
-                                    string[] zData = {"CMOV", clientID, xStr, zStr, cardGameboardID, cardID};
+                                    string[] zData = {"CMOV", clientID, cardGameboardID, cardID};
                                     Incoming(zData);
                                 }
 
@@ -442,9 +442,13 @@ namespace Script
                     }
                     break;
                 case "CMOV":
-                    x = int.Parse(aData[2]);
-                    z = int.Parse(aData[3]);
-                    //gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed = CS.CAR_REVEAL_SHOWN;
+                    for (z = 0; z < CS.CSGRIDZDIM; z++)
+                    for (x = 0; x < CS.CSGRIDXDIM; x++)
+                    {
+                        //implement additional attributes
+                        if (gbd.gameCards[x + z * CS.CSGRIDXDIM].cardID == aData[3]) gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed = CS.CAR_REVEAL_SHOWN;
+                    }
+                    
                     break;
                 case "CPCC":
                     BuildHandDeck(CS.CREATE);

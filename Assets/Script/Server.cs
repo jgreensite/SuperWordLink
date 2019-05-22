@@ -248,7 +248,7 @@ namespace Script
                     //Currently all validation for the gameboard move is done client side
                     gbs.Incoming(aData);
                 
-                    string strValidGameboardMove = gbs.UpdateGameboardDeckCardStatus(aData[4], aData[5]) ? "1" : "0";
+                    string strValidGameboardMove = gbs.UpdateGameboardDeckCardStatus(aData[2], aData[3]) ? "1" : "0";
                 
                     Broadcast(
                         "SMOV" + '|'
