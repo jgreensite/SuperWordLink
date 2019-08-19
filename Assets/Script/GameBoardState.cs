@@ -26,8 +26,12 @@ namespace Script
         public int cntGoalRedCards;
         public int cntGoalBlueCards;
         public bool isGameover;
+        private static Server _server;
 
-    
+        
+        private int gridXDim = _server.GridXDim;
+        private int gridZDim = _server.GridZDim;
+        
         public void Init()
         {
             //needed to make this a singleton
@@ -37,9 +41,9 @@ namespace Script
             DontDestroyOnLoad(gameObject);
             GameManager.Instance.goDontDestroyList.Add(gameObject);
             Debug.Log("Added GameBoardState at position:" + GameManager.Instance.goDontDestroyList.Count + " to donotdestroylist");
-        
-            //Establish whose turn it is
-            var worddictionary = FindObjectOfType<WordDictionary>();
+
+            //Get Reference to Server GameObject in Unity
+            _server = GetComponentInParent<Server>();
         }
 
         private void Update()
@@ -182,10 +186,10 @@ namespace Script
                                     string cardGameboardID = "";
                                     do
                                     {
-                                        x = Random.Range(0, CS.CSGRIDXDIM);
-                                        z = Random.Range(0, CS.CSGRIDZDIM);
-                                        cardID = gbd.gameCards[x + z * CS.CSGRIDXDIM].cardID;
-                                    } while (gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed == CS.CAR_REVEAL_SHOWN);
+                                        x = Random.Range(0, gridXDim);
+                                        z = Random.Range(0, gridZDim);
+                                        cardID = gbd.gameCards[x + z * gridXDim].cardID;
+                                    } while (gbd.gameCards[x + z * gridXDim].cardRevealed == CS.CAR_REVEAL_SHOWN);
                 
                                     string xStr = x.ToString();
                                     string zStr = z.ToString();
@@ -229,11 +233,11 @@ namespace Script
             int z = 0;
             int x = 0;
 
-            while ((z < CS.CSGRIDZDIM) && (isPlayableCard == false))
+            while ((z < gridZDim) && (isPlayableCard == false))
             {
-                while ((x < CS.CSGRIDXDIM) && (isPlayableCard == false))
+                while ((x < gridXDim) && (isPlayableCard == false))
                 {
-                    bc = gbd.gameCards[x + z * CS.CSGRIDXDIM];
+                    bc = gbd.gameCards[x + z * gridXDim];
                     //Check to see if the cardID is correct and the card ha not been played ClientID
                     //TODO - To make this more secure clients should only know their (and only their own) clientID
                     //TODO - cep and cwp are not currently attributes of board cards but there is no reason they should not be
@@ -256,7 +260,7 @@ namespace Script
             if (isPlayableCard)
             {
                 bc.cardRevealed = CS.CAR_REVEAL_SHOWN;
-                gbd.gameCards[x + z * CS.CSGRIDXDIM] = bc;
+                gbd.gameCards[x + z * gridXDim] = bc;
                 Debug.Log("Played reveal card:" + cardID + "at x:" +x.ToString() + "z:" +z.ToString());
             
                 //Select the card, note that it may not be this client that selected the card
@@ -332,19 +336,19 @@ namespace Script
             int x = 0;
             cntBlueCards = 0;
             cntRedCards = 0;
-            for (z = 0; z < CS.CSGRIDZDIM; z++)
-            for (x = 0; x < CS.CSGRIDXDIM; x++)
-                bc = gbd.gameCards[x + z * CS.CSGRIDXDIM];
+            for (z = 0; z < gridZDim; z++)
+            for (x = 0; x < gridXDim; x++)
+                bc = gbd.gameCards[x + z * gridXDim];
             if (bc.cardRevealed == CS.CAR_REVEAL_SHOWN)
             {
                 if (bc.cardSuit == CS.BLUE_TEAM) cntBlueCards++;
                 if (bc.cardSuit == CS.RED_TEAM) cntRedCards++;
             }
         
-            for (z = 0; z < CS.CSGRIDZDIM; z++)
-            for (x = 0; x < CS.CSGRIDXDIM; x++)
+            for (z = 0; z < gridZDim; z++)
+            for (x = 0; x < gridXDim; x++)
             {
-                bc = gbd.gameCards[x + z * CS.CSGRIDXDIM];
+                bc = gbd.gameCards[x + z * gridXDim];
             }
         
             //See if anyone has won
@@ -423,8 +427,8 @@ namespace Script
                     worddictionary.buildGameboardData();
                     isRedTurn = (worddictionary.isRedStart =="1"? true: false);
 
-                    for (z = 0; z < CS.CSGRIDZDIM; z++)
-                    for (x = 0; x < CS.CSGRIDXDIM; x++)
+                    for (z = 0; z < gridZDim; z++)
+                    for (x = 0; x < gridXDim; x++)
                     {
                         //create new card
                         GameCard gc = MakeBoardCard();
@@ -433,20 +437,20 @@ namespace Script
                         gbd.gameCards.Add(gc);
                     
                         //implement additional attributes
-                        gbd.gameCards[x + z * CS.CSGRIDXDIM].cardXPos = x;
-                        gbd.gameCards[x + z * CS.CSGRIDXDIM].cardZPos = z;
-                        gbd.gameCards[x + z * CS.CSGRIDXDIM].cardWord = worddictionary.gameBoardCardData[x + z * CS.CSGRIDXDIM].wordList;
-                        gbd.gameCards[x + z * CS.CSGRIDXDIM].cardSuit = worddictionary.gameBoardCardData[x + z * CS.CSGRIDXDIM].populate;
-                        gbd.gameCards[x + z * CS.CSGRIDXDIM].cardID = worddictionary.gameBoardCardData[x + z * CS.CSGRIDXDIM].cardid;
-                        gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed = CS.CAR_REVEAL_HIDDEN;
+                        gbd.gameCards[x + z * gridXDim].cardXPos = x;
+                        gbd.gameCards[x + z * gridXDim].cardZPos = z;
+                        gbd.gameCards[x + z * gridXDim].cardWord = worddictionary.gameBoardCardData[x + z * gridXDim].wordList;
+                        gbd.gameCards[x + z * gridXDim].cardSuit = worddictionary.gameBoardCardData[x + z * gridXDim].populate;
+                        gbd.gameCards[x + z * gridXDim].cardID = worddictionary.gameBoardCardData[x + z * gridXDim].cardid;
+                        gbd.gameCards[x + z * gridXDim].cardRevealed = CS.CAR_REVEAL_HIDDEN;
                     }
                     break;
                 case "CMOV":
-                    for (z = 0; z < CS.CSGRIDZDIM; z++)
-                    for (x = 0; x < CS.CSGRIDXDIM; x++)
+                    for (z = 0; z < gridZDim; z++)
+                    for (x = 0; x < gridXDim; x++)
                     {
                         //implement additional attributes
-                        if (gbd.gameCards[x + z * CS.CSGRIDXDIM].cardID == aData[3]) gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed = CS.CAR_REVEAL_SHOWN;
+                        if (gbd.gameCards[x + z * gridXDim].cardID == aData[3]) gbd.gameCards[x + z * gridXDim].cardRevealed = CS.CAR_REVEAL_SHOWN;
                     }
                     
                     break;

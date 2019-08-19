@@ -7,10 +7,12 @@ namespace Script
 {
     public class WordDictionary : MonoBehaviour
     {
-        private static int gridXDim = CS.CSGRIDXDIM;
-        private static int gridZDim = CS.CSGRIDZDIM;
-        private static int gridSize = gridXDim * gridZDim;
-        public Card[,] cardsPlayerGameBoard = new Card[gridXDim, gridZDim];
+        //Establish whose turn it is
+        
+        private int gridXDim;
+        private int gridZDim;
+        private int gridSize;
+        public Card[,] cardsPlayerGameBoard;
     
         private Dictionary<int, List<string>> words = new Dictionary<int, List<string>>();
         public Dictionary<int, GameWords> gameBoardCardData = new Dictionary<int, GameWords>();
@@ -30,6 +32,7 @@ namespace Script
         public GameObject bluePfb;
         public GameObject deathPfb;
         public GameObject civilPfb;
+        private static Server _server;
 
         //makes class a singleton
         public static WordDictionary Instance { set; get; }
@@ -45,19 +48,28 @@ namespace Script
             GameManager.Instance.goDontDestroyList.Add(gameObject);
             Debug.Log("Added WordDictionary at position:" + GameManager.Instance.goDontDestroyList.Count +
                       " to donotdestroylist");
+            
+            //Get Reference to Server GameObject in Unity
+            _server = GetComponentInParent<Server>();
         }
 
         public void buildGameboardData()
         {
-            //Clear Arrays
-            // Array.Clear(wordList, 0, wordList.Length);
-            //Array.Clear(populate, 0, populate.Length);
-            //Array.Clear(cardid, 0, cardid.Length);
+            //dimension the arrays            
+            gridXDim = _server.GridXDim;
+            gridZDim = _server.GridZDim;
+
+            gridSize = gridXDim * gridZDim;
+            cardsPlayerGameBoard = new Card[gridXDim, gridZDim];
+            
+            //clear the data
             gameBoardCardData.Clear();
         
+            //build the data
             GetWords();
             GenerateWords();
             AssignWords();
+            
         }
 
         // Use this to generate the words for the cards
@@ -125,7 +137,7 @@ namespace Script
      
             string cardType = null;
             var cardTypes = new string[gridSize];
-
+            
             int cntRedCards;
             int cntBlueCards;
             int cntCivilCards;
@@ -251,7 +263,7 @@ namespace Script
                     //if the card is able to added then add it
                     if (validChoice)
                     {
-                        gameBoardCardData[x + z * CS.CSGRIDXDIM].populate = cardType;
+                        gameBoardCardData[x + z * gridXDim].populate = cardType;
                     }
  
                 }

@@ -85,6 +85,8 @@ namespace Script
             var z = 0;
             Debug.Log("Client Receiving: " + data);
             int howManyPlaying;
+            int sizeOfXDim;
+            int sizeOfYDim;
             var cardID = "";
 
 
@@ -111,16 +113,24 @@ namespace Script
                         //Get the number of participants from the GameManager and convet to an integer
                         //Note that cannot write the number of participants that is used to decide to start the game
                         //this must be initiated from the server sending a message to the client
-                        if (int.TryParse(GameManager.Instance.minPlayers.text, out howManyPlaying))
+                        if (
+                            int.TryParse(GameManager.Instance.minPlayers.text, out howManyPlaying) &&
+                            int.TryParse(GameManager.Instance.gridXDim.text, out sizeOfXDim) &&
+                            int.TryParse(GameManager.Instance.gridZDim.text, out sizeOfYDim)
+                        )
                         {
                         }
                         else if (isHost && GameManager.Instance.minPlayers.text == "")
                         {
                             howManyPlaying = 1;
+                            sizeOfXDim = 5;
+                            sizeOfYDim = 5;
                         }
                         else
                         {
                             howManyPlaying = 0;
+                            sizeOfXDim = 0;
+                            sizeOfYDim = 0;
                         }
 
                         Send(
@@ -130,7 +140,10 @@ namespace Script
                                    + (isPlayer ? 1 : 0) + '|'
                                    + (isRedTeam ? 1 : 0) + '|'
                                    + clientID + '|'
-                                   + howManyPlaying
+                                   + howManyPlaying + '|'
+                                   + sizeOfXDim + '|'
+                                   + sizeOfYDim
+
                         );
                         break;
 
@@ -147,8 +160,13 @@ namespace Script
                                 bData[4]
                             );
 
-                            //if we get the signal to start the lobby, start it 
-                            if (bData[5] != "0") GameManager.Instance.OpenLobby();
+                            //if we get the signal to start the lobby, start it addind the constants set by whichever player isHost
+                            if (bData[5] != "0")
+                            {
+                                GameManager.Instance.gridXDim.text =  bData[6];
+                                GameManager.Instance.gridZDim.text =  bData[7];
+                                GameManager.Instance.OpenLobby();
+                            }
                         }
 
                         break;

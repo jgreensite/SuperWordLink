@@ -17,7 +17,10 @@ namespace Script
         private readonly GameHandDeck gcdBlue = new GameHandDeck();
         private readonly GameHandDeck gcdRed = new GameHandDeck();
         public int numParticipants;
-        private string[] populate = new string[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
+        public int GridXDim;
+        public int GridZDim;
+
+        private string[] populate;
 
         public int port = 6321;
 
@@ -26,7 +29,7 @@ namespace Script
         private bool serverStarted;
 
         //the list of words and their assignments
-        private string[,] words = new string[2,CS.CSGRIDXDIM * CS.CSGRIDZDIM];
+        private string[,] words;
     
         //which team's turn it is
         //private bool isRedTurn;
@@ -212,6 +215,11 @@ namespace Script
                     if (aData[2] == "1" ? true : false)
                     {
                         int.TryParse(aData[6], out numParticipants);
+                        int.TryParse(aData[7], out GridXDim);
+                        int.TryParse(aData[8], out GridZDim);
+
+                        populate = new string[GridXDim * GridZDim];
+                        words = new string[2, GridXDim * GridZDim];
 
                         //if a client intitiates a host call then clear all other client's connections
                         var i = 0;
@@ -354,17 +362,17 @@ namespace Script
                     distPopulate = "";
                     distReveal = "";
                
-                    for (z = 0; z < CS.CSGRIDZDIM; z++)
-                    for (x = 0; x < CS.CSGRIDXDIM; x++)
+                    for (z = 0; z < GridZDim; z++)
+                    for (x = 0; x < GridXDim; x++)
                     {
 
                         //implement additional attributes
-                        distPosX += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardXPos + ",";
-                        distPosZ += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardZPos + ",";
-                        distWords += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardWord + ",";
-                        distPopulate += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardSuit +",";
-                        distReveal += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardRevealed +",";
-                        distCardID += gbs.gbd.gameCards[x + z * CS.CSGRIDXDIM].cardID + ",";
+                        distPosX += gbs.gbd.gameCards[x + z * GridXDim].cardXPos + ",";
+                        distPosZ += gbs.gbd.gameCards[x + z * GridXDim].cardZPos + ",";
+                        distWords += gbs.gbd.gameCards[x + z * GridXDim].cardWord + ",";
+                        distPopulate += gbs.gbd.gameCards[x + z * GridXDim].cardSuit +",";
+                        distReveal += gbs.gbd.gameCards[x + z * GridXDim].cardRevealed +",";
+                        distCardID += gbs.gbd.gameCards[x + z * GridXDim].cardID + ",";
                     }
 
                     Broadcast(
@@ -398,10 +406,21 @@ namespace Script
                 // this is a "magic field" that tells the client it should add the participant and start the lobby
                 // it is placed on the last entry of the message sent to the client
                 // Really this should be another message embedded in this message
+                
                 if (numParticipants != 0 && clients.Count == numParticipants && i == clients.Count - 1)
-                    concatClients += numParticipants.ToString();
+                    concatClients += numParticipants.ToString() + ",";
                 else
-                    concatClients += 0;
+                    concatClients += "0" + ",";
+                
+                if (GridXDim != 0 && clients.Count == numParticipants && i == clients.Count - 1)
+                    concatClients += GridXDim.ToString() + ",";
+                else
+                    concatClients += "0" + ",";
+                
+                if (GridZDim != 0 && clients.Count == numParticipants && i == clients.Count - 1)
+                    concatClients += GridZDim.ToString();
+                else
+                    concatClients += "0";
             }
 
             return concatClients;

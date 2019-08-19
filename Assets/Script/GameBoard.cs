@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
 namespace Script
 {
     public class GameBoard : MonoBehaviour
     {
-        public static int gridXDim = CS.CSGRIDXDIM;
-        public static int gridZDim = CS.CSGRIDZDIM;
+        public static int gridXDim = Convert.ToInt32(GameManager.Instance.gridXDim.text);
+        public static int gridZDim = Convert.ToInt32(GameManager.Instance.gridZDim.text);
         public static int cardHandDim = CS.CSCARDHANDDIM;
     
     
@@ -81,12 +82,12 @@ namespace Script
         private TurnIndicator turnIndicatorScript;
 
         //used to pass data into the Gameboard
-        public string[] words = new string[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
-        public string[] populate = new string[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
-        public string[] cardids = new string[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
-        public int[] xPos = new int[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
-        public int[] zPos = new int[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
-        public string[] reveal = new string[CS.CSGRIDXDIM * CS.CSGRIDZDIM];
+        public string[] words = new string[gridXDim * gridZDim];
+        public string[] populate = new string[gridXDim * gridZDim];
+        public string[] cardids = new string[gridXDim * gridZDim];
+        public int[] xPos = new int[gridXDim * gridZDim];
+        public int[] zPos = new int[gridXDim * gridZDim];
+        public string[] reveal = new string[gridXDim * gridZDim];
 
     
         //makes class a singleton
@@ -488,10 +489,10 @@ namespace Script
             GameObject go = null;
             string cardType = null;
 
-            for (var z = 0; z < CS.CSGRIDZDIM; z++)
-            for (var x = 0; x < CS.CSGRIDXDIM; x++)
+            for (var z = 0; z < gridZDim; z++)
+            for (var x = 0; x < gridXDim; x++)
             {
-                switch (populate[x + z * CS.CSGRIDXDIM])
+                switch (populate[x + z * gridXDim])
                 {
                     case CS.RED_TEAM:
                         go = Instantiate(redPfb);
@@ -511,7 +512,7 @@ namespace Script
                         break;
                 }
 
-                GenerateGameBoardCard(x, z, ref go, words[x + z * CS.CSGRIDXDIM], populate[x + z * CS.CSGRIDXDIM], cardids[x + z * CS.CSGRIDXDIM]);
+                GenerateGameBoardCard(x, z, ref go, words[x + z * gridXDim], populate[x + z * gridXDim], cardids[x + z * gridXDim]);
             }
 
             //Blue goes first

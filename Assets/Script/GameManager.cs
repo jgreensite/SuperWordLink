@@ -20,8 +20,13 @@ namespace Script
 
         public GameObject mainMenu;
 
+        public GameObject userPreferences;
+        
         // Keep this on the GameManager so the server can be run on a seperate machine
         public InputField minPlayers;
+
+        public InputField gridXDim;
+        public InputField gridZDim;
 
         public InputField nameInput;
         public GameObject serverMenu;
@@ -43,13 +48,21 @@ namespace Script
             serverMenu.SetActive(false);
             connectMenu.SetActive(false);
             lobbyMenu.SetActive(false);
-
-
+            userPreferences.SetActive(false);
+            
             DontDestroyOnLoad(gameObject);
             Instance.goDontDestroyList.Add(gameObject);
             Debug.Log("Added GameManager at position:" + Instance.goDontDestroyList.Count + " to donotdestroylist");
         }
 
+        public void PeferencesButton()
+        {
+            mainMenu.SetActive(false);
+            serverMenu.SetActive(false);
+            connectMenu.SetActive(false);
+            lobbyMenu.SetActive(false);
+            userPreferences.SetActive(true);
+        }
         public void ConnectButton()
         {
             mainMenu.SetActive(false);
@@ -59,6 +72,7 @@ namespace Script
             toggleHostLocal.isOn = false;
             toggleHostLocal.isOn = true;
             lobbyMenu.SetActive(false);
+            userPreferences.SetActive(false);
         }
 
         public void setHostingToLocal()
@@ -110,6 +124,7 @@ namespace Script
             serverMenu.SetActive(true);
             connectMenu.SetActive(false);
             lobbyMenu.SetActive(false);
+            userPreferences.SetActive(false);
         }
 
         public void HostLocalConnectToggle()
@@ -158,6 +173,7 @@ namespace Script
             serverMenu.SetActive(false);
             connectMenu.SetActive(false);
             lobbyMenu.SetActive(true);
+            userPreferences.SetActive(false);
         }
 
         public void StartGameButton()
@@ -173,6 +189,7 @@ namespace Script
             serverMenu.SetActive(false);
             connectMenu.SetActive(false);
             lobbyMenu.SetActive(false);
+            userPreferences.SetActive(false);
 
             RestartAll();
 
