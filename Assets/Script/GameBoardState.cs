@@ -29,8 +29,8 @@ namespace Script
         private static Server _server;
 
         
-        private int gridXDim = _server.GridXDim;
-        private int gridZDim = _server.GridZDim;
+        private int gridXDim;
+        private int gridZDim;
         
         public void Init()
         {
@@ -132,6 +132,9 @@ namespace Script
 
         public bool UpdateHandDeckCardStatus(string cardID, string clientID)
         {
+            gridXDim = _server.GridXDim;
+            gridZDim = _server.GridZDim;
+            
             string strReponse = "";
             var s = FindObjectOfType<Server>();
             var pc = new GameCard(); 
@@ -223,6 +226,9 @@ namespace Script
 
         public bool UpdateGameboardDeckCardStatus(string cardID, string clientID)
         {
+            gridXDim = _server.GridXDim;
+            gridZDim = _server.GridZDim;
+
             string strReponse = "";
             var s = FindObjectOfType<Server>();
             var bc = new GameCard(); 
@@ -329,6 +335,9 @@ namespace Script
 
         private string checkVictory()
         {
+            gridXDim = _server.GridXDim;
+            gridZDim = _server.GridZDim;
+
             //iterate through cards looking for a win
             var retVal = "";
             var bc = new GameCard();
@@ -415,6 +424,9 @@ namespace Script
 
             //TODO - Upgrade to XML and message objects when they are available
         {
+            gridXDim = _server.GridXDim;
+            gridZDim = _server.GridZDim;
+            
             int x = 0;
             int z = 0;
         
