@@ -57,12 +57,14 @@ namespace Script
 
         public void PeferencesButton()
         {
-            mainMenu.SetActive(false);
-            serverMenu.SetActive(false);
-            connectMenu.SetActive(false);
-            lobbyMenu.SetActive(false);
             userPreferences.SetActive(true);
         }
+
+        public void CloseOptionsButton()
+        {
+            userPreferences.SetActive(false);
+        }
+
         public void ConnectButton()
         {
             mainMenu.SetActive(false);

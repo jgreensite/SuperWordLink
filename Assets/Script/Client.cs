@@ -123,8 +123,8 @@ namespace Script
                         else if (isHost && GameManager.Instance.minPlayers.text == "")
                         {
                             howManyPlaying = 1;
-                            sizeOfXDim = 5;
-                            sizeOfYDim = 5;
+                            sizeOfXDim = 6;
+                            sizeOfYDim = 6;
                         }
                         else
                         {
