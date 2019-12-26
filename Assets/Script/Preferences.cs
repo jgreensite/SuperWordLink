@@ -40,7 +40,7 @@ namespace Script
         
         public static string getPrefString(string key)
         {
-            return(PlayerPrefs.GetString(key, "0"));
+            return(PlayerPrefs.GetString(key, ""));
         }
     }
 }

@@ -5,20 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1437e589-671a-4957-a669-82a5eb0bb141" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Script/UserInputManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ProjectSettings/XRSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Blender/materials/Card Face Blue.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Blender/materials/Card Face Blue.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scene/Menu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scene/Menu.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Client.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Client.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Preferences.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Preferences.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/Packages-Update.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/Packages-Update.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/UserInputManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/UserInputManager.cs" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -102,8 +91,8 @@
         <option value="$PROJECT_DIR$/Assets/Script/WordDictionary.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameManager.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/UserInputManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Client.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/UserInputManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Preferences.cs" />
       </list>
     </option>
@@ -227,7 +216,7 @@
       <workItem from="1577185612255" duration="2503000" />
       <workItem from="1577210574996" duration="369000" />
       <workItem from="1577366658909" duration="50000" />
-      <workItem from="1577366746070" duration="9691000" />
+      <workItem from="1577366746070" duration="10740000" />
     </task>
     <task id="LOCAL-00001" summary="Testing commit with Rider">
       <created>1545559485773</created>
@@ -278,7 +267,14 @@
       <option name="project" value="LOCAL" />
       <updated>1558565578531</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Got user preferences working in basic format can now set preferences but does not yet load preferences that are stored">
+      <created>1577382877096</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1577382877096</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -309,7 +305,8 @@
     <MESSAGE value="Got the cards in the hand workign well, moving on to being able to change the size of GRIDXDIM and GRIDYDIM" />
     <MESSAGE value="*** Breaking Change ***&#10;Tried again to get client and server to communicate card status using cardID really need to update all messages to use serialized objects like the cards in the hands do. Also finally figured that Rider and Unity are not playing nicely. For some reason I have to compile in Unity now to see any changes introduced by Rider. Lost a lot of time chasing my tail on why updates I made in Rider did not appear in the build." />
     <MESSAGE value="Clicking on player hand cards and boardgame cards working for limited tests run so far. More extensive testing is required&#10;&#10;*** Known Bugs ***&#10;No animation for the callerboard cards&#10;Caller can click on boardgame cards and affect play, they should not be allowed to do this unless using a hand card that grants such powers&#10;All caller cards can be used again at the start of the next turn" />
-    <option name="LAST_COMMIT_MESSAGE" value="Clicking on player hand cards and boardgame cards working for limited tests run so far. More extensive testing is required&#10;&#10;*** Known Bugs ***&#10;No animation for the callerboard cards&#10;Caller can click on boardgame cards and affect play, they should not be allowed to do this unless using a hand card that grants such powers&#10;All caller cards can be used again at the start of the next turn" />
+    <MESSAGE value="Got user preferences working in basic format can now set preferences but does not yet load preferences that are stored" />
+    <option name="LAST_COMMIT_MESSAGE" value="Got user preferences working in basic format can now set preferences but does not yet load preferences that are stored" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
