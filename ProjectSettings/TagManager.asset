@@ -41,6 +41,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Pop-Up
+    uniqueID: 3387190309
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

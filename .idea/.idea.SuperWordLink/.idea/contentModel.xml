@@ -203,6 +203,7 @@
           <e p="Preferences.cs" t="Include" />
           <e p="Server.cs" t="Include" />
           <e p="TurnIndicator.cs" t="Include" />
+          <e p="UserInputManager.cs" t="Include" />
           <e p="WordDictionary.cs" t="Include" />
         </e>
         <e p="Shaders" t="Include">

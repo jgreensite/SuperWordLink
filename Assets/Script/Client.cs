@@ -84,9 +84,9 @@ namespace Script
             var x = 0;
             var z = 0;
             Debug.Log("Client Receiving: " + data);
-            int howManyPlaying;
-            int sizeOfXDim;
-            int sizeOfYDim;
+            int howManyPlaying =0;
+            int sizeOfXDim =0;
+            int sizeOfYDim =0;
             var cardID = "";
 
 
@@ -110,21 +110,15 @@ namespace Script
                             );
                         }
 
-                        //Get the number of participants from the GameManager and convet to an integer
+                        //Hosts will use their preferences in order to determine the game parameters e.g. number of players, board dimentions
                         //Note that cannot write the number of participants that is used to decide to start the game
                         //this must be initiated from the server sending a message to the client
-                        if (
-                            int.TryParse(GameManager.Instance.minPlayers.text, out howManyPlaying) &&
-                            int.TryParse(GameManager.Instance.gridXDim.text, out sizeOfXDim) &&
-                            int.TryParse(GameManager.Instance.gridZDim.text, out sizeOfYDim)
-                        )
+
+                        if (isHost)    
                         {
-                        }
-                        else if (isHost && GameManager.Instance.minPlayers.text == "")
-                        {
-                            howManyPlaying = 1;
-                            sizeOfXDim = 6;
-                            sizeOfYDim = 6;
+                            howManyPlaying = PREFS.getPrefInt("MinPlayers");
+                            sizeOfXDim = PREFS.getPrefInt("GridXDim");
+                            sizeOfYDim = PREFS.getPrefInt("GridZDim");
                         }
                         else
                         {

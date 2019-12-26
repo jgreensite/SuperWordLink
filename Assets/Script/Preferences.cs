@@ -25,5 +25,22 @@ namespace Script
             Debug.Log("Added PREFS at position:" + GameManager.Instance.goDontDestroyList.Count +
                       " to donotdestroylist");
         }
+
+        //TODO - update this to an object that is serialized so that it can survive a clear preferences wipe by a user
+        public static void SetPref(string key, string val)
+        {
+            PlayerPrefs.SetString(key, val);
+            Debug.Log("Stored preference [" + key + "] as:"+ val);
+        }
+
+        public static int getPrefInt(string key)
+        {
+            return(Int32.Parse(PlayerPrefs.GetString(key, "0")));
+        }
+        
+        public static string getPrefString(string key)
+        {
+            return(PlayerPrefs.GetString(key, "0"));
+        }
     }
 }
