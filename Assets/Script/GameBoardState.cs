@@ -435,10 +435,17 @@ namespace Script
                 case "CDIC":
                     //Cannot use FindObjectOfType in the constructor, so have to assign in here    
                     var worddictionary = FindObjectOfType<WordDictionary>();
-                
+                    
+                    //Build the Gameboard data
                     worddictionary.buildGameboardData();
                     isRedTurn = (worddictionary.isRedStart =="1"? true: false);
-
+                    
+                    //Clear Gameboard data
+                    cntGoalRedCards = 0;
+                    cntGoalBlueCards = 0;
+                    gbd.gameCards.Clear();
+                    
+                    //Rebuild Gameboard data
                     for (z = 0; z < gridZDim; z++)
                     for (x = 0; x < gridXDim; x++)
                     {
@@ -455,6 +462,10 @@ namespace Script
                         gbd.gameCards[x + z * gridXDim].cardSuit = worddictionary.gameBoardCardData[x + z * gridXDim].populate;
                         gbd.gameCards[x + z * gridXDim].cardID = worddictionary.gameBoardCardData[x + z * gridXDim].cardid;
                         gbd.gameCards[x + z * gridXDim].cardRevealed = CS.CAR_REVEAL_HIDDEN;
+                        
+                        //Increase the goals for the teams to win
+                        if (gbd.gameCards[x + z * gridXDim].cardSuit == CS.RED_TEAM) cntGoalRedCards += 1;
+                        if (gbd.gameCards[x + z * gridXDim].cardSuit == CS.RED_TEAM) cntGoalRedCards += 1;
                     }
                     break;
                 case "CMOV":

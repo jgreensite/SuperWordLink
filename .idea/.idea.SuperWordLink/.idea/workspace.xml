@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1437e589-671a-4957-a669-82a5eb0bb141" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Preferences.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Preferences.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/UserInputManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/UserInputManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Editor/JetBrains/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scene/Menu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scene/Menu.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/GameBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameBoard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,50 +27,51 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Script/TurnIndicator.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scene/Menu.unity" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AE22A4E8-F83C-41D6-9684-AE7F557133D9/12/e3b78682/WebClient.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3845A180-C26B-4889-BC2D-47593A665814/b8/96a82f17/Socket.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scene/Main/LightingData.asset" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AE22A4E8-F83C-41D6-9684-AE7F557133D9/ad/e5dfb5a2/HttpWebRequest.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Editor/MultiplayersBuildAndRun.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/567DF3E0-9192-41BA-98DB-88BEC4C6696F/34/81a60397/Buffer.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AE22A4E8-F83C-41D6-9684-AE7F557133D9/51/7fd4b6e0/MonoTlsStream.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/D7AC571C-A2D0-4B2F-981D-0D886FA067CF/44/f3f4cebb/Buffer.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/567DF3E0-9192-41BA-98DB-88BEC4C6696F/db/43d3c443/Task.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Fabric/Editor/GUI/View/LoginPage.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/567DF3E0-9192-41BA-98DB-88BEC4C6696F/3b/1901091c/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Fabric/Kits/Crashlytics/Runtime/Internal/Impl.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AE22A4E8-F83C-41D6-9684-AE7F557133D9/0f/6d037748/Debug.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/GameMenu.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AE22A4E8-F83C-41D6-9684-AE7F557133D9/3c/29fdac19/X509Store.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/567DF3E0-9192-41BA-98DB-88BEC4C6696F/db/43d3c443/Task.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Card.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AE22A4E8-F83C-41D6-9684-AE7F557133D9/51/7fd4b6e0/MonoTlsStream.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/GameHandDeck.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/451F0B03-3AF8-4B6D-B8A8-2AA44146C999/9b/edeac90e/IMGUIContainer.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Script/GameWords.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Fabric/Editor/FabricUtils.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/GameWords.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AE22A4E8-F83C-41D6-9684-AE7F557133D9/ad/e5dfb5a2/HttpWebRequest.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Lobby.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/451F0B03-3AF8-4B6D-B8A8-2AA44146C999/5b/ba32dbe6/UIElementsUtility.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/D7AC571C-A2D0-4B2F-981D-0D886FA067CF/44/f3f4cebb/Buffer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/GameConstants.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Script/HeadlessServer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Script/GameCard.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9FDC4C51-B0C7-4546-B786-3960F9028656/fe/2092ae0f/GUIUtility.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/HeadlessServer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AE22A4E8-F83C-41D6-9684-AE7F557133D9/10/1da5662a/Socket.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AE22A4E8-F83C-41D6-9684-AE7F557133D9/12/e3b78682/WebClient.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/GameCard.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/GameBoardDeck.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Script/Preferences.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Script/CameraHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Client.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AE22A4E8-F83C-41D6-9684-AE7F557133D9/2f/29b11bf1/TcpClient.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/CameraHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Server.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/GameBoard.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AE22A4E8-F83C-41D6-9684-AE7F557133D9/10/1da5662a/Socket.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/UserInputManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Script/UserInputManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AE22A4E8-F83C-41D6-9684-AE7F557133D9/0f/6d037748/Debug.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/WordDictionary.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/Preferences.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Card.cs.meta" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/TurnIndicator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scene/Menu.unity" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AD9BEDA1-AB32-47EE-B473-0364A1BA4085/51/d3faa472/Debug.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3845A180-C26B-4889-BC2D-47593A665814/b8/96a82f17/Socket.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scene/Main/LightingData.asset" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/451F0B03-3AF8-4B6D-B8A8-2AA44146C999/5b/ba32dbe6/UIElementsUtility.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/567DF3E0-9192-41BA-98DB-88BEC4C6696F/ce/be3715c8/WaitHandle.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Editor/MultiplayersBuildAndRun.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/451F0B03-3AF8-4B6D-B8A8-2AA44146C999/9b/edeac90e/IMGUIContainer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/567DF3E0-9192-41BA-98DB-88BEC4C6696F/34/81a60397/Buffer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Fabric/Editor/GUI/View/LoginPage.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AE22A4E8-F83C-41D6-9684-AE7F557133D9/3c/29fdac19/X509Store.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/567DF3E0-9192-41BA-98DB-88BEC4C6696F/d8/66278de7/Void.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/567DF3E0-9192-41BA-98DB-88BEC4C6696F/3b/1901091c/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Fabric/Kits/Crashlytics/Runtime/Internal/Impl.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -86,14 +90,14 @@
         <option value="$PROJECT_DIR$/Assets/Editor/MultiplayersBuildAndRun.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Card.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameConstants.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/GameBoard.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/Server.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/WordDictionary.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Client.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/UserInputManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Preferences.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/GameBoard.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/Server.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" />
       </list>
     </option>
   </component>
@@ -103,12 +107,19 @@
     </ignored-facets>
   </component>
   <component name="ProjectId" id="1TNrGdflM9ah7hICZq5TSXSNqer" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="Rider.DefaultBreakpoints.AreToggled" value="true" />
     <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
+    <property name="Rider.SolutionExplorerActivator" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SearchEverywhereHistoryKey" value="HERE&#9;ACTION&#9;SearchEverywhere" />
+    <property name="TWShift.3" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -117,33 +128,19 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="preferences.build.unityPlugin" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
-    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" pid="42278">
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="42278" />
-      <option name="userSelectedPid" value="false" />
+      <option name="pid" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" pid="42370">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="42370" />
-      <option name="userSelectedPid" value="false" />
+      <option name="pid" />
       <method v="2" />
     </configuration>
     <list>
@@ -216,7 +213,11 @@
       <workItem from="1577185612255" duration="2503000" />
       <workItem from="1577210574996" duration="369000" />
       <workItem from="1577366658909" duration="50000" />
-      <workItem from="1577366746070" duration="10740000" />
+      <workItem from="1577366746070" duration="11359000" />
+      <workItem from="1585001684481" duration="1103000" />
+      <workItem from="1586684125144" duration="2585000" />
+      <workItem from="1586686923511" duration="4404000" />
+      <workItem from="1586718876921" duration="959000" />
     </task>
     <task id="LOCAL-00001" summary="Testing commit with Rider">
       <created>1545559485773</created>
@@ -274,7 +275,14 @@
       <option name="project" value="LOCAL" />
       <updated>1577382877096</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="User preferences now load if saved in a previous session">
+      <created>1577403397116</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1577403397116</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -296,7 +304,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="true" />
     <MESSAGE value="Testing commit with Rider" />
     <MESSAGE value="Testing commits again with Rider" />
     <MESSAGE value="up and running with 2018 but editor still looks like it has broken prefabs" />
@@ -306,7 +313,98 @@
     <MESSAGE value="*** Breaking Change ***&#10;Tried again to get client and server to communicate card status using cardID really need to update all messages to use serialized objects like the cards in the hands do. Also finally figured that Rider and Unity are not playing nicely. For some reason I have to compile in Unity now to see any changes introduced by Rider. Lost a lot of time chasing my tail on why updates I made in Rider did not appear in the build." />
     <MESSAGE value="Clicking on player hand cards and boardgame cards working for limited tests run so far. More extensive testing is required&#10;&#10;*** Known Bugs ***&#10;No animation for the callerboard cards&#10;Caller can click on boardgame cards and affect play, they should not be allowed to do this unless using a hand card that grants such powers&#10;All caller cards can be used again at the start of the next turn" />
     <MESSAGE value="Got user preferences working in basic format can now set preferences but does not yet load preferences that are stored" />
-    <option name="LAST_COMMIT_MESSAGE" value="Got user preferences working in basic format can now set preferences but does not yet load preferences that are stored" />
+    <MESSAGE value="User preferences now load if saved in a previous session" />
+    <option name="LAST_COMMIT_MESSAGE" value="User preferences now load if saved in a previous session" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="485" height="466" key="DebuggerActiveHint" timestamp="1586687759289">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="485" height="466" key="DebuggerActiveHint/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586687759289" />
+    <state x="100" y="123" width="1240" height="604" key="DiffContextDialog" timestamp="1586719104504">
+      <screen x="0" y="23" width="1440" height="804" />
+    </state>
+    <state x="100" y="123" width="1240" height="604" key="DiffContextDialog/0.23.1440.804@0.23.1440.804" timestamp="1586719104504" />
+    <state width="1765" height="394" key="GridCell.Tab.0.bottom" timestamp="1586689682117">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.0.bottom/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682117" />
+    <state width="1765" height="394" key="GridCell.Tab.0.center" timestamp="1586689682115">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.0.center/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682115" />
+    <state width="1765" height="394" key="GridCell.Tab.0.left" timestamp="1586689682114">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.0.left/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682114" />
+    <state width="1765" height="394" key="GridCell.Tab.0.right" timestamp="1586689682116">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.0.right/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682116" />
+    <state width="1765" height="394" key="GridCell.Tab.1.bottom" timestamp="1586689682120">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.1.bottom/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682120" />
+    <state width="1765" height="394" key="GridCell.Tab.1.center" timestamp="1586689682118">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.1.center/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682118" />
+    <state width="1765" height="394" key="GridCell.Tab.1.left" timestamp="1586689682118">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.1.left/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682118" />
+    <state width="1765" height="394" key="GridCell.Tab.1.right" timestamp="1586689682119">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.1.right/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682119" />
+    <state width="1765" height="394" key="GridCell.Tab.2.bottom" timestamp="1586689682122">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.2.bottom/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682122" />
+    <state width="1765" height="394" key="GridCell.Tab.2.center" timestamp="1586689682121">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.2.center/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682121" />
+    <state width="1765" height="394" key="GridCell.Tab.2.left" timestamp="1586689682120">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.2.left/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682120" />
+    <state width="1765" height="394" key="GridCell.Tab.2.right" timestamp="1586689682121">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.2.right/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682121" />
+    <state width="1765" height="394" key="GridCell.Tab.3.bottom" timestamp="1586689682124">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.3.bottom/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682124" />
+    <state width="1765" height="394" key="GridCell.Tab.3.center" timestamp="1586689682123">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.3.center/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682123" />
+    <state width="1765" height="394" key="GridCell.Tab.3.left" timestamp="1586689682123">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.3.left/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682123" />
+    <state width="1765" height="394" key="GridCell.Tab.3.right" timestamp="1586689682124">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state width="1765" height="394" key="GridCell.Tab.3.right/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586689682124" />
+    <state x="320" y="90" key="PlantUMLSettings" timestamp="1586721263315">
+      <screen x="0" y="23" width="1440" height="804" />
+    </state>
+    <state x="320" y="90" key="PlantUMLSettings/0.23.1440.804@0.23.1440.804" timestamp="1586721263315" />
+    <state x="320" y="164" key="Rider.ProjectTemplateDialog.Size" timestamp="1586725636060">
+      <screen x="0" y="23" width="1440" height="804" />
+    </state>
+    <state x="320" y="164" key="Rider.ProjectTemplateDialog.Size/0.23.1440.804@0.23.1440.804" timestamp="1586725636060" />
+    <state x="229" y="60" key="SettingsEditor" timestamp="1586718829531">
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state x="229" y="60" key="SettingsEditor/0.23.1440.806@0.23.1440.806" timestamp="1586718829531" />
+    <state x="287" y="448" width="721" height="486" key="find.popup" timestamp="1586708475283">
+      <screen x="0" y="23" width="2560" height="1337" />
+    </state>
+    <state x="287" y="448" width="721" height="486" key="find.popup/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586708475283" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -525,13 +623,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
-          <line>438</line>
+          <line>439</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="424">
             <startOffsets>
-              <option value="16658" />
+              <option value="16709" />
             </startOffsets>
             <endOffsets>
-              <option value="16694" />
+              <option value="16745" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="21" />
@@ -603,13 +701,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
-          <line>460</line>
+          <line>471</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="448">
             <startOffsets>
-              <option value="17898" />
+              <option value="18509" />
             </startOffsets>
             <endOffsets>
-              <option value="17928" />
+              <option value="18539" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="29" />
@@ -652,6 +750,97 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
+          <line>374</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="374">
+            <startOffsets>
+              <option value="14329" />
+            </startOffsets>
+            <endOffsets>
+              <option value="14377" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Script/GameBoard.cs</url>
+          <line>468</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoard.cs" initialLine="468">
+            <startOffsets>
+              <option value="19063" />
+            </startOffsets>
+            <endOffsets>
+              <option value="19111" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Script/GameCard.cs</url>
+          <line>27</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/Script/GameCard.cs" initialLine="27">
+            <startOffsets>
+              <option value="923" />
+            </startOffsets>
+            <endOffsets>
+              <option value="945" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
+          <line>352</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="352">
+            <startOffsets>
+              <option value="13693" />
+            </startOffsets>
+            <endOffsets>
+              <option value="13708" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
+          <line>353</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="353">
+            <startOffsets>
+              <option value="13757" />
+            </startOffsets>
+            <endOffsets>
+              <option value="13771" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
+          <line>363</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="363">
+            <startOffsets>
+              <option value="14020" />
+            </startOffsets>
+            <endOffsets>
+              <option value="14055" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
+          <line>282</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="282">
+            <startOffsets>
+              <option value="11363" />
+            </startOffsets>
+            <endOffsets>
+              <option value="11393" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="40" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

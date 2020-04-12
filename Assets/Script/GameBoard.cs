@@ -246,7 +246,7 @@ namespace Script
 //                gameboardCardOver.y = (int) ((hitGameBoardCard.point.z + gameboardDimz / 2) / (2.35 / gridZDim));
                 gameboardCardIDOver = hitGameBoardCard.collider.gameObject.GetComponent<Card>().cardID;
                 Debug.DrawLine(ray.origin, currentCamera.GetComponent<Camera>().transform.forward * 10, Color.red);
-                Debug.Log("User just hovered over cardID:" +gameboardCardIDOver);
+                //Debug.Log("User just hovered over cardID:" +gameboardCardIDOver);
                 //gameboardCardIDOver = cardsPlayerGameBoard[(int)gameboardCardOver.x, (int)gameboardCardOver.y].cardID;
             }
             else
