@@ -466,7 +466,7 @@ namespace Script
 
         private bool endGame()
         {
-            Debug.Log("Game Over !!! - Press R to restart");
+            Debug.Log("Client | Game Over !!! - Press R to restart");
             isGameover = true;
             return true;
         }

@@ -238,13 +238,14 @@ namespace Script
 
             int z = 0;
             int x = 0;
-
+            
+            //Check to see if the cardID is correct and the card has not been played ClientID
             while ((z < gridZDim) && (isPlayableCard == false))
             {
                 while ((x < gridXDim) && (isPlayableCard == false))
                 {
                     bc = gbd.gameCards[x + z * gridXDim];
-                    //Check to see if the cardID is correct and the card ha not been played ClientID
+
                     //TODO - To make this more secure clients should only know their (and only their own) clientID
                     //TODO - cep and cwp are not currently attributes of board cards but there is no reason they should not be
                     if ((bc.cardID == cardID) && (bc.cardRevealed == CS.CAR_REVEAL_HIDDEN))
@@ -263,11 +264,13 @@ namespace Script
                 }
             }
 
+            //Now check to see what type of card has been selected
             if (isPlayableCard)
             {
+                Debug.Log("Server | cardID is valid:" + cardID);
                 bc.cardRevealed = CS.CAR_REVEAL_SHOWN;
                 gbd.gameCards[x + z * gridXDim] = bc;
-                Debug.Log("Played reveal card:" + cardID + "at x:" +x.ToString() + "z:" +z.ToString());
+                Debug.Log("Server | Player revealed card:" + cardID + "at x:" +x.ToString() + "z:" +z.ToString());
             
                 //Select the card, note that it may not be this client that selected the card
 
@@ -299,7 +302,8 @@ namespace Script
                         EndTurn(moveResult);
                         break;
                 }
-            } else Debug.Log("invalid selection of card:" + cardID);
+            } else
+                Debug.Log("Server | cardID is invalid:" + cardID);
             SaveDeck(gbd);
             return(isPlayableCard);
         }
@@ -372,7 +376,7 @@ namespace Script
 
         private bool endGame()
         {
-            Debug.Log("Game Over !!! - Press R to restart");
+            Debug.Log("Server | Game Over !!! - Press R to restart");
             isGameover = true;
             return true;
         }
@@ -465,7 +469,7 @@ namespace Script
                         
                         //Increase the goals for the teams to win
                         if (gbd.gameCards[x + z * gridXDim].cardSuit == CS.RED_TEAM) cntGoalRedCards += 1;
-                        if (gbd.gameCards[x + z * gridXDim].cardSuit == CS.RED_TEAM) cntGoalRedCards += 1;
+                        if (gbd.gameCards[x + z * gridXDim].cardSuit == CS.RED_TEAM) cntGoalBlueCards += 1;
                     }
                     break;
                 case "CMOV":
