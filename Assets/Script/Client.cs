@@ -17,10 +17,16 @@ namespace Script
         public GameHandDeck gcdBlue = new GameHandDeck();
         public GameHandDeck gcdRed = new GameHandDeck();
         private GameHandDeck gcdTemp = new GameHandDeck();
-        public bool isHost;
-        public bool isPlayer;
-        public bool isRedTeam;
-        private int numParticipants;
+        
+        //Client's Current View of
+        private Game gClientGame = new Game();
+        public GameTeam gClientTeam = new GameTeam();
+        public TeamPlayer gClientPlayer = new TeamPlayer();
+
+        //public bool isHost;
+        //public bool isPlayer;
+        //public bool isRedTeam;
+        //private int numParticipants;
 
         public List<GameClient> players = new List<GameClient>();
         private StreamReader reader;
@@ -35,6 +41,7 @@ namespace Script
             DontDestroyOnLoad(gameObject);
             GameManager.Instance.goDontDestroyList.Add(gameObject);
             Debug.Log("Added Client at position:" + GameManager.Instance.goDontDestroyList.Count + " to donotdestroylist");
+            gClientTeam.teamPlayers.Add(gClientPlayer);
         }
 
         public bool ConnectToServer(string host, int port)
@@ -93,6 +100,10 @@ namespace Script
             //TODO - remove this when all messaging is done via XML
             if (!data[0].Equals('<'))
             {
+                //Use these for temporary messages
+                Game gEventGame = new Game();
+                GameEvent gEventPlayer = new GameEvent();
+                
                 var aData = data.Split('|');
                 switch (aData[0])
                 {
@@ -114,7 +125,7 @@ namespace Script
                         //Note that cannot write the number of participants that is used to decide to start the game
                         //this must be initiated from the server sending a message to the client
 
-                        if (isHost)    
+                        if (gClientPlayer.isHost)    
                         {
                             howManyPlaying = PREFS.getPrefInt("MinPlayers");
                             sizeOfXDim = PREFS.getPrefInt("GridXDim");
@@ -129,16 +140,32 @@ namespace Script
 
                         Send(
                             "CWHO" + '|'
-                                   + clientName + '|'
-                                   + (isHost ? 1 : 0) + '|'
-                                   + (isPlayer ? 1 : 0) + '|'
-                                   + (isRedTeam ? 1 : 0) + '|'
-                                   + clientID + '|'
+                                   + gClientPlayer.name + '|'
+                                   + (gClientPlayer.isHost ? 1 : 0) + '|'
+                                   + (gClientPlayer.isPlayer ? 1 : 0) + '|'
+                                   + (gClientTeam.id) + '|'
+                                   + gClientPlayer.id + '|'
                                    + howManyPlaying + '|'
                                    + sizeOfXDim + '|'
                                    + sizeOfYDim
 
                         );
+                        //START HERE Sending the new message back
+                        //This message is probably complete but it highlights the need to get rid of
+                        //the class client.gameClient and replace with gamePlayer
+                        
+                        //The Event
+                        gEventPlayer.id = "1";
+                        gEventPlayer.name = "CWHO";
+
+                        //Add The Team & Player Information to The Event
+                        gEventGame.gameTeam.Add(gClientTeam);
+
+                        //Add The Game Information to the Event
+                        gEventGame.howManyPlaying = gClientGame.howManyPlaying;
+                        gEventGame.sizeOfXDim = gClientGame.sizeOfXDim;
+                        gEventGame.sizeOfYDim = gClientGame.sizeOfYDim;
+
                         break;
 
                     case "SCNN":
@@ -238,11 +265,12 @@ namespace Script
                             );
 
                             //Populate the client attributes
-                            if (string.Equals(bData[4], clientID))
+                            if (string.Equals(bData[4], gClientPlayer.id))
                             {
-                                isHost = bData[1] == "0" ? false : true;
-                                isPlayer = bData[2] == "0" ? false : true;
-                                isRedTeam = bData[3] == "0" ? false : true;
+                                gClientPlayer.isHost = bData[1] == "0" ? false : true;
+                                gClientPlayer.isPlayer = bData[2] == "0" ? false : true;
+                                gClientTeam.id = bData[3];
+                                gClientTeam.name = gClientTeam.id;
                             }
                         }
 
@@ -272,7 +300,7 @@ namespace Script
                 }
             }
             //Must be XML
-            else
+            else if(1==1)
             {
                 //TODO - Assumes that the xml message is one to populate a game card deck
                 gcdTemp = GameHandDeck.LoadFromText(data);
@@ -294,6 +322,17 @@ namespace Script
                     GameBoard.Instance.GeneratePlayerHand();
                 }
             }
+            else if (1==0)
+            {
+                Game gTemp = new Game();
+                gTemp = Game.LoadFromText(data);
+                if (!gClientGame.SaveToText().Equals(gTemp.SaveToText()))
+                {
+                    // If there are differences render the deck
+                    gClientGame = Game.LoadFromText(data);
+                    GameBoard.Instance.GeneratePlayerHand();
+                }
+            }
         }
 
         //Called when a message is received that a user has connected
@@ -304,7 +343,7 @@ namespace Script
             c.isHost = isHost;
             c.isPlayer = isPlayer;
             c.isRedTeam = isRedTeam;
-            c.clientID = clientID;
+            c.id = clientID;
 
             players.Add(c);
             //TODO - Update the panel message to say "waiting for host to choose teams"
@@ -319,11 +358,11 @@ namespace Script
                                  + players[cnt].name + ","
                                  + (players[cnt].isPlayer ? 1 : 0) + ","
                                  + (players[cnt].isRedTeam ? 1 : 0) + ","
-                                 + players[cnt].clientID;
+                                 + players[cnt].id;
 
             Send(
                 "CBEG" + "|"
-                       + clientName
+                       + gClientPlayer.name
                        + concatPlayers
             );
         }
@@ -342,11 +381,11 @@ namespace Script
             }
             Send(
                 msg + "|"
-                    + clientName + '|'
-                    + (isHost ? 1 : 0) + '|'
-                    + (isPlayer ? 1 : 0) + '|'
-                    + (isRedTeam ? 1 : 0) + '|'
-                    + clientID + '|'
+                    + gClientPlayer.name  + '|'
+                    + (gClientPlayer.isHost ? 1 : 0) + '|'
+                    + (gClientPlayer.isPlayer ? 1 : 0) + '|'
+                    + gClientTeam.id + '|'
+                    + gClientPlayer.id + '|'
             );
         }
 
@@ -376,7 +415,7 @@ namespace Script
 
     public class GameClient
     {
-        public string clientID;
+        public string id;
         public bool isHost;
         public bool isPlayer;
         public bool isRedTeam;

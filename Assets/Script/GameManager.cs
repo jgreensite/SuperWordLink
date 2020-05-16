@@ -103,14 +103,25 @@ namespace Script
 
                 //The Host has a client as well as a server
                 var c = Instantiate(clientPrefab).GetComponent<Client>();
-                c.clientName = nameInput.text;
-                if (c.clientName == "") c.clientName = "Host_" + rnd;
-
-                c.isHost = true;
-                c.isPlayer = false;
-                c.isRedTeam = true;
-                c.clientID = rnd.ToString();
-
+//                c.clientName = nameInput.text;
+//                if (c.clientName == "") c.clientName = "Host_" + rnd;
+//
+//                c.isHost = true;
+//                c.isPlayer = false;
+//                c.isRedTeam = true;
+//                c.clientID = rnd.ToString();
+                
+                //The Player Information
+                c.gClientPlayer.id = rnd.ToString();;
+                c.gClientPlayer.name = nameInput.text;
+                if (c.gClientPlayer.name == "") c.gClientPlayer.name = "Host_" + rnd;
+                
+                c.gClientPlayer.isHost = true;
+                c.gClientPlayer.isPlayer = false;
+                        
+                //The Team Information
+                c.gClientTeam.id = (true)?CS.RED_TEAM:CS.BLUE_TEAM;
+                c.gClientTeam.name = c.gClientTeam.id;
 
                 if (isHostLocal)
                     c.ConnectToServer(CS.GAMESERVERLOCALADDRESS, CS.GAMESERVERPORT);
@@ -151,14 +162,26 @@ namespace Script
             try
             {
                 var c = Instantiate(clientPrefab).GetComponent<Client>();
-                c.clientName = nameInput.text;
+ //               c.clientName = nameInput.text;
                 var rnd = Random.Range(0, 99999);
-                if (c.clientName == "") c.clientName = "Client_" + rnd;
-                c.isHost = false;
-                c.isPlayer = true;
-                c.isRedTeam = false;
-                c.clientID = rnd.ToString();
+//                if (c.clientName == "") c.clientName = "Client_" + rnd;
+//                c.isHost = false;
+//                c.isPlayer = true;
+//                c.isRedTeam = false;
+//                c.clientID = rnd.ToString();
 
+                //The Player Information
+                c.gClientPlayer.id = rnd.ToString();;
+                c.gClientPlayer.name = nameInput.text;
+                if (c.gClientPlayer.name == "") c.gClientPlayer.name = "Client_" + rnd;
+                
+                c.gClientPlayer.isHost = false;
+                c.gClientPlayer.isPlayer = true;
+                        
+                //The Team Information
+                c.gClientTeam.id = (false)?CS.RED_TEAM:CS.BLUE_TEAM;
+                c.gClientTeam.name = c.gClientTeam.id;
+                
                 c.ConnectToServer(HostAddress.text, CS.GAMESERVERPORT);
                 Debug.Log("Connecting to " + HostAddress.text + ":" + CS.GAMESERVERPORT);
                 connectMenu.SetActive(false);

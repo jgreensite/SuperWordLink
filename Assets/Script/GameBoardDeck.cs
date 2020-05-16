@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
+using System;
 
 //static public void Serialize(AddressDetails details)
 //{ 
@@ -25,6 +26,9 @@ namespace Script
     [XmlRoot("GameBoardDeck")]
     public class GameBoardDeck
     {
+        [XmlAttribute] public String id { get; set; }
+        [XmlAttribute] public String name { get; set; }
+        
         [XmlArray("GameCards")] [XmlArrayItem("GameCard")]
         public List<GameCard> gameCards = new List<GameCard>();
 
@@ -36,7 +40,6 @@ namespace Script
                 serializer.Serialize(stream, this);
             }
         }
-
 
         public string SaveToText()
         {

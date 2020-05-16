@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
+using System;
 
 namespace Script
 {
@@ -7,10 +8,11 @@ namespace Script
     [XmlRoot("GameCard")]
     public class GameCard
     {
+        [XmlAttribute] public String id { get; set; }
+        [XmlAttribute] public String name { get; set; }
+        
         [XmlElement("CardWhenPlayable")] public List<CardWhenPlayable> cardWhenPlayable = new List<CardWhenPlayable>();
-
-        [XmlElement("CardEffectPlayable")]
-        public List<CardEffectPlayable> cardEffectPlayable = new List<CardEffectPlayable>();
+        [XmlElement("CardEffectPlayable")] public List<CardEffectPlayable> cardEffectPlayable = new List<CardEffectPlayable>();
 
         public string cardID { get; set; }
         public string cardPlayerNum { get; set; }
@@ -21,6 +23,10 @@ namespace Script
         public int cardXPos { get; set; }
         public int cardZPos { get; set; }
         public string cardWord { get; set; }
+        
+        public string teamId { get; set; }
+        
+        public string selected { get; set; }
 
         public string ValidMove(bool isRedTurn)
             // Check move is valid

@@ -188,21 +188,24 @@
           <e p="CameraHandler.cs" t="Include" />
           <e p="Card.cs" t="Include" />
           <e p="Client.cs" t="Include" />
+          <e p="Game.cs" t="Include" />
           <e p="GameBoard.cs" t="Include" />
           <e p="GameBoardDeck.cs" t="Include" />
           <e p="GameBoardState.cs" t="Include" />
           <e p="GameCard.cs" t="Include" />
           <e p="GameConstants.cs" t="Include" />
+          <e p="GameEvent.cs" t="Include" />
           <e p="GameHandDeck.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />
           <e p="GameMenu.cs" t="Include" />
+          <e p="GameTeam.cs" t="Include" />
           <e p="GameWords.cs" t="Include" />
           <e p="HeadlessServer.cs" t="Include" />
           <e p="Lobby.cs" t="Include" />
           <e p="LobbyLineItem.cs" t="Include" />
           <e p="Preferences.cs" t="Include" />
           <e p="Server.cs" t="Include" />
-          <e p="SuperWordLink.puml" t="Include" />
+          <e p="TeamPlayer.cs" t="Include" />
           <e p="TurnIndicator.cs" t="Include" />
           <e p="UserInputManager.cs" t="Include" />
           <e p="WordDictionary.cs" t="Include" />

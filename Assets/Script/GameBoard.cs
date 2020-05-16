@@ -116,10 +116,10 @@ namespace Script
             //TODO the dictionary should be the place where the initial cards are dealt
             //Get Dictionary from the server, as opposed to getting it locally
             //Only the host should make this request otherwise we'll generate too many cards as each client will request dictionary
-            if (client.isHost)
+            if (client.gClientPlayer.isHost)
                 client.Send(
                     "CDIC" + '|'
-                           + client.clientName
+                           + client.gClientPlayer.name
                 );
             // Get the initial set of Gamecards
         }
@@ -135,12 +135,12 @@ namespace Script
             {
                 client.Send(
                     "CKEY" + '|'
-                           + client.clientName + '|'
+                           + client.gClientPlayer.name + '|'
                            + Input.inputString
                 );
             }
             else if ((Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.P)) &&
-                     (client.isPlayer == false || isGameover))
+                     (client.gClientPlayer.isPlayer == false || isGameover))
             {
                 SetCamera(Input.inputString.ToUpper());
             }
@@ -164,11 +164,11 @@ namespace Script
                             //Send move to server
                             client.Send(
                                 "CMOV" + '|'
-                                       + client.clientName + '|'
+                                       + client.gClientPlayer.name + '|'
 //                                       + x + '|'
 //                                       + z + '|'
                                        + gameboardCardIDOver + '|'
-                                       + client.clientID
+                                       + client.gClientPlayer.id
                             );
                         break;
 
@@ -183,9 +183,9 @@ namespace Script
                             //Send move to server
                             client.Send(
                                 "CHAN" + '|'
-                                       + client.clientName + '|'
+                                       + client.gClientPlayer.name + '|'
                                        + playerhandCardIDOver + '|'
-                                       + client.clientID
+                                       + client.gClientPlayer.id
                             );
                         break;
                 }
@@ -194,8 +194,8 @@ namespace Script
                 {
                     client.Send(
                         "CGFU" + '|'
-                               + client.clientName + '|'
-                               + client.clientID
+                               + client.gClientPlayer.name + '|'
+                               + client.gClientPlayer.id
                     );
                     cardsGameboardForceUpdate = !cardsGameboardForceUpdate;
                 }
@@ -204,8 +204,8 @@ namespace Script
                 {
                     client.Send(
                         "CPFU" + '|'
-                               + client.clientName + '|'
-                               + client.clientID
+                               + client.gClientPlayer.name + '|'
+                               + client.gClientPlayer.id
                     );
                     cardsPlayerHandForceUpdate = !cardsPlayerHandForceUpdate;
                 }
@@ -475,7 +475,7 @@ namespace Script
         {
             cntGoalRedCards = 0;
             cntGoalBlueCards = 0;
-            if (client.isPlayer)
+            if (client.gClientPlayer.isPlayer)
                 SetCamera("P");
             else
                 SetCamera("C");
@@ -545,7 +545,7 @@ namespace Script
 
         public void GeneratePlayerHand()
         {
-            if (client.isPlayer != true)
+            if (client.gClientPlayer.isPlayer != true)
             {
                 //TODO - Callers may get a differrent view
             }
@@ -571,12 +571,14 @@ namespace Script
             cardsPlayerHand.Clear();
         
             for (var cnt = 0; cnt < client.gcd.gameCards.Count; cnt++)
+            //START HERE - Trying to use the new structure
+            //for (var cnt = 0; cnt <client.g.gameTeam.Count; cnt++)    
             {
                 playerNum = Convert.ToInt32(client.gcd.gameCards[cnt].cardPlayerNum);
                 clientID = client.gcd.gameCards[cnt].cardClientID;
                 cardID = client.gcd.gameCards[cnt].cardID;
                 usedUp = client.gcd.gameCards[cnt].cardRevealed;
-                if (clientID == client.clientID)
+                if (clientID == client.gClientPlayer.id)
                 {
                     //TO DO - This is limited to red and blue only and is based on team on owner of cards, add owner of cards to cards using playerID from server
                     go = Instantiate(handPfb);
@@ -712,7 +714,7 @@ namespace Script
             //Establish if the card is one for a caller or a player
             for (var cnt = 0; cnt < client.players.Count; cnt++)
             {
-                if (string.Equals(client.players[cnt].clientID, clientID))
+                if (string.Equals(client.players[cnt].id, clientID))
                 {
                     if (client.players[cnt].isPlayer)
                     {
@@ -739,11 +741,11 @@ namespace Script
         {
             var cardPos = new Vector3(-1.5f, 1.25f, 0.5F * cardNum);
             //TODO - need to find a way to visual the cards of other players 
-            if (client.players[playerNum].clientID == client.clientID)
+            if (client.players[playerNum].id == client.gClientPlayer.id)
                 cardPos += handOffsetLeft;
             else
                 cardPos += handOffsetRight;
-            if (client.isPlayer != true)
+            if (client.gClientPlayer.isPlayer != true)
             {
                 cardPos += callerCardOffset;
             }

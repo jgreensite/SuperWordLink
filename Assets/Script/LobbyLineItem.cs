@@ -28,7 +28,7 @@ namespace Script
             isCaller.isOn = !gc.isPlayer;
             isRedTeam.isOn = gc.isRedTeam;
             isBlueTeam.isOn = !gc.isRedTeam;
-            clientID = gc.clientID;
+            clientID = gc.id;
         }
 
         private void SetGameClient()
@@ -36,12 +36,12 @@ namespace Script
             var client = FindObjectOfType<Client>();
 
             for (var cnt = 0; cnt < client.players.Count; cnt++)
-                if (string.Equals(client.players[cnt].clientID, clientID))
+                if (string.Equals(client.players[cnt].id, clientID))
                 {
                     client.players[cnt].name = lineItemText.text;
                     client.players[cnt].isPlayer = !isCaller.isOn;
                     client.players[cnt].isRedTeam = isRedTeam.isOn;
-                    client.players[cnt].clientID = clientID;
+                    client.players[cnt].id = clientID;
                 }
         }
 

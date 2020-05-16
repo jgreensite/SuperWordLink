@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using System.Linq;
 
 namespace Script
 {
@@ -8,7 +9,10 @@ namespace Script
     {
         //makes class a singleton
         public static GameBoardState Instance { set; get; }
-    
+        
+        //the game state
+        public Game g = new Game();
+        
         //which team's turn it is
         public static bool isRedTurn;
  
@@ -106,10 +110,11 @@ namespace Script
                     }
                     break;
             }
-            SaveDeck(ghd);
+            SaveObject(ghd);
+            SaveObject(g);
         }
 
-        private void SaveDeck(object obj)
+        private void SaveObject(object obj)
         {
             string filePath;
         
@@ -125,6 +130,11 @@ namespace Script
             {
                 filePath += "/gameboardhand1.xml";
                 ghd.Save(filePath);
+            }
+            else if(obj is Game)
+            {
+                filePath += "/game1.xml";
+                g.Save(filePath);
             }
 
             Debug.Log("Wrote : " + filePath);
@@ -220,7 +230,8 @@ namespace Script
                     }
                 }
             }
-            SaveDeck(ghd);
+            SaveObject(ghd);
+            SaveObject(g);
             return(isPlayableCard);
         }
 
@@ -304,7 +315,8 @@ namespace Script
                 }
             } else
                 Debug.Log("Server | cardID is invalid:" + cardID);
-            SaveDeck(gbd);
+            SaveObject(gbd);
+            SaveObject(g);
             return(isPlayableCard);
         }
     

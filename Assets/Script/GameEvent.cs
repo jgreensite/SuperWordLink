@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
+using System;
 
 //static public void Serialize(AddressDetails details)
 //{ 
@@ -22,25 +23,27 @@ using System.Xml.Serialization;
 namespace Script
 {
 
-    [XmlRoot("GameHandDeck")]
-    public class GameHandDeck
+    [XmlRoot("GameEvent")]
+    public class GameEvent
     {
-        [XmlArray("GameCards")] [XmlArrayItem("GameCard")]
-        public List<GameCard> gameCards = new List<GameCard>();
+        [XmlAttribute] public String id { get; set; }
+        [XmlAttribute] public String name { get; set; }
+        
+        GameBoardDeck gameBoardDeck = new GameBoardDeck();
+        public List<TeamPlayer> players = new List<TeamPlayer>();
 
         public void Save(string path)
         {
-            var serializer = new XmlSerializer(typeof(GameHandDeck));
+            var serializer = new XmlSerializer(typeof(GameEvent));
             using (var stream = new FileStream(path, FileMode.Create))
             {
                 serializer.Serialize(stream, this);
             }
         }
 
-
         public string SaveToText()
         {
-            var xmlSerializer = new XmlSerializer(typeof(GameHandDeck));
+            var xmlSerializer = new XmlSerializer(typeof(GameEvent));
 
             using (var textWriter = new StringWriter())
             {
@@ -50,20 +53,20 @@ namespace Script
         }
 
 
-        public static GameHandDeck Load(string path)
+        public static GameEvent Load(string path)
         {
-            var serializer = new XmlSerializer(typeof(GameHandDeck));
+            var serializer = new XmlSerializer(typeof(GameEvent));
             using (var stream = new FileStream(path, FileMode.Open))
             {
-                return serializer.Deserialize(stream) as GameHandDeck;
+                return serializer.Deserialize(stream) as GameEvent;
             }
         }
 
         //Loads the xml directly from the given string. Useful in combination with www.text.
-        public static GameHandDeck LoadFromText(string text)
+        public static GameEvent LoadFromText(string text)
         {
-            var serializer = new XmlSerializer(typeof(GameHandDeck));
-            return serializer.Deserialize(new StringReader(text)) as GameHandDeck;
+            var serializer = new XmlSerializer(typeof(GameEvent));
+            return serializer.Deserialize(new StringReader(text)) as GameEvent;
         }
     }
 }
