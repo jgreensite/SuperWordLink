@@ -179,7 +179,7 @@ namespace Script
                 c.gClientPlayer.isPlayer = true;
                         
                 //The Team Information
-                c.gClientTeam.id = (false)?CS.RED_TEAM:CS.BLUE_TEAM;
+                c.gClientTeam.id = "";
                 c.gClientTeam.name = c.gClientTeam.id;
                 
                 c.ConnectToServer(HostAddress.text, CS.GAMESERVERPORT);

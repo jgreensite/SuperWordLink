@@ -712,11 +712,14 @@ namespace Script
             emptyObjectCard.tag = CS.OBJ_LOCATION_TAG_PLAYERHAND;
 
             //Establish if the card is one for a caller or a player
-            for (var cnt = 0; cnt < client.players.Count; cnt++)
+            //for (var cnt = 0; cnt < client.players.Count; cnt++)
+            foreach (var tempTeam in client.gClientGame.gameTeam)
+            foreach (var tempPlayer in tempTeam.teamPlayers)
+
             {
-                if (string.Equals(client.players[cnt].id, clientID))
+                if (string.Equals(tempPlayer.id, clientID))
                 {
-                    if (client.players[cnt].isPlayer)
+                    if (tempPlayer.isPlayer)
                     {
                         emptyObjectCard.transform.parent = gameBoardPlayer.transform;
                     }
@@ -741,7 +744,9 @@ namespace Script
         {
             var cardPos = new Vector3(-1.5f, 1.25f, 0.5F * cardNum);
             //TODO - need to find a way to visual the cards of other players 
-            if (client.players[playerNum].id == client.gClientPlayer.id)
+            foreach (var tempTeam in client.gClientGame.gameTeam)
+            foreach (var tempPlayer in tempTeam.teamPlayers)
+            if (tempPlayer.id == client.gClientPlayer.id)
                 cardPos += handOffsetLeft;
             else
                 cardPos += handOffsetRight;

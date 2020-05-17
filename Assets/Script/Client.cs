@@ -19,7 +19,7 @@ namespace Script
         private GameHandDeck gcdTemp = new GameHandDeck();
         
         //Client's Current View of
-        private Game gClientGame = new Game();
+        public Game gClientGame = new Game();
         public GameTeam gClientTeam = new GameTeam();
         public TeamPlayer gClientPlayer = new TeamPlayer();
 
@@ -28,7 +28,7 @@ namespace Script
         //public bool isRedTeam;
         //private int numParticipants;
 
-        public List<GameClient> players = new List<GameClient>();
+        //public List<GameClient> players = new List<GameClient>();
         private StreamReader reader;
         private TcpClient socket;
 
@@ -108,7 +108,7 @@ namespace Script
                 switch (aData[0])
                 {
                     case "SWHO":
-                        players.Clear();
+                        gClientGame.gameTeam.Clear();
                         for (var i = 1; i < aData.Length; i++)
                         {
                             var bData = aData[i].Split(',');
@@ -169,7 +169,7 @@ namespace Script
                         break;
 
                     case "SCNN":
-                        players.Clear();
+                        gClientGame.gameTeam.Clear();
                         for (var i = 1; i < aData.Length; i++)
                         {
                             var bData = aData[i].Split(',');
@@ -252,7 +252,7 @@ namespace Script
                     }
                         break;
                     case "SBEG":
-                        players.Clear();
+                        gClientGame.gameTeam.Clear();
                         for (var i = 1; i < aData.Length; i++)
                         {
                             var bData = aData[i].Split(',');
@@ -338,27 +338,47 @@ namespace Script
         //Called when a message is received that a user has connected
         private void UserConnected(string name, bool isHost, bool isPlayer, bool isRedTeam, string clientID)
         {
-            var c = new GameClient();
+            //var c = new GameClient();
+            //c.name = name;
+            //c.isHost = isHost;
+            //c.isPlayer = isPlayer;
+            //c.isRedTeam = isRedTeam;
+            //c.id = clientID;
+            
+            var c = new TeamPlayer();
             c.name = name;
             c.isHost = isHost;
             c.isPlayer = isPlayer;
-            c.isRedTeam = isRedTeam;
-            c.id = clientID;
+            var tempTeamName = isRedTeam ? CS.RED_TEAM : CS.BLUE_TEAM;
+            var tempTeamID = tempTeamName;
+            var fTeam = gClientGame.gameTeam.Where(team => team.name == tempTeamID);
+            if (fTeam.FirstOrDefault() != null)
+            {
+                var t = new GameTeam();
+                t.name = tempTeamName;
+                t.id = t.name;
+                t.teamPlayers.Add(c);
+                gClientGame.gameTeam.Add(t);
+            }
+            else
+            {
+               gClientGame.gameTeam.Where(team => team.name == tempTeamID).FirstOrDefault().teamPlayers.Add(c);
+            }
 
-            players.Add(c);
+            //players.Add(c);
             //TODO - Update the panel message to say "waiting for host to choose teams"
         }
 
         public void StartGame()
         {
             var concatPlayers = "";
-
-            for (var cnt = 0; cnt < players.Count; cnt++)
+            
+            foreach (var cntP in gClientGame.gameTeam.OfType<TeamPlayer>())
                 concatPlayers += "|"
-                                 + players[cnt].name + ","
-                                 + (players[cnt].isPlayer ? 1 : 0) + ","
-                                 + (players[cnt].isRedTeam ? 1 : 0) + ","
-                                 + players[cnt].id;
+                                 + cntP.name + ","
+                                 + (cntP.isPlayer ? 1 : 0) + ","
+                                 + (cntP.isRedTeam ? 1 : 0) + ","
+                                 + cntP.id;
 
             Send(
                 "CBEG" + "|"

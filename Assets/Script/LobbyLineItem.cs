@@ -22,7 +22,9 @@ namespace Script
         {
         }
 
-        public void SetLobbyLineItem(GameClient gc)
+        //public void SetLobbyLineItem(GameClient gc)
+        public void SetLobbyLineItem(TeamPlayer gc)
+        
         {
             lineItemText.text = gc.name;
             isCaller.isOn = !gc.isPlayer;
