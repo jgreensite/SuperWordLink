@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+//using MoreLinq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Script
 {
@@ -349,20 +351,22 @@ namespace Script
             c.name = name;
             c.isHost = isHost;
             c.isPlayer = isPlayer;
+            c.id = clientID;
             var tempTeamName = isRedTeam ? CS.RED_TEAM : CS.BLUE_TEAM;
             var tempTeamID = tempTeamName;
-            var fTeam = gClientGame.gameTeam.Where(team => team.name == tempTeamID);
-            if (fTeam.FirstOrDefault() != null)
+            var fTeam = gClientGame.gameTeam.Where(team => team.id == tempTeamID);
+            if (fTeam.FirstOrDefault() == null)
             {
                 var t = new GameTeam();
                 t.name = tempTeamName;
-                t.id = t.name;
+                t.id = tempTeamID;
                 t.teamPlayers.Add(c);
                 gClientGame.gameTeam.Add(t);
             }
             else
             {
-               gClientGame.gameTeam.Where(team => team.name == tempTeamID).FirstOrDefault().teamPlayers.Add(c);
+               //gClientGame.gameTeam.Where(team => team.name == tempTeamID).FirstOrDefault().teamPlayers.Add(c);
+               fTeam.FirstOrDefault().teamPlayers.Add(c);
             }
 
             //players.Add(c);
@@ -372,12 +376,12 @@ namespace Script
         public void StartGame()
         {
             var concatPlayers = "";
-            
-            foreach (var cntP in gClientGame.gameTeam.OfType<TeamPlayer>())
+            //todo - Ideally use and extension linq such as more enumerable to write a simpler version of the following nested 'foreach' call
+            foreach (var cntT in gClientGame.gameTeam) foreach (var cntP in cntT.teamPlayers)
                 concatPlayers += "|"
                                  + cntP.name + ","
                                  + (cntP.isPlayer ? 1 : 0) + ","
-                                 + (cntP.isRedTeam ? 1 : 0) + ","
+                                 + cntT.id + ","
                                  + cntP.id;
 
             Send(

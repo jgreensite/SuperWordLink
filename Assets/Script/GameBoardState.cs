@@ -401,12 +401,13 @@ namespace Script
             gc.cardID = Guid.NewGuid().ToString();
             gc.cardPlayerNum = playerCnt.ToString();
             gc.cardClientID = Server.clients[playerCnt].clientID;
-            if (Server.clients[playerCnt].isRedTeam)
+            //todo - remove hardcoding for number of teams
+            if (Server.clients[playerCnt].teamID == CS.RED_TEAM)
             {
                 gc.cardSuit = CS.RED_TEAM;
                 gc.cardLocation = CS.CAR_LOCATION_RED_DECK;
             }
-            else if (!Server.clients[playerCnt].isRedTeam)
+            else if (Server.clients[playerCnt].teamID == CS.BLUE_TEAM)
             {
                 gc.cardSuit = CS.BLUE_TEAM;
                 gc.cardLocation = CS.CAR_LOCATION_BLUE_DECK;

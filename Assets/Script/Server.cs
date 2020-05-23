@@ -125,7 +125,7 @@ namespace Script
                     + i.clientName + ","
                     + (i.isHost ? 1 : 0) + ","
                     + (i.isPlayer ? 1 : 0) + ","
-                    + (i.isRedTeam ? 1 : 0) + ","
+                    + i.teamID + ","
                     + i.clientID;
 
             //If a client connection occurs add it to the list of clients
@@ -245,7 +245,7 @@ namespace Script
                     clients[clients.Count - 1].clientName = aData[1];
                     clients[clients.Count - 1].isHost = aData[2] == "1" ? true : false;
                     clients[clients.Count - 1].isPlayer = aData[3] == "1" ? true : false;
-                    clients[clients.Count - 1].isRedTeam = aData[4] == "1" ? true : false;
+                    clients[clients.Count - 1].teamID = aData[4];
                     clients[clients.Count - 1].clientID = aData[5];
 
                     //get a list of all the users that are connected, do this after adding the new client's details to this list
@@ -333,7 +333,7 @@ namespace Script
                             if (string.Equals(bData[3], sc.clientID))
                             {
                                 sc.isPlayer = bData[1] == "0" ? false : true;
-                                sc.isRedTeam = bData[2] == "0" ? false : true;
+                                sc.teamID = bData[2];
                             }
                     }
 
@@ -399,7 +399,7 @@ namespace Script
                                  + clients[i].clientName + ","
                                  + (clients[i].isHost ? 1 : 0) + ","
                                  + (clients[i].isPlayer ? 1 : 0) + ","
-                                 + (clients[i].isRedTeam ? 1 : 0) + ","
+                                 + clients[i].teamID + ","
                                  + clients[i].clientID + ",";
 
                 // TODO - Change this it is not the easiest to understand code
@@ -456,7 +456,7 @@ namespace Script
         public string clientName;
         public bool isHost;
         public bool isPlayer;
-        public bool isRedTeam;
+        public string teamID;
         public TcpClient tcp;
 
         public ServerClient(TcpClient tcp)

@@ -31,7 +31,7 @@ namespace Script
         
         public bool isHost { get; set; }
         public bool isPlayer { get; set; }
-        public bool isRedTeam { get; set; }
+        //public bool isRedTeam { get; set; }
 
         public GameHandDeck gameHandDeck = new GameHandDeck();
 
