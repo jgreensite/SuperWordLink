@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
+using System.Xml;
 using System;
 
 //static public void Serialize(AddressDetails details)
@@ -29,12 +30,12 @@ namespace Script
         [XmlAttribute] public String id { get; set; }
         [XmlAttribute] public String name { get; set; }
         
-        public bool isHost { get; set; }
-        public bool isPlayer { get; set; }
+        [XmlElement] public bool isHost { get; set; }
+        [XmlElement] public bool isPlayer { get; set; }
         //public bool isRedTeam { get; set; }
 
-        public GameHandDeck gameHandDeck = new GameHandDeck();
-
+        [XmlElement] public GameHandDeck gameHandDeck = new GameHandDeck();
+        
         public void Save(string path)
         {
             var serializer = new XmlSerializer(typeof(TeamPlayer));

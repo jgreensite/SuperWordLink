@@ -23,18 +23,18 @@ using System;
 namespace Script
 {
 
-    [XmlRoot("GameEvent")]
-    public class GameEvent
+    [XmlRoot("GameParameters")]
+    public class GameParameters
     {
-        [XmlAttribute] public String id { get; set; }
-        [XmlAttribute] public String name { get; set; }
-        
-        GameBoardDeck gameBoardDeck = new GameBoardDeck();
-        public List<TeamPlayer> players = new List<TeamPlayer>();
+        [XmlElement] public string teamTurnId { get; set; }
+        [XmlElement] public string winStatus { get; set; }
+        [XmlElement] public int howManyPlaying { get; set; }
+        [XmlElement] public int sizeOfXDim { get; set; }
+        [XmlElement] public int sizeOfYDim{ get; set; }
 
         public void Save(string path)
         {
-            var serializer = new XmlSerializer(typeof(GameEvent));
+            var serializer = new XmlSerializer(typeof(GameMessage));
             using (var stream = new FileStream(path, FileMode.Create))
             {
                 serializer.Serialize(stream, this);
@@ -43,7 +43,7 @@ namespace Script
 
         public string SaveToText()
         {
-            var xmlSerializer = new XmlSerializer(typeof(GameEvent));
+            var xmlSerializer = new XmlSerializer(typeof(GameMessage));
 
             using (var textWriter = new StringWriter())
             {
@@ -53,20 +53,20 @@ namespace Script
         }
 
 
-        public static GameEvent Load(string path)
+        public static GameMessage Load(string path)
         {
-            var serializer = new XmlSerializer(typeof(GameEvent));
+            var serializer = new XmlSerializer(typeof(GameMessage));
             using (var stream = new FileStream(path, FileMode.Open))
             {
-                return serializer.Deserialize(stream) as GameEvent;
+                return serializer.Deserialize(stream) as GameMessage;
             }
         }
 
         //Loads the xml directly from the given string. Useful in combination with www.text.
-        public static GameEvent LoadFromText(string text)
+        public static GameMessage LoadFromText(string text)
         {
-            var serializer = new XmlSerializer(typeof(GameEvent));
-            return serializer.Deserialize(new StringReader(text)) as GameEvent;
+            var serializer = new XmlSerializer(typeof(GameMessage));
+            return serializer.Deserialize(new StringReader(text)) as GameMessage;
         }
     }
 }

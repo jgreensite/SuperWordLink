@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
@@ -19,9 +20,10 @@ namespace Script
         public int numParticipants;
         public int GridXDim;
         public int GridZDim;
-
+        
         private string[] populate;
-
+ 
+        //tcp port
         public int port = 6321;
 
         //the actual server
@@ -36,7 +38,7 @@ namespace Script
     
         //makes class a singleton
         public static Server Instance { set; get; }
-
+        
         public void Init()
         {
             //needed to make this a singleton
@@ -50,7 +52,7 @@ namespace Script
             //create lists of clients that need to be connected / disconnected
             clients = new List<ServerClient>();
             disconnectList = new List<ServerClient>();
-        
+            
             try
             {
                 //create a new listener and start it listening
@@ -114,10 +116,13 @@ namespace Script
 
         private void AcceptTcpClient(IAsyncResult ar)
         {
+            var gbs = FindObjectOfType<GameState>();
+
             //Listen for a client connection
             var listener = (TcpListener) ar.AsyncState;
 
             //Get a list of all the users that are connected, do this before the client connects
+            /*
             var Allusers = "";
             foreach (var i in clients)
                 Allusers +=
@@ -127,10 +132,32 @@ namespace Script
                     + (i.isPlayer ? 1 : 0) + ","
                     + i.teamID + ","
                     + i.clientID;
+                    */
 
             //If a client connection occurs add it to the list of clients
             var sc = new ServerClient(listener.EndAcceptTcpClient(ar));
             clients.Add(sc);
+            
+            //And now add it to the game
+            //First create a new player
+            var c = new TeamPlayer();
+            c.id = sc.clientID;
+            
+            //Now add the player to team
+            var fTeam =  gbs.g.gameTeam.Where(team => team.id == CS.NO_TEAM);
+            if (fTeam.FirstOrDefault() == null)
+            {
+                var t = new GameTeam();
+                t.name = CS.NO_TEAM;
+                t.id = CS.NO_TEAM;
+                t.teamPlayers.Add(c);
+                gbs.g.gameTeam.Add(t);
+            }
+            else
+            {
+                //gClientGame.gameTeam.Where(team => team.name == tempTeamID).FirstOrDefault().teamPlayers.Add(c);
+                fTeam.FirstOrDefault().teamPlayers.Add(c);
+            }
 
             //Once a connection occurs the listener will stop, so if you want to listen for more clients you need to restart listening again.
             startListening();
@@ -138,7 +165,23 @@ namespace Script
             Debug.Log("Somebody has connected. Starting to listen for any other clients");
 
             //Ask last person that connected to state who they are
-            Broadcast("SWHO" + Allusers, clients[clients.Count - 1]);
+            //Build the message
+            GameMessage gOutgoingMessage = new GameMessage();
+            //Message Header
+            gOutgoingMessage.id = CS.MESSAGE_SWHO;
+            gOutgoingMessage.name = gOutgoingMessage.id;
+            gOutgoingMessage.type = CS.MESSAGE_COMMAND;
+            
+            //Message Sender
+            gOutgoingMessage.sender.id = CS.SERVER_ID;
+            gOutgoingMessage.sender.name = CS.SERVER_ID;
+            
+            //Broadcast the message
+            //Broadcast("SWHO" + gbs.g.SaveToText(), clients[clients.Count - 1]);
+            Broadcast(gOutgoingMessage.SaveToText().Replace(Environment.NewLine, ""), clients[clients.Count - 1]);
+            
+            //Finally Add Message to the list of events in the game
+            gbs.g.GameMessages.Add(gOutgoingMessage);
         }
 
         private bool IsConnected(TcpClient c)
@@ -167,7 +210,7 @@ namespace Script
             foreach (var sc in cl)
                 try
                 {
-                    Debug.Log("Server Sending To:" + sc.clientName + " => " + data);
+                    Debug.Log("Server Sending To:" + sc.clientID + " => " + data);
                     var writer = new StreamWriter(sc.tcp.GetStream());
                     //this has been replace from data to xml
                     writer.WriteLine(data);
@@ -191,7 +234,7 @@ namespace Script
         {
             Debug.Log("Server Receiving: " + data);
 
-            var gbs = FindObjectOfType<GameBoardState>();
+            var gbs = FindObjectOfType<GameState>();
         
             //parse the incoming data stream
             var aData = data.Split('|');
@@ -206,42 +249,62 @@ namespace Script
             var distReveal = "";
             var distCardID = "";
         
-            switch (aData[0])
+            GameMessage gIncomingMessage = new GameMessage();
+            gIncomingMessage = GameMessage.LoadFromText(data);
+            GameMessage gOutgoingMessage = new GameMessage();
+            
+            //First Add Message to the list of events in the game
+            gbs.g.GameMessages.Add(gIncomingMessage);
+
+            //Now decide what to do with the stored message
+            switch (gIncomingMessage.name)
             {
                 case "CWHO":
                     //See if the number of participants is greater than zero, if it is then it must have been sent
 
                     // if the new client that is added is a host then it will determine the number of players
-                    if (aData[2] == "1" ? true : false)
+
+                    foreach (var cntT in gIncomingMessage.gameTeam)
                     {
-                        int.TryParse(aData[6], out numParticipants);
-                        int.TryParse(aData[7], out GridXDim);
-                        int.TryParse(aData[8], out GridZDim);
-
-                        populate = new string[GridXDim * GridZDim];
-                        words = new string[2, GridXDim * GridZDim];
-
-                        //if a client intitiates a host call then clear all other client's connections
-                        var i = 0;
-                        if (clients.Count > 1)
-                            do
+                        var fPlayer = cntT.teamPlayers.Where(player => player.id == gIncomingMessage.sender.id);
+                        if (fPlayer.FirstOrDefault() != null)
+                        {
+                            if (fPlayer.isHost)
                             {
-                                var sc = clients[i];
+                                gbs.g.gameParameters.howManyPlaying = gIncomingMessage.gameParameters.howManyPlaying;
+                                gbs.g.gameParameters.sizeOfXDim = gIncomingMessage.gameParameters.sizeOfXDim;
+                                gbs.g.gameParameters.sizeOfYDim = gIncomingMessage.gameParameters.sizeOfYDim;
 
-                                //is the client still connected?
-                                if (IsConnected(sc.tcp))
+                                populate = new string[gbs.g.gameParameters.sizeOfXDim *
+                                                      gbs.g.gameParameters.sizeOfYDim];
+                                words = new string[2,
+                                    gbs.g.gameParameters.sizeOfXDim * gbs.g.gameParameters.sizeOfYDim];
 
-                                    //TODO - upgrade the server to be able to manage multiple games and present the list of games that are currently running to the players
-                                {
-                                    sc.tcp.Close();
-                                    clients.Remove(sc);
-                                }
+                                //if a client intitiates a host call then clear all other client's connections
+                                var i = 0;
+                                if (clients.Count > 1)
+                                    do
+                                    {
+                                        var sc = clients[i];
 
-                                i++;
-                            } while (i < clients.Count - 2);
+                                        //is the client still connected?
+                                        if (IsConnected(sc.tcp))
+
+                                            //TODO - upgrade the server to be able to manage multiple games and present the list of games that are currently running to the players
+                                        {
+                                            sc.tcp.Close();
+                                            clients.Remove(sc);
+                                        }
+
+                                        i++;
+                                    } while (i < clients.Count - 2);
+                            }
+                        }
                     }
 
                     // add the new client details, remember that it will always be the last client in the list of clients that we do not have the details for
+                    //START HERE, COPY THE CLIENT DETAILS OFF TEAM SPACE IN THE MESSAGE FROM THE CLIENT AND UPSERT THEM INTO THE SERVERS VIEW OF THR WORLD
+                    
                     clients[clients.Count - 1].clientName = aData[1];
                     clients[clients.Count - 1].isHost = aData[2] == "1" ? true : false;
                     clients[clients.Count - 1].isPlayer = aData[3] == "1" ? true : false;
@@ -377,7 +440,7 @@ namespace Script
 
                     Broadcast(
                         "SGFU" + '|'
-                               + GameBoardState.isRedTurn + '|'
+                               + GameState.isRedTurn + '|'
                                + distWords.Remove(distWords.LastIndexOf(',')) + '|'
                                + distPopulate.Remove(distPopulate.LastIndexOf(',')) + '|'
                                + distPosX.Remove(distPosX.LastIndexOf(',')) + '|'
@@ -453,15 +516,16 @@ namespace Script
     public class ServerClient
     {
         public string clientID;
-        public string clientName;
-        public bool isHost;
-        public bool isPlayer;
-        public string teamID;
+        //public string clientName;
+        //public bool isHost;
+        //public bool isPlayer;
+        //public string teamID;
         public TcpClient tcp;
 
         public ServerClient(TcpClient tcp)
         {
             this.tcp = tcp;
+            clientID = tcp.GetHashCode().ToString();
         }
     }
 }

@@ -191,13 +191,14 @@
           <e p="Game.cs" t="Include" />
           <e p="GameBoard.cs" t="Include" />
           <e p="GameBoardDeck.cs" t="Include" />
-          <e p="GameBoardState.cs" t="Include" />
           <e p="GameCard.cs" t="Include" />
           <e p="GameConstants.cs" t="Include" />
-          <e p="GameEvent.cs" t="Include" />
           <e p="GameHandDeck.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />
           <e p="GameMenu.cs" t="Include" />
+          <e p="GameMessage.cs" t="Include" />
+          <e p="GameParameters.cs" t="Include" />
+          <e p="GameState.cs" t="Include" />
           <e p="GameTeam.cs" t="Include" />
           <e p="GameWords.cs" t="Include" />
           <e p="HeadlessServer.cs" t="Include" />

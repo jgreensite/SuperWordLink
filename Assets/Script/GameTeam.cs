@@ -29,6 +29,10 @@ namespace Script
         [XmlAttribute] public String id { get; set; }
         [XmlAttribute] public String name { get; set; }
         
+        [XmlElement] public int goal { get; set; }
+        
+        [XmlElement] public int score { get; set; }
+        
         [XmlArray("TeamPlayers")] [XmlArrayItem("TeamPlayer")]
         public List<TeamPlayer> teamPlayers = new List<TeamPlayer>();
 

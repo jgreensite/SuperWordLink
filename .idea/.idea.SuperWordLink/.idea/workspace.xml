@@ -23,58 +23,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1437e589-671a-4957-a669-82a5eb0bb141" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/.signature.p7s" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/LICENSE.TXT" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/System.ValueTuple.4.5.0.nupkg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/THIRD-PARTY-NOTICES.TXT" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/MonoAndroid10/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/MonoTouch10/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/net461/System.ValueTuple.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/net461/System.ValueTuple.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/net47/System.ValueTuple.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/net47/System.ValueTuple.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/netcoreapp2.0/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/netstandard1.0/System.ValueTuple.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/netstandard1.0/System.ValueTuple.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/netstandard2.0/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/portable-net40+sl4+win8+wp8/System.ValueTuple.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/portable-net40+sl4+win8+wp8/System.ValueTuple.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/uap10.0.16299/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/xamarinios10/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/xamarinmac20/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/xamarintvos10/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/lib/xamarinwatchos10/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/ref/MonoAndroid10/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/ref/MonoTouch10/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/ref/net461/System.ValueTuple.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/ref/net47/System.ValueTuple.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/ref/netcoreapp2.0/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/ref/netstandard2.0/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/ref/uap10.0.16299/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/ref/xamarinios10/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/ref/xamarinmac20/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/ref/xamarintvos10/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/ref/xamarinwatchos10/_._" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/useSharedDesignerContext.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/System.ValueTuple.4.5.0/version.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/morelinq.3.3.2/.signature.p7s" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/morelinq.3.3.2/COPYING.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/morelinq.3.3.2/lib/net451/MoreLinq.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/morelinq.3.3.2/lib/net451/MoreLinq.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/morelinq.3.3.2/lib/netstandard1.0/MoreLinq.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/morelinq.3.3.2/lib/netstandard1.0/MoreLinq.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/morelinq.3.3.2/lib/netstandard2.0/MoreLinq.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/morelinq.3.3.2/lib/netstandard2.0/MoreLinq.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/morelinq.3.3.2/morelinq.3.3.2.nupkg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/GameParameters.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scene/Menu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scene/Menu.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Client.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Client.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Lobby.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Lobby.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/GameConstants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameConstants.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/GameEvent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/GameTeam.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameTeam.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/HeadlessServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/HeadlessServer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Server.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Server.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/TeamPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/TeamPlayer.cs" afterDir="false" />
     </list>
@@ -100,19 +59,22 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Script/GameTeam.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Script/GameEvent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/GameMessage.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/TeamPlayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/GameHandDeck.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Game.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/GameWords.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Fabric/Editor/FabricUtils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Card.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/814BD9A1-1538-4360-9098-E1F5491F0282/0a/3d38f898/TcpListener.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Card.cs.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Client.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Fabric/Editor/Postbuild/FabricBuildEventAndroid.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Server.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/GameParameters.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/GameBoard.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/GameState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/WordDictionary.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scene/Menu.unity" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/GameMenu.cs" root0="FORCE_HIGHLIGHTING" />
@@ -142,6 +104,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/AD9BEDA1-AB32-47EE-B473-0364A1BA4085/51/d3faa472/Debug.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/UserInputManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/TurnIndicator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Fabric/Editor/GUI/Controller/PluginController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/567DF3E0-9192-41BA-98DB-88BEC4C6696F/ce/be3715c8/WaitHandle.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Fabric/Kits/Crashlytics/Runtime/Internal/Impl.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/567DF3E0-9192-41BA-98DB-88BEC4C6696F/d8/66278de7/Void.cs" root0="SKIP_HIGHLIGHTING" />
@@ -163,7 +126,6 @@
         <option value="$PROJECT_DIR$/Assets/Script/TurnIndicator.cs" />
         <option value="$PROJECT_DIR$/Assets/Editor/MultiplayersBuildAndRun.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Card.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/GameConstants.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/WordDictionary.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/UserInputManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Preferences.cs" />
@@ -173,18 +135,22 @@
         <option value="$PROJECT_DIR$/Assets/Script/Player.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Team.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameCard.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/GameTeam.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameEvent.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/Game.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/GameManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameBoard.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/Server.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Traverse.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/Client.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/TeamPlayer.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Lobby.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/GameParameters.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/Game.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/GameTeam.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/GameConstants.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/TeamPlayer.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/GameState.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/GameMessage.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/GameManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/Client.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/Server.cs" />
       </list>
     </option>
   </component>
@@ -319,7 +285,7 @@
       <workItem from="1589498869756" duration="77000" />
       <workItem from="1589499027456" duration="18481000" />
       <workItem from="1590189170484" duration="51000" />
-      <workItem from="1590189255648" duration="15529000" />
+      <workItem from="1590189255648" duration="41973000" />
     </task>
     <task id="LOCAL-00001" summary="Testing commit with Rider">
       <created>1545559485773</created>
@@ -548,19 +514,19 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="510" y="414" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.1440.877@0.23.1440.877" timestamp="1588939017926" />
-    <state x="161" y="302" width="732" height="490" key="find.popup" timestamp="1588939227590">
+    <state x="161" y="302" width="732" height="490" key="find.popup" timestamp="1590539922699">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="287" y="448" width="721" height="486" key="find.popup/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586708475283" />
-    <state x="161" y="302" width="732" height="490" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1588939227590" />
+    <state x="161" y="302" width="732" height="490" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1590539922699" />
     <state width="600" height="428" key="javadoc.popup" timestamp="1589585061301">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state width="600" height="428" key="javadoc.popup/0.23.1440.877@0.23.1440.877" timestamp="1589585061301" />
-    <state x="449" y="221" width="672" height="678" key="search.everywhere.popup" timestamp="1589676757729">
+    <state x="449" y="221" width="672" height="678" key="search.everywhere.popup" timestamp="1590539499378">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="449" y="221" width="672" height="678" key="search.everywhere.popup/0.23.1440.877@0.23.1440.877" timestamp="1589676757729" />
+    <state x="449" y="221" width="672" height="678" key="search.everywhere.popup/0.23.1440.877@0.23.1440.877" timestamp="1590539499378" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -571,15 +537,15 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/Client.cs</url>
-          <line>367</line>
+          <line>363</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/Client.cs" initialLine="364">
             <startOffsets>
-              <option value="14898" />
-              <option value="14933" />
+              <option value="14832" />
+              <option value="14867" />
             </startOffsets>
             <endOffsets>
-              <option value="14994" />
-              <option value="14956" />
+              <option value="14928" />
+              <option value="14890" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="2" />
@@ -638,13 +604,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/Client.cs</url>
-          <line>350</line>
+          <line>346</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/Client.cs" initialLine="348">
             <startOffsets>
-              <option value="14270" />
+              <option value="14204" />
             </startOffsets>
             <endOffsets>
-              <option value="14284" />
+              <option value="14218" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="7" />
@@ -676,43 +642,56 @@
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Script/GameBoardState.cs</url>
+          <url>file://$PROJECT_DIR$/Assets/Script/GameState.cs</url>
           <line>397</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" initialLine="397">
             <startOffsets>
-              <option value="15017" />
+              <option value="15083" />
             </startOffsets>
             <endOffsets>
-              <option value="15018" />
+              <option value="15084" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/Client.cs</url>
-          <line>379</line>
+          <line>375</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/Client.cs" initialLine="377">
             <startOffsets>
-              <option value="15429" />
+              <option value="15363" />
             </startOffsets>
             <endOffsets>
-              <option value="15471" />
+              <option value="15405" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/Client.cs</url>
-          <line>386</line>
+          <line>382</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/Client.cs" initialLine="389">
             <startOffsets>
-              <option value="15770" />
+              <option value="15704" />
             </startOffsets>
             <endOffsets>
-              <option value="15902" />
+              <option value="15836" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Script/Client.cs</url>
+          <line>278</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/Script/Client.cs" initialLine="272">
+            <startOffsets>
+              <option value="10951" />
+            </startOffsets>
+            <endOffsets>
+              <option value="10957" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

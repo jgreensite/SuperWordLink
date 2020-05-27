@@ -4,6 +4,20 @@ namespace Script
 {
     public class CS
     {
+        //Player Defaults
+        public const string NO_CLIENT_ID = "No Client ID";
+        
+        //Message Types
+        public const string MESSAGE_COMMAND = "COMMAND";
+        public const string MESSAGE_REPLY = "REPLY";
+        
+        //Message Names - Client
+        public const string MESSAGE_CWHO = "CWHO";
+        
+        //Message Names - Server
+        public const string SERVER_ID = "SERVER";
+        public const string MESSAGE_SWHO = "SWHO";
+
         //Names of Objects
         public const string OBJ_NAME_ROOT_CARD = "Card Root";
 
@@ -57,8 +71,9 @@ namespace Script
         public const string NONEWIN = "nonewin";
         public const string BLUEWIN = "bluewin";
         public const string REDWIN = "redwin";
-
+        
         //Card Class and Team constants
+        public const string NO_TEAM = "noteam";
         public const string BLUE_TEAM = "blue";
         public const string RED_TEAM = "red";
         public const string DEATH_TEAM = "death";

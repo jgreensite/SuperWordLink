@@ -96,7 +96,7 @@ namespace Script
                     //Create the Host's server first
                     var s = Instantiate(serverPrefab);
                     s.GetComponent<Server>().Init();
-                    s.GetComponent<GameBoardState>().Init();
+                    s.GetComponent<GameState>().Init();
                 }
 
                 var rnd = Random.Range(0, 99999);
@@ -112,7 +112,7 @@ namespace Script
 //                c.clientID = rnd.ToString();
                 
                 //The Player Information
-                c.gClientPlayer.id = rnd.ToString();;
+                //c.gClientPlayer.id = rnd.ToString();;
                 c.gClientPlayer.name = nameInput.text;
                 if (c.gClientPlayer.name == "") c.gClientPlayer.name = "Host_" + rnd;
                 
@@ -171,7 +171,7 @@ namespace Script
 //                c.clientID = rnd.ToString();
 
                 //The Player Information
-                c.gClientPlayer.id = rnd.ToString();;
+                //c.gClientPlayer.id = rnd.ToString();;
                 c.gClientPlayer.name = nameInput.text;
                 if (c.gClientPlayer.name == "") c.gClientPlayer.name = "Client_" + rnd;
                 

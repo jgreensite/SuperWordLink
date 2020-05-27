@@ -19,7 +19,7 @@ namespace Script
                 //Create the Host's server first
                 var s = Instantiate(serverPrefab);
                 s.GetComponent<Server>().Init();
-                s.GetComponent<GameBoardState>().Init();
+                s.GetComponent<GameState>().Init();
             }
             catch (Exception e)
             {

@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace Script
 {
-    public class GameBoardState : MonoBehaviour
+    public class GameState : MonoBehaviour
     {
         //makes class a singleton
-        public static GameBoardState Instance { set; get; }
+        public static GameState Instance { set; get; }
         
         //the game state
         public Game g = new Game();
@@ -17,8 +17,9 @@ namespace Script
         public static bool isRedTurn;
  
         //the decks that will be used in the game
+        //Server's Current View of
+        public Game gServerGame = new Game();
         public GameBoardDeck gbd = new GameBoardDeck();
-    
         public GameHandDeck ghd = new GameHandDeck();
 
         public int cntBlueCards;
@@ -401,16 +402,23 @@ namespace Script
             gc.cardID = Guid.NewGuid().ToString();
             gc.cardPlayerNum = playerCnt.ToString();
             gc.cardClientID = Server.clients[playerCnt].clientID;
+
             //todo - remove hardcoding for number of teams
-            if (Server.clients[playerCnt].teamID == CS.RED_TEAM)
+            foreach (var cntT in g.gameTeam) foreach (var cntP in cntT.teamPlayers)
             {
-                gc.cardSuit = CS.RED_TEAM;
-                gc.cardLocation = CS.CAR_LOCATION_RED_DECK;
-            }
-            else if (Server.clients[playerCnt].teamID == CS.BLUE_TEAM)
-            {
-                gc.cardSuit = CS.BLUE_TEAM;
-                gc.cardLocation = CS.CAR_LOCATION_BLUE_DECK;
+                if (cntP.id == Server.clients[playerCnt].clientID)
+                {
+                    if (cntT.id == CS.RED_TEAM)
+                    {
+                        gc.cardSuit = CS.RED_TEAM;
+                        gc.cardLocation = CS.CAR_LOCATION_RED_DECK;
+                    }
+                    else if (cntT.id == CS.BLUE_TEAM)
+                    {
+                        gc.cardSuit = CS.BLUE_TEAM;
+                        gc.cardLocation = CS.CAR_LOCATION_BLUE_DECK;
+                    }
+                }
             }
 
             gc.cardRevealed = CS.CAR_REVEAL_HIDDEN;

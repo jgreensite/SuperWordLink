@@ -11,8 +11,8 @@ namespace Script
 {
     public class Client : MonoBehaviour
     {
-        public string clientID;
-        public string clientName;
+ //       public string clientID;
+ //       public string clientName;
 
         //the decks that will be used in the game
         public GameHandDeck gcd = new GameHandDeck();
@@ -87,6 +87,11 @@ namespace Script
             writer.Flush();
         }
 
+        public void Send(GameMessage data)
+        {
+            Send(data.SaveToText().Replace(Environment.NewLine, ""));
+        }
+
         //Reading messages from the Server
         private void OnIncomingData(string data)
         {
@@ -98,77 +103,18 @@ namespace Script
             int sizeOfYDim =0;
             var cardID = "";
 
-
+            //Use these for temporary messages
+            Game gEventGame = new Game();
+            GameMessage gMessagePlayer = new GameMessage();
+            
             //TODO - remove this when all messaging is done via XML
             if (!data[0].Equals('<'))
             {
-                //Use these for temporary messages
-                Game gEventGame = new Game();
-                GameEvent gEventPlayer = new GameEvent();
+
                 
                 var aData = data.Split('|');
                 switch (aData[0])
                 {
-                    case "SWHO":
-                        gClientGame.gameTeam.Clear();
-                        for (var i = 1; i < aData.Length; i++)
-                        {
-                            var bData = aData[i].Split(',');
-                            UserConnected(
-                                bData[0],
-                                bData[1] == "0" ? false : true,
-                                bData[2] == "0" ? false : true,
-                                bData[3] == "0" ? false : true,
-                                bData[4]
-                            );
-                        }
-
-                        //Hosts will use their preferences in order to determine the game parameters e.g. number of players, board dimentions
-                        //Note that cannot write the number of participants that is used to decide to start the game
-                        //this must be initiated from the server sending a message to the client
-
-                        if (gClientPlayer.isHost)    
-                        {
-                            howManyPlaying = PREFS.getPrefInt("MinPlayers");
-                            sizeOfXDim = PREFS.getPrefInt("GridXDim");
-                            sizeOfYDim = PREFS.getPrefInt("GridZDim");
-                        }
-                        else
-                        {
-                            howManyPlaying = 0;
-                            sizeOfXDim = 0;
-                            sizeOfYDim = 0;
-                        }
-
-                        Send(
-                            "CWHO" + '|'
-                                   + gClientPlayer.name + '|'
-                                   + (gClientPlayer.isHost ? 1 : 0) + '|'
-                                   + (gClientPlayer.isPlayer ? 1 : 0) + '|'
-                                   + (gClientTeam.id) + '|'
-                                   + gClientPlayer.id + '|'
-                                   + howManyPlaying + '|'
-                                   + sizeOfXDim + '|'
-                                   + sizeOfYDim
-
-                        );
-                        //START HERE Sending the new message back
-                        //This message is probably complete but it highlights the need to get rid of
-                        //the class client.gameClient and replace with gamePlayer
-                        
-                        //The Event
-                        gEventPlayer.id = "1";
-                        gEventPlayer.name = "CWHO";
-
-                        //Add The Team & Player Information to The Event
-                        gEventGame.gameTeam.Add(gClientTeam);
-
-                        //Add The Game Information to the Event
-                        gEventGame.howManyPlaying = gClientGame.howManyPlaying;
-                        gEventGame.sizeOfXDim = gClientGame.sizeOfXDim;
-                        gEventGame.sizeOfYDim = gClientGame.sizeOfYDim;
-
-                        break;
 
                     case "SCNN":
                         gClientGame.gameTeam.Clear();
@@ -302,7 +248,8 @@ namespace Script
                 }
             }
             //Must be XML
-            else if(1==1)
+            //This section is harccoded for only dealing with decks, it is the first use of XML messaging and eventually must be removed
+            else if(1==0)
             {
                 //TODO - Assumes that the xml message is one to populate a game card deck
                 gcdTemp = GameHandDeck.LoadFromText(data);
@@ -324,15 +271,64 @@ namespace Script
                     GameBoard.Instance.GeneratePlayerHand();
                 }
             }
-            else if (1==0)
+            else if (1==1)
             {
-                Game gTemp = new Game();
-                gTemp = Game.LoadFromText(data);
-                if (!gClientGame.SaveToText().Equals(gTemp.SaveToText()))
+                GameMessage gIncomingMessage = new GameMessage();
+                GameMessage gOutgoingMessage = new GameMessage();
+                gIncomingMessage = GameMessage.LoadFromText(data);
+                switch (gIncomingMessage.name)
                 {
-                    // If there are differences render the deck
-                    gClientGame = Game.LoadFromText(data);
-                    GameBoard.Instance.GeneratePlayerHand();
+                    case "SWHO":
+                        //gClientGame.gameTeam.Clear();
+                        
+                        //This message sets the ClientID from the server
+                        gClientPlayer.id = gIncomingMessage.receiver.id;
+
+                        foreach (var cntT in gIncomingMessage.gameTeam)
+                        {
+                            var fPlayer =  cntT.teamPlayers.Where(player => player.id == gClientPlayer.id);
+                            if (fPlayer.FirstOrDefault() == null)
+                                gClientTeam.id = cntT.id;
+                                gClientTeam.name = cntT.name;
+                        }
+
+                        //Hosts will use their preferences in order to determine the game parameters e.g. number of players, board dimentions
+                        //Note that cannot write the number of participants that is used to decide to start the game
+                        //this must be initiated from the server sending a message to the client
+
+                        if (gClientPlayer.isHost)    
+                        {
+                            howManyPlaying = PREFS.getPrefInt("MinPlayers");
+                            sizeOfXDim = PREFS.getPrefInt("GridXDim");
+                            sizeOfYDim = PREFS.getPrefInt("GridZDim");
+                        }
+                        else
+                        {
+                            howManyPlaying = 0;
+                            sizeOfXDim = 0;
+                            sizeOfYDim = 0;
+                        }
+                        //Respond the ask for more details about the player
+                        //Build the message
+                        //Message Header
+                        gOutgoingMessage.id = CS.MESSAGE_CWHO;
+                        gOutgoingMessage.name = gOutgoingMessage.id;
+                        gOutgoingMessage.type = CS.MESSAGE_REPLY;
+                        
+                        //Message Sender
+                        gOutgoingMessage.sender.id = gClientPlayer.id;
+                        gOutgoingMessage.sender.name = gClientPlayer.name;
+                        
+                        //Message Details
+                        gOutgoingMessage.gameParameters.howManyPlaying = howManyPlaying;
+                        gOutgoingMessage.gameParameters.sizeOfXDim = sizeOfXDim;
+                        gOutgoingMessage.gameParameters.sizeOfYDim = sizeOfYDim;
+                        
+                        gOutgoingMessage.gameTeam.Clear();
+                        gOutgoingMessage.gameTeam.Add(gClientTeam);
+                        
+                        Send(gOutgoingMessage);
+                        break;
                 }
             }
         }
