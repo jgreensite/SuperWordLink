@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
 
 namespace Script
@@ -32,15 +33,19 @@ namespace Script
 
         //the list of words and their assignments
         private string[,] words;
-    
+
+        private GameState gbs;
+        
         //which team's turn it is
         //private bool isRedTurn;
-    
+        
         //makes class a singleton
         public static Server Instance { set; get; }
         
         public void Init()
         {
+            gbs = FindObjectOfType<GameState>();
+            
             //needed to make this a singleton
             Instance = this;
     
@@ -116,7 +121,7 @@ namespace Script
 
         private void AcceptTcpClient(IAsyncResult ar)
         {
-            var gbs = FindObjectOfType<GameState>();
+           // var gbs = FindObjectOfType<GameState>();
 
             //Listen for a client connection
             var listener = (TcpListener) ar.AsyncState;
@@ -176,6 +181,9 @@ namespace Script
             gOutgoingMessage.sender.id = CS.SERVER_ID;
             gOutgoingMessage.sender.name = CS.SERVER_ID;
             
+            //Message Receiver
+            gOutgoingMessage.receiver.id = c.id;
+            
             //Broadcast the message
             //Broadcast("SWHO" + gbs.g.SaveToText(), clients[clients.Count - 1]);
             Broadcast(gOutgoingMessage.SaveToText().Replace(Environment.NewLine, ""), clients[clients.Count - 1]);
@@ -222,6 +230,23 @@ namespace Script
                 }
         }
 
+        private void Broadcast(GameMessage data, List<ServerClient> cl)
+        {
+            foreach (var sc in cl)
+                try
+                {
+                    Debug.Log("Server Sending To:" + sc.clientID + " => " + data);
+                    var writer = new StreamWriter(sc.tcp.GetStream());
+                    //this has been replace from data to xml
+                    writer.WriteLine(data.SaveToText().Replace(Environment.NewLine, ""));
+                    writer.Flush();
+                }
+                catch (Exception e)
+                {
+                    Debug.Log("Write error : " + e.Message);
+                }
+        }
+        
         //Used to create a list of clients that only has one item in it, so that can broadcast when only one client connected
         private void Broadcast(string data, ServerClient c)
         {
@@ -229,12 +254,18 @@ namespace Script
             Broadcast(data, sc);
         }
 
+        public void Broadcast(GameMessage data, ServerClient c)
+        {
+            var sc = new List<ServerClient> {c};
+            Broadcast(data,sc);
+        }
+        
         //Server read
         public void OnIncomingData(string data)
         {
             Debug.Log("Server Receiving: " + data);
 
-            var gbs = FindObjectOfType<GameState>();
+            //var gbs = FindObjectOfType<GameState>();
         
             //parse the incoming data stream
             var aData = data.Split('|');
@@ -249,71 +280,88 @@ namespace Script
             var distReveal = "";
             var distCardID = "";
         
+            //used for messaging
             GameMessage gIncomingMessage = new GameMessage();
             gIncomingMessage = GameMessage.LoadFromText(data);
             GameMessage gOutgoingMessage = new GameMessage();
             
+            //used as temporary stores for found players and teams in the server
+            TeamPlayer fPlayer = new TeamPlayer();
+            GameTeam fTeam = new GameTeam();
+            
+            //used to refer to players and teams in incoming messages
+            TeamPlayer gIncomingPlayer = new TeamPlayer();
+            GameTeam gIncomingTeam = new GameTeam();
+            
             //First Add Message to the list of events in the game
             gbs.g.GameMessages.Add(gIncomingMessage);
+            
+            // find the player who sent the message in the server's list of players
+            gbs.g.FindPlayer(gIncomingMessage.sender.id, ref fPlayer);
+                    
+            // find the player's details in the message received
+            gIncomingMessage.FindPlayer(gIncomingMessage.sender.id, ref gIncomingPlayer);
 
             //Now decide what to do with the stored message
             switch (gIncomingMessage.name)
             {
-                case "CWHO":
-                    //See if the number of participants is greater than zero, if it is then it must have been sent
-
-                    // if the new client that is added is a host then it will determine the number of players
-
-                    foreach (var cntT in gIncomingMessage.gameTeam)
+                case CS.MESSAGE_CWHO:
+                        
+                    if (fPlayer != null && gIncomingPlayer.isHost)
                     {
-                        var fPlayer = cntT.teamPlayers.Where(player => player.id == gIncomingMessage.sender.id);
-                        if (fPlayer.FirstOrDefault() != null)
-                        {
-                            if (fPlayer.isHost)
+                        //update player parameters
+                        fPlayer.isHost = gIncomingPlayer.isHost;
+                        
+                        //update game parameters                                
+                        gbs.g.gameParameters.howManyPlaying = gIncomingMessage.gameParameters.howManyPlaying;
+                        gbs.g.gameParameters.sizeOfXDim = gIncomingMessage.gameParameters.sizeOfXDim;
+                        gbs.g.gameParameters.sizeOfYDim = gIncomingMessage.gameParameters.sizeOfYDim;
+
+                        populate = new string[gbs.g.gameParameters.sizeOfXDim *
+                                              gbs.g.gameParameters.sizeOfYDim];
+                        words = new string[2,
+                            gbs.g.gameParameters.sizeOfXDim * gbs.g.gameParameters.sizeOfYDim];
+
+                        //if a client intitiates a host call then clear all other client's connections
+                        var i = 0;
+                        if (clients.Count > 1)
+                            do
                             {
-                                gbs.g.gameParameters.howManyPlaying = gIncomingMessage.gameParameters.howManyPlaying;
-                                gbs.g.gameParameters.sizeOfXDim = gIncomingMessage.gameParameters.sizeOfXDim;
-                                gbs.g.gameParameters.sizeOfYDim = gIncomingMessage.gameParameters.sizeOfYDim;
+                                var sc = clients[i];
 
-                                populate = new string[gbs.g.gameParameters.sizeOfXDim *
-                                                      gbs.g.gameParameters.sizeOfYDim];
-                                words = new string[2,
-                                    gbs.g.gameParameters.sizeOfXDim * gbs.g.gameParameters.sizeOfYDim];
+                                //is the client still connected?
+                                if (IsConnected(sc.tcp))
 
-                                //if a client intitiates a host call then clear all other client's connections
-                                var i = 0;
-                                if (clients.Count > 1)
-                                    do
-                                    {
-                                        var sc = clients[i];
+                                    //TODO - upgrade the server to be able to manage multiple games and present the list of games that are currently running to the players
+                                {
+                                    sc.tcp.Close();
+                                    clients.Remove(sc);
+                                }
 
-                                        //is the client still connected?
-                                        if (IsConnected(sc.tcp))
-
-                                            //TODO - upgrade the server to be able to manage multiple games and present the list of games that are currently running to the players
-                                        {
-                                            sc.tcp.Close();
-                                            clients.Remove(sc);
-                                        }
-
-                                        i++;
-                                    } while (i < clients.Count - 2);
-                            }
+                                i++;
+                            } while (i < clients.Count - 2);
                         }
-                    }
-
-                    // add the new client details, remember that it will always be the last client in the list of clients that we do not have the details for
-                    //START HERE, COPY THE CLIENT DETAILS OFF TEAM SPACE IN THE MESSAGE FROM THE CLIENT AND UPSERT THEM INTO THE SERVERS VIEW OF THR WORLD
                     
-                    clients[clients.Count - 1].clientName = aData[1];
-                    clients[clients.Count - 1].isHost = aData[2] == "1" ? true : false;
-                    clients[clients.Count - 1].isPlayer = aData[3] == "1" ? true : false;
-                    clients[clients.Count - 1].teamID = aData[4];
-                    clients[clients.Count - 1].clientID = aData[5];
+                    // add the new client details, remember that it will always be the last client in the list of clients that we do not have the details for
 
-                    //get a list of all the users that are connected, do this after adding the new client's details to this list
-                    //broadcast this updated list to all the connected clients
-                    Broadcast("SCNN" + GetStringOfAllClients(), clients);
+                    clients[clients.Count - 1].clientID = gIncomingPlayer.id;
+                    
+                    //Respond by telling all clients there is a new list of clients
+                    //Build the message
+                    //Message Header
+                    gOutgoingMessage.id = CS.MESSAGE_SCNN;
+                    gOutgoingMessage.name = gOutgoingMessage.id;
+                    gOutgoingMessage.type = CS.MESSAGE_EVENT;
+                        
+                    //Message Sender
+                    gOutgoingMessage.sender.id = CS.SERVER_ID;
+                    gOutgoingMessage.sender.name = CS.SERVER_NAME;
+                        
+                    //Message Details
+                    gOutgoingMessage.gameParameters = gbs.g.gameParameters;
+                    gOutgoingMessage.gameTeam = gbs.g.gameTeam;
+                    
+                    Broadcast(gOutgoingMessage, clients);
                     break;
                 case "CMOV":
                     //Currently all validation for the gameboard move is done client side
@@ -395,8 +443,9 @@ namespace Script
                             //Populate the client attributes
                             if (string.Equals(bData[3], sc.clientID))
                             {
-                                sc.isPlayer = bData[1] == "0" ? false : true;
-                                sc.teamID = bData[2];
+                                //START HERE - Temporarily commented out these lines to force a succesful compile
+                                //sc.isPlayer = bData[1] == "0" ? false : true;
+                                //sc.teamID = bData[2];
                             }
                     }
 
@@ -459,10 +508,10 @@ namespace Script
             for (var i = 0; i < clients.Count; i++)
             {
                 concatClients += "|"
-                                 + clients[i].clientName + ","
-                                 + (clients[i].isHost ? 1 : 0) + ","
-                                 + (clients[i].isPlayer ? 1 : 0) + ","
-                                 + clients[i].teamID + ","
+                                 // + clients[i].clientName + ","
+                                 // + (clients[i].isHost ? 1 : 0) + ","
+                                 // + (clients[i].isPlayer ? 1 : 0) + ","
+                                 // + clients[i].teamID + ","
                                  + clients[i].clientID + ",";
 
                 // TODO - Change this it is not the easiest to understand code

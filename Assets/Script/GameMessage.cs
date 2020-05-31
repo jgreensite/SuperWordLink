@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using System;
+using System.Linq;
 
 //static public void Serialize(AddressDetails details)
 //{ 
@@ -31,24 +32,47 @@ namespace Script
         [XmlAttribute] public String type { get; set; }
         
         [XmlAttribute] public String name { get; set; }
-        [XmlElement] public Sender sender { get; set; }
         
-        [XmlElement] public Receiver receiver { get; set; }
-        [XmlElement] public GameParameters gameParameters { get; set; }
+        [XmlElement("Sender")]
+        public Sender sender = new Sender();
+        
+        [XmlElement("Receiver")]
+        public Receiver receiver = new Receiver();
+        
+        [XmlElement("GameParameters")]
+        public GameParameters gameParameters = new GameParameters();
         
         [XmlArray("GameBoardDecks")] [XmlArrayItem("GameBoardDeck")]
         public List<GameBoardDeck> gameBoardDeck = new List<GameBoardDeck>();
         
         [XmlArray("GameTeams")] [XmlArrayItem("GameTeam")]
         public List<GameTeam> gameTeam = new List<GameTeam>();
+        public void FindPlayer(String fplayerID, ref TeamPlayer fPlayer)
+        {
+            foreach (var cntT in this.gameTeam)
+            {
+                var cntP = cntT.teamPlayers.FirstOrDefault(player => player.id == fplayerID);
+                if (cntP != null)
+                {
+                    fPlayer = cntP;
+                }
+            }
 
+            if ((fPlayer.id == null) || (fPlayer.id == ""))
+            {
+                fPlayer = null;
+            }
+        }
+        
+        [XmlRoot("Sender")]
         public class Sender
         {
             [XmlAttribute] public String id { get; set; }
 
             [XmlAttribute] public String name { get; set; }
         }
-
+        
+        [XmlRoot("Receiver")]
         public class Receiver
         {
             [XmlAttribute] public String id { get; set; }

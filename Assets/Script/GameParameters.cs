@@ -34,7 +34,7 @@ namespace Script
 
         public void Save(string path)
         {
-            var serializer = new XmlSerializer(typeof(GameMessage));
+            var serializer = new XmlSerializer(typeof(GameParameters));
             using (var stream = new FileStream(path, FileMode.Create))
             {
                 serializer.Serialize(stream, this);
@@ -43,7 +43,7 @@ namespace Script
 
         public string SaveToText()
         {
-            var xmlSerializer = new XmlSerializer(typeof(GameMessage));
+            var xmlSerializer = new XmlSerializer(typeof(GameParameters));
 
             using (var textWriter = new StringWriter())
             {
@@ -53,20 +53,20 @@ namespace Script
         }
 
 
-        public static GameMessage Load(string path)
+        public static GameParameters Load(string path)
         {
-            var serializer = new XmlSerializer(typeof(GameMessage));
+            var serializer = new XmlSerializer(typeof(GameParameters));
             using (var stream = new FileStream(path, FileMode.Open))
             {
-                return serializer.Deserialize(stream) as GameMessage;
+                return serializer.Deserialize(stream) as GameParameters;
             }
         }
 
         //Loads the xml directly from the given string. Useful in combination with www.text.
-        public static GameMessage LoadFromText(string text)
+        public static GameParameters LoadFromText(string text)
         {
             var serializer = new XmlSerializer(typeof(GameMessage));
-            return serializer.Deserialize(new StringReader(text)) as GameMessage;
+            return serializer.Deserialize(new StringReader(text)) as GameParameters;
         }
     }
 }

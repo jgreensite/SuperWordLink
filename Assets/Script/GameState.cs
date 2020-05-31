@@ -45,7 +45,7 @@ namespace Script
             //needed to preserve game objects
             DontDestroyOnLoad(gameObject);
             GameManager.Instance.goDontDestroyList.Add(gameObject);
-            Debug.Log("Added GameBoardState at position:" + GameManager.Instance.goDontDestroyList.Count + " to donotdestroylist");
+            Debug.Log("Added GameState at position:" + GameManager.Instance.goDontDestroyList.Count + " to donotdestroylist");
 
             //Get Reference to Server GameObject in Unity
             _server = GetComponentInParent<Server>();

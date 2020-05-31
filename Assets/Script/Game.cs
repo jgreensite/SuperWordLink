@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using System;
+using System.Linq;
+using UnityEditorInternal.VersionControl;
 
 //static public void Serialize(AddressDetails details)
 //{ 
@@ -29,7 +31,8 @@ namespace Script
         [XmlAttribute] public String id { get; set; }
         [XmlAttribute] public String name { get; set; }
 
-        [XmlElement] public GameParameters gameParameters { get; set; }
+        [XmlElement("GameParmetrs")]
+        public GameParameters gameParameters = new GameParameters();
 
         [XmlArray("GameBoardDecks")] [XmlArrayItem("GameBoardDeck")]
         public List<GameBoardDeck> gameBoardDeck = new List<GameBoardDeck>();
@@ -39,6 +42,24 @@ namespace Script
         
         [XmlArray("GameMessages")] [XmlArrayItem("GameMessages")]
         public List<GameMessage> GameMessages = new List<GameMessage>();
+
+        public void FindPlayer(String fplayerID, ref TeamPlayer fPlayer)
+        {
+            foreach (var cntT in this.gameTeam)
+            {
+                var cntP = cntT.teamPlayers.FirstOrDefault(player => player.id == fplayerID);
+                if (cntP != null)
+                {
+                    fPlayer = cntP;
+                }
+            }
+
+            if ((fPlayer.id == null) || (fPlayer.id == ""))
+            {
+                fPlayer = null;
+            }
+        }
+
         public void Save(string path)
         {
             var serializer = new XmlSerializer(typeof(Game));

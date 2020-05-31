@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numParticipants: 0
+  GridXDim: 0
+  GridZDim: 0
   port: 6321
 --- !u!114 &114006749758195922
 MonoBehaviour:
@@ -59,58 +61,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3085968a72e7d4099a9a8bf65ae54c4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wordList:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  populate:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   largeWordLength: 9
   smallWordLength: 3
   isRedStart: 
@@ -128,7 +78,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1383401737153584}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ae0d27233ff4e19a0c93a82070b88d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 2728ee7dfcc1c4e979c227f9469197ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isRedTurn: 0
+  cntBlueCards: 0
+  cntRedCards: 0
+  cntBlueHandCards: 0
+  cntRedHandCards: 0
+  cntCivilCards: 0
+  cntDeathCards: 0
+  cntGoalRedCards: 0
+  cntGoalBlueCards: 0
+  isGameover: 0
