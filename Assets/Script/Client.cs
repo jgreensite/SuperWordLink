@@ -115,30 +115,6 @@ namespace Script
                 var aData = data.Split('|');
                 switch (aData[0])
                 {
-
-                    case "SCNN":
-                        gClientGame.gameTeam.Clear();
-                        for (var i = 1; i < aData.Length; i++)
-                        {
-                            var bData = aData[i].Split(',');
-                            UserConnected(
-                                bData[0],
-                                bData[1] == "0" ? false : true,
-                                bData[2] == "0" ? false : true,
-                                bData[3] == "0" ? false : true,
-                                bData[4]
-                            );
-
-                            //if we get the signal to start the lobby, start it addind the constants set by whichever player isHost
-                            if (bData[5] != "0")
-                            {
-                                GameManager.Instance.gridXDim.text =  bData[6];
-                                GameManager.Instance.gridZDim.text =  bData[7];
-                                GameManager.Instance.OpenLobby();
-                            }
-                        }
-
-                        break;
                     case "SMOV":
 //                        x = int.Parse(aData[2]);
 //                        z = int.Parse(aData[3]);
@@ -328,6 +304,24 @@ namespace Script
                         gOutgoingMessage.gameTeam.Add(gClientTeam);
                         
                         Send(gOutgoingMessage);
+                        break;
+
+                    case "SCNN":
+
+                        gClientGame.gameParameters = gIncomingMessage.gameParameters;
+                        gClientGame.gameTeam = gIncomingMessage.gameTeam;
+
+                        int cntIncomingPlayers = 0;
+                        foreach (var t in gIncomingMessage.gameTeam)
+                        foreach (var p in t.teamPlayers)
+                            cntIncomingPlayers++;
+
+                        if ((gClientGame.gameParameters.howManyPlaying == cntIncomingPlayers) && (cntIncomingPlayers != 0))
+                        {
+                            GameManager.Instance.gridXDim.text = gClientGame.gameParameters.sizeOfXDim.ToString();
+                            GameManager.Instance.gridZDim.text = gClientGame.gameParameters.sizeOfYDim.ToString();
+                            GameManager.Instance.OpenLobby();
+                        }
                         break;
                 }
             }

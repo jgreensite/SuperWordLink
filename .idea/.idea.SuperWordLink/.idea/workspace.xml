@@ -24,13 +24,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1437e589-671a-4957-a669-82a5eb0bb141" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Server.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Server.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/GameConstants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameConstants.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/GameMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameMessage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/GameParameters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameParameters.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/GameState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Server.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Server.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Client.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Client.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,12 +140,12 @@
         <option value="$PROJECT_DIR$/Assets/Script/GameManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameTeam.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameConstants.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/Client.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameState.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameMessage.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Game.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameParameters.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Server.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/Client.cs" />
       </list>
     </option>
   </component>
@@ -287,7 +281,7 @@
       <workItem from="1589499027456" duration="18481000" />
       <workItem from="1590189170484" duration="51000" />
       <workItem from="1590189255648" duration="42171000" />
-      <workItem from="1590610678424" duration="24558000" />
+      <workItem from="1590610678424" duration="26208000" />
     </task>
     <task id="LOCAL-00001" summary="Testing commit with Rider">
       <created>1545559485773</created>
@@ -539,15 +533,15 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/Client.cs</url>
-          <line>363</line>
+          <line>381</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/Client.cs" initialLine="364">
             <startOffsets>
-              <option value="14832" />
-              <option value="14867" />
+              <option value="15778" />
+              <option value="15813" />
             </startOffsets>
             <endOffsets>
-              <option value="14928" />
-              <option value="14890" />
+              <option value="15874" />
+              <option value="15836" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="2" />
@@ -606,13 +600,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/Client.cs</url>
-          <line>346</line>
+          <line>364</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/Client.cs" initialLine="348">
             <startOffsets>
-              <option value="14204" />
+              <option value="15150" />
             </startOffsets>
             <endOffsets>
-              <option value="14218" />
+              <option value="15164" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="7" />
@@ -651,39 +645,39 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/Client.cs</url>
-          <line>375</line>
+          <line>393</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/Client.cs" initialLine="377">
             <startOffsets>
-              <option value="15363" />
+              <option value="16309" />
             </startOffsets>
             <endOffsets>
-              <option value="15405" />
+              <option value="16351" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/Client.cs</url>
-          <line>382</line>
+          <line>400</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/Client.cs" initialLine="389">
             <startOffsets>
-              <option value="15704" />
+              <option value="16650" />
             </startOffsets>
             <endOffsets>
-              <option value="15836" />
+              <option value="16782" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/Client.cs</url>
-          <line>278</line>
+          <line>254</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/Client.cs" initialLine="272">
             <startOffsets>
-              <option value="10951" />
+              <option value="9838" />
             </startOffsets>
             <endOffsets>
-              <option value="10957" />
+              <option value="9844" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="13" />
