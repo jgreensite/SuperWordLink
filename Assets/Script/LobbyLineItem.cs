@@ -23,7 +23,7 @@ namespace Script
         }
 
         //public void SetLobbyLineItem(GameClient gc)
-        public void SetLobbyLineItem(GameTeam gt,TeamPlayer tp)
+        public void SetLobbyLineItem(GameTeam gt, TeamPlayer tp)
         
         {
             lineItemText.text = tp.name;
@@ -31,6 +31,17 @@ namespace Script
             isRedTeam.isOn = gt.id==CS.RED_TEAM;
             isBlueTeam.isOn = !isRedTeam.isOn;
             clientID = tp.id;
+
+            //Having set defaults for what to display in the UI, reflect these back in the data structures
+            //TODO - Remove hardcoding of TEAMS
+            if (isRedTeam.isOn)
+            {
+                gt.id = CS.RED_TEAM;
+            }
+            else
+            {
+                gt.id = CS.BLUE_TEAM;
+            }
         }
 
         private void SetGameClient()

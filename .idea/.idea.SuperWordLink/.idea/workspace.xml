@@ -24,14 +24,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1437e589-671a-4957-a669-82a5eb0bb141" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperWordLink/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scene/Menu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scene/Menu.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Client.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Client.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/GameBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameBoard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/GameMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameMessage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/GameParameters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameParameters.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/GameState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Lobby.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Lobby.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Server.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Server.cs" afterDir="false" />
     </list>
@@ -144,7 +136,6 @@
         <option value="$PROJECT_DIR$/Assets/Script/GameEvent.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameBoard.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Traverse.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/Lobby.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameBoardState.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/TeamPlayer.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameManager.cs" />
@@ -152,11 +143,12 @@
         <option value="$PROJECT_DIR$/Assets/Script/GameConstants.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameState.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameMessage.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/GameParameters.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Client.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Game.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Server.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/Lobby.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" />
       </list>
     </option>
   </component>
@@ -292,7 +284,7 @@
       <workItem from="1589499027456" duration="18481000" />
       <workItem from="1590189170484" duration="51000" />
       <workItem from="1590189255648" duration="42171000" />
-      <workItem from="1590610678424" duration="51149000" />
+      <workItem from="1590610678424" duration="52969000" />
     </task>
     <task id="LOCAL-00001" summary="Testing commit with Rider">
       <created>1545559485773</created>
@@ -543,20 +535,20 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="510" y="414" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.1440.877@0.23.1440.877" timestamp="1588939017926" />
-    <state x="409" y="462" width="1302" height="792" key="find.popup" timestamp="1591465141472">
-      <screen x="0" y="23" width="2560" height="1417" />
+    <state x="230" y="295" width="732" height="490" key="find.popup" timestamp="1591576383413">
+      <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="287" y="448" width="721" height="486" key="find.popup/-1440.23.1440.877/0.23.2560.1337@0.23.2560.1337" timestamp="1586708475283" />
-    <state x="230" y="295" width="732" height="490" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1591397403363" />
+    <state x="230" y="295" width="732" height="490" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1591576383413" />
     <state x="409" y="462" width="1302" height="792" key="find.popup/2560.382.1440.877/0.23.2560.1417@0.23.2560.1417" timestamp="1591465141472" />
     <state width="600" height="428" key="javadoc.popup" timestamp="1589585061301">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state width="600" height="428" key="javadoc.popup/0.23.1440.877@0.23.1440.877" timestamp="1589585061301" />
-    <state x="798" y="343" width="1195" height="1096" key="search.everywhere.popup" timestamp="1591463955206">
-      <screen x="0" y="23" width="2560" height="1417" />
+    <state x="449" y="221" width="672" height="678" key="search.everywhere.popup" timestamp="1591576335646">
+      <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="449" y="221" width="672" height="678" key="search.everywhere.popup/0.23.1440.877@0.23.1440.877" timestamp="1591393516380" />
+    <state x="449" y="221" width="672" height="678" key="search.everywhere.popup/0.23.1440.877@0.23.1440.877" timestamp="1591576335646" />
     <state x="798" y="343" width="1195" height="1096" key="search.everywhere.popup/2560.382.1440.877/0.23.2560.1417@0.23.2560.1417" timestamp="1591463955206" />
   </component>
   <component name="XDebuggerManager">
@@ -599,10 +591,10 @@
           <line>28</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" initialLine="28">
             <startOffsets>
-              <option value="613" />
+              <option value="614" />
             </startOffsets>
             <endOffsets>
-              <option value="641" />
+              <option value="642" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="8" />
@@ -693,39 +685,39 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs</url>
-          <line>41</line>
+          <line>52</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" initialLine="41">
             <startOffsets>
-              <option value="1065" />
+              <option value="1402" />
             </startOffsets>
             <endOffsets>
-              <option value="1126" />
+              <option value="1463" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs</url>
-          <line>38</line>
+          <line>49</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" initialLine="38">
             <startOffsets>
-              <option value="933" />
+              <option value="1270" />
             </startOffsets>
             <endOffsets>
-              <option value="979" />
+              <option value="1316" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs</url>
-          <line>47</line>
+          <line>58</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" initialLine="44">
             <startOffsets>
-              <option value="1293" />
+              <option value="1630" />
             </startOffsets>
             <endOffsets>
-              <option value="1335" />
+              <option value="1672" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="38" />
@@ -735,10 +727,10 @@
           <line>29</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" initialLine="29">
             <startOffsets>
-              <option value="654" />
+              <option value="655" />
             </startOffsets>
             <endOffsets>
-              <option value="683" />
+              <option value="684" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="41" />
@@ -748,10 +740,10 @@
           <line>30</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" initialLine="30">
             <startOffsets>
-              <option value="696" />
+              <option value="697" />
             </startOffsets>
             <endOffsets>
-              <option value="732" />
+              <option value="733" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="42" />
@@ -761,10 +753,10 @@
           <line>31</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" initialLine="31">
             <startOffsets>
-              <option value="745" />
+              <option value="746" />
             </startOffsets>
             <endOffsets>
-              <option value="779" />
+              <option value="780" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="43" />
@@ -774,75 +766,75 @@
           <line>32</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" initialLine="32">
             <startOffsets>
-              <option value="792" />
+              <option value="793" />
             </startOffsets>
             <endOffsets>
-              <option value="809" />
+              <option value="810" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs</url>
-          <line>51</line>
+          <line>62</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/LobbyLineItem.cs" initialLine="51">
             <startOffsets>
-              <option value="1467" />
+              <option value="1804" />
             </startOffsets>
             <endOffsets>
-              <option value="1556" />
+              <option value="1893" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="46" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/Server.cs</url>
-          <line>379</line>
+          <line>381</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/Server.cs" initialLine="367">
             <startOffsets>
-              <option value="14644" />
+              <option value="14940" />
             </startOffsets>
             <endOffsets>
-              <option value="14724" />
+              <option value="15020" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="54" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/Server.cs</url>
-          <line>386</line>
+          <line>388</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/Server.cs" initialLine="371">
             <startOffsets>
-              <option value="15021" />
+              <option value="15317" />
             </startOffsets>
             <endOffsets>
-              <option value="15039" />
+              <option value="15335" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/Server.cs</url>
-          <line>394</line>
+          <line>396</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/Server.cs" initialLine="379">
             <startOffsets>
-              <option value="15310" />
+              <option value="15606" />
             </startOffsets>
             <endOffsets>
-              <option value="15339" />
+              <option value="15635" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Script/Server.cs</url>
-          <line>410</line>
+          <line>412</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Script/Server.cs" initialLine="395">
             <startOffsets>
-              <option value="16013" />
+              <option value="16309" />
             </startOffsets>
             <endOffsets>
-              <option value="16058" />
+              <option value="16354" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="57" />

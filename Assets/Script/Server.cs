@@ -314,6 +314,7 @@ namespace Script
             {
                 case CS.MESSAGE_CWHO:
 
+                    //If a host request is made reset the game and the list of connections
                     if (fPlayer != null && gIncomingPlayer.isHost)
                     {
                         //update player parameters
@@ -350,30 +351,31 @@ namespace Script
 
                                 i++;
                             } while (i < clients.Count - 2);
+                        
+                        //clear teams
+                        gbs.g.gameTeams.Clear();
+                    
+                        //add in team for players not yet assigned
+                        var noTeam = new GameTeam
+                        {
+                            id = CS.NO_TEAM,
+                            name = CS.NO_TEAM
+                        };
+                        gbs.g.gameTeams.Add(noTeam);
                     }
 
-                    // add the new client details, remember that it will always be the last client in the list of clients that we do not have the details for
+                    // add the new client details to the list of clients, remember that it will always be the last client in the list of clients that we do not have the details for
                     clients[clients.Count - 1].clientID = gIncomingPlayer.id;
-
-                    //clear teams
-                    gbs.g.gameTeams.Clear();
-                    
-                    //add in team for players not yet assigned
-                    var noTeam = new GameTeam
-                    {
-                        id = CS.NO_TEAM,
-                        name = CS.NO_TEAM
-                    };
-                    gbs.g.gameTeams.Add(noTeam);
-                    
-                    //Add all the clients as players of the unassigned team
+                   
+                    //Add the new client details to the team of players that are unassigned team
                     foreach (var client in clients)
                     {
                         var tmpTeamPlayer= new TeamPlayer
                         {
-                            id = client.clientID
+                            id = gIncomingPlayer.id,
+                            name = gIncomingPlayer.name
                         };
-                        noTeam.teamPlayers.Add(tmpTeamPlayer);
+                        gbs.g.gameTeams.First(gt => gt.id == CS.NO_TEAM).teamPlayers.Add(tmpTeamPlayer);
                     }
                     
                     //add in remaining teams, note they will have no players
