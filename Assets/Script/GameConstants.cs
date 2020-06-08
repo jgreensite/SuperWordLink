@@ -14,12 +14,14 @@ namespace Script
         
         //Message Names - Client
         public const string MESSAGE_CWHO = "CWHO";
+        public const string MESSAGE_CBEG = "CBEG";
         
         //Message Names - Server
         public const string SERVER_ID = "SERVER";
         public const string SERVER_NAME = "I_AM_THE_SERVER";
         public const string MESSAGE_SWHO = "SWHO";
         public const string MESSAGE_SCNN = "SCNN";
+        public const string MESSAGE_SBEG = "SBEG";
 
         //Names of Objects
         public const string OBJ_NAME_ROOT_CARD = "Card Root";

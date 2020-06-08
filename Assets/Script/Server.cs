@@ -485,25 +485,25 @@ namespace Script
                     );
                     break;
                 case "CBEG":
-                    //Note that start at 2 not 1 because the name of the client is transmitted at position 1
-                    for (var i = 2; i < aData.Length; i++)
-                    {
-                        var bData = aData[i].Split(',');
-                        foreach (var sc in clients)
-                            //TODO - improve matching, should not be matching on client name it's brittle
-                            //Populate the client attributes
-                            if (string.Equals(bData[3], sc.clientID))
-                            {
-                                //START HERE - Temporarily commented out these lines to force a succesful compile
-                                //sc.isPlayer = bData[1] == "0" ? false : true;
-                                //sc.teamID = bData[2];
-                            }
-                    }
+                    //replace all teams
+                    gbs.g.gameTeams = gIncomingMessage.gameTeams;
+                    
+                    //Respond by telling all clients the updated details for all players of all teams
+                    //Build the message
+                    //Message Header
+                    gOutgoingMessage.id = CS.MESSAGE_SBEG;
+                    gOutgoingMessage.name = gOutgoingMessage.id;
+                    gOutgoingMessage.type = CS.MESSAGE_EVENT;
 
-                    Broadcast(
-                        "SBEG" + GetStringOfAllClients(),
-                        clients
-                    );
+                    //Message Sender
+                    gOutgoingMessage.sender.id = CS.SERVER_ID;
+                    gOutgoingMessage.sender.name = CS.SERVER_NAME;
+
+                    //Message Details
+                    gOutgoingMessage.gameParameters = gbs.g.gameParameters;
+                    gOutgoingMessage.gameTeams = gbs.g.gameTeams;
+                    
+                    Broadcast(gOutgoingMessage.SaveToText().Replace(Environment.NewLine, ""), clients);
                     break;
                 case "CPCC":
                     //Send message to GameBoardState

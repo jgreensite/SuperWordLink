@@ -178,31 +178,7 @@ namespace Script
                         }
                     }
                         break;
-                    case "SBEG":
-                        gClientGame.gameTeams.Clear();
-                        for (var i = 1; i < aData.Length; i++)
-                        {
-                            var bData = aData[i].Split(',');
-                            UserConnected(
-                                bData[0],
-                                bData[1] == "0" ? false : true,
-                                bData[2] == "0" ? false : true,
-                                bData[3] == "0" ? false : true,
-                                bData[4]
-                            );
 
-                            //Populate the client attributes
-                            if (string.Equals(bData[4], gClientPlayer.id))
-                            {
-                                gClientPlayer.isHost = bData[1] == "0" ? false : true;
-                                gClientPlayer.isPlayer = bData[2] == "0" ? false : true;
-                                gClientTeam.id = bData[3];
-                                gClientTeam.name = gClientTeam.id;
-                            }
-                        }
-
-                        GameManager.Instance.StartGame();
-                        break;
                     case"SGFU":
                         //Forced client update of Gameboard from server
                         GameBoard.Instance.isRedTurn = aData[1] == "False" ? false: true;
@@ -257,9 +233,7 @@ namespace Script
                 gIncomingMessage = GameMessage.LoadFromText(data);
                 switch (gIncomingMessage.name)
                 {
-                    case "SWHO":
-                        //gClientGame.gameTeam.Clear();
-                        
+                    case CS.MESSAGE_SWHO:
                         //This message sets the ClientID from the server
                         gClientPlayer.id = gIncomingMessage.receiver.id;
 
@@ -317,8 +291,7 @@ namespace Script
                         Send(gOutgoingMessage);
                         break;
 
-                    case "SCNN":
-
+                    case CS.MESSAGE_SCNN:
                         gClientGame.gameParameters = gIncomingMessage.gameParameters;
                         gClientGame.gameTeams = gIncomingMessage.gameTeams;
 
@@ -334,6 +307,20 @@ namespace Script
                             GameManager.Instance.OpenLobby();
                         }
                         break;
+                    case CS.MESSAGE_SBEG:
+                        //Update Game Data
+                        gClientGame.gameParameters = gIncomingMessage.gameParameters;
+                        gClientGame.gameTeams = gIncomingMessage.gameTeams;
+                        
+                        //Update Client Player Data
+                        gClientGame.FindPlayer(gClientPlayer.id,ref gClientPlayer);
+                        
+                        //Update Client Team Data
+                        gClientGame.FindPlayerTeam(gClientPlayer.id,ref gClientTeam);
+                        
+                        //Start the Game
+                        GameManager.Instance.StartGame();
+                        break;
                 }
             }
         }
@@ -341,13 +328,6 @@ namespace Script
         //Called when a message is received that a user has connected
         private void UserConnected(string name, bool isHost, bool isPlayer, bool isRedTeam, string clientID)
         {
-            //var c = new GameClient();
-            //c.name = name;
-            //c.isHost = isHost;
-            //c.isPlayer = isPlayer;
-            //c.isRedTeam = isRedTeam;
-            //c.id = clientID;
-            
             var c = new TeamPlayer();
             c.name = name;
             c.isHost = isHost;
@@ -376,20 +356,22 @@ namespace Script
 
         public void StartGame()
         {
-            var concatPlayers = "";
-            //todo - Ideally use and extension linq such as more enumerable to write a simpler version of the following nested 'foreach' call
-            foreach (var cntT in gClientGame.gameTeams) foreach (var cntP in cntT.teamPlayers)
-                concatPlayers += "|"
-                                 + cntP.name + ","
-                                 + (cntP.isPlayer ? 1 : 0) + ","
-                                 + cntT.id + ","
-                                 + cntP.id;
-
-            Send(
-                "CBEG" + "|"
-                       + gClientPlayer.name
-                       + concatPlayers
-            );
+            GameMessage gOutgoingMessage = new GameMessage();
+            
+            //Build the message
+            //Message Header
+            gOutgoingMessage.id = CS.MESSAGE_CBEG;
+            gOutgoingMessage.name = gOutgoingMessage.id;
+            gOutgoingMessage.type = CS.MESSAGE_COMMAND;
+            
+            //Message Sender
+            gOutgoingMessage.sender.id = gClientPlayer.id;
+            gOutgoingMessage.sender.name = gClientPlayer.name;
+            
+            //Message Details
+            gOutgoingMessage.gameTeams = gClientGame.gameTeams;
+            
+            Send(gOutgoingMessage);
         }
 
         public void GetGameCardDeck(string action)
