@@ -404,7 +404,7 @@ namespace Script
             gc.cardClientID = Server.clients[playerCnt].clientID;
 
             //todo - remove hardcoding for number of teams
-            foreach (var cntT in g.gameTeam) foreach (var cntP in cntT.teamPlayers)
+            foreach (var cntT in g.gameTeams) foreach (var cntP in cntT.teamPlayers)
             {
                 if (cntP.id == Server.clients[playerCnt].clientID)
                 {

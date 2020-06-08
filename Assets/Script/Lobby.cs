@@ -13,7 +13,7 @@ namespace Script
         {
             var client = FindObjectOfType<Client>();
             //Create each LineItem and them to the List of LineItems
-            foreach (var tempTeam in client.gClientGame.gameTeam) foreach (var tempPlayer in tempTeam.teamPlayers)
+            foreach (var tempTeam in client.gClientGame.gameTeams) foreach (var tempPlayer in tempTeam.teamPlayers)
             {
                 var line = Instantiate(lobbyLineItemPrefab).GetComponent<LobbyLineItem>();
                 LobbyLineItems.Add(line);

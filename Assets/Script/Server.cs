@@ -145,25 +145,31 @@ namespace Script
             
             //And now add it to the game
             //First create a new player
+            /*
             var c = new TeamPlayer();
             c.id = sc.clientID;
+            */
             
-            //Now add the player to team
-            var fTeam =  gbs.g.gameTeam.Where(team => team.id == CS.NO_TEAM);
+            //Now add the player to team, at the moment it has no team so place it in a dummy team used for players yet to be assigned a team
+            gbs.g.MovePlayerTeam(sc.clientID, CS.NO_TEAM);
+            
+            /*
+            var fTeam =  gbs.g.gameTeams.Where(team => team.id == CS.NO_TEAM);
             if (fTeam.FirstOrDefault() == null)
             {
                 var t = new GameTeam();
                 t.name = CS.NO_TEAM;
                 t.id = CS.NO_TEAM;
                 t.teamPlayers.Add(c);
-                gbs.g.gameTeam.Add(t);
+                gbs.g.gameTeams.Add(t);
             }
             else
             {
                 //gClientGame.gameTeam.Where(team => team.name == tempTeamID).FirstOrDefault().teamPlayers.Add(c);
                 fTeam.FirstOrDefault().teamPlayers.Add(c);
             }
-
+            */
+            
             //Once a connection occurs the listener will stop, so if you want to listen for more clients you need to restart listening again.
             startListening();
 
@@ -182,7 +188,7 @@ namespace Script
             gOutgoingMessage.sender.name = CS.SERVER_ID;
             
             //Message Receiver
-            gOutgoingMessage.receiver.id = c.id;
+            gOutgoingMessage.receiver.id = sc.clientID;
             
             //Broadcast the message
             //Broadcast("SWHO" + gbs.g.SaveToText(), clients[clients.Count - 1]);
@@ -232,13 +238,14 @@ namespace Script
 
         private void Broadcast(GameMessage data, List<ServerClient> cl)
         {
+            var strdata = data.SaveToText().Replace(Environment.NewLine, "");
             foreach (var sc in cl)
                 try
                 {
-                    Debug.Log("Server Sending To:" + sc.clientID + " => " + data);
+                    Debug.Log("Server Sending To:" + sc.clientID + " => " + strdata);
                     var writer = new StreamWriter(sc.tcp.GetStream());
                     //this has been replace from data to xml
-                    writer.WriteLine(data.SaveToText().Replace(Environment.NewLine, ""));
+                    writer.WriteLine(strdata);
                     writer.Flush();
                 }
                 catch (Exception e)
@@ -306,14 +313,17 @@ namespace Script
             switch (gIncomingMessage.name)
             {
                 case CS.MESSAGE_CWHO:
-                        
+
                     if (fPlayer != null && gIncomingPlayer.isHost)
                     {
                         //update player parameters
                         fPlayer.isHost = gIncomingPlayer.isHost;
-                        
+
                         //update game parameters                                
                         gbs.g.gameParameters.howManyPlaying = gIncomingMessage.gameParameters.howManyPlaying;
+                        gbs.g.gameParameters.howManyTeams = gIncomingMessage.gameParameters.howManyTeams;
+                        gbs.g.gameParameters.howManyCallers = gIncomingMessage.gameParameters.howManyCallers;
+
                         gbs.g.gameParameters.sizeOfXDim = gIncomingMessage.gameParameters.sizeOfXDim;
                         gbs.g.gameParameters.sizeOfYDim = gIncomingMessage.gameParameters.sizeOfYDim;
 
@@ -322,7 +332,7 @@ namespace Script
                         words = new string[2,
                             gbs.g.gameParameters.sizeOfXDim * gbs.g.gameParameters.sizeOfYDim];
 
-                        //if a client intitiates a host call then clear all other client's connections
+                        //clear all other client's connections
                         var i = 0;
                         if (clients.Count > 1)
                             do
@@ -340,27 +350,66 @@ namespace Script
 
                                 i++;
                             } while (i < clients.Count - 2);
-                        }
-                    
-                    // add the new client details, remember that it will always be the last client in the list of clients that we do not have the details for
+                    }
 
+                    // add the new client details, remember that it will always be the last client in the list of clients that we do not have the details for
                     clients[clients.Count - 1].clientID = gIncomingPlayer.id;
+
+                    //clear teams
+                    gbs.g.gameTeams.Clear();
                     
+                    //add in team for players not yet assigned
+                    var noTeam = new GameTeam
+                    {
+                        id = CS.NO_TEAM,
+                        name = CS.NO_TEAM
+                    };
+                    gbs.g.gameTeams.Add(noTeam);
+                    
+                    //Add all the clients as players of the unassigned team
+                    foreach (var client in clients)
+                    {
+                        var tmpTeamPlayer= new TeamPlayer
+                        {
+                            id = client.clientID
+                        };
+                        noTeam.teamPlayers.Add(tmpTeamPlayer);
+                    }
+                    
+                    //add in remaining teams, note they will have no players
+                    for (var cntTeams = 0; cntTeams < gbs.g.gameParameters.howManyTeams; cntTeams++)
+                    {
+                        var tmpTeam = new GameTeam
+                        {
+                            id = UnityEngine.Random.Range(0, 99999).ToString()
+                        };
+                        //todo - remove hardcoding of only 2 teams
+                        if (cntTeams == 0)
+                        {
+                            tmpTeam.name = CS.RED_TEAM;
+                        }
+                        else
+                        {
+                            tmpTeam.name = CS.BLUE_TEAM;
+                        }
+                        gbs.g.gameTeams.Add(tmpTeam);
+                    }
+
                     //Respond by telling all clients there is a new list of clients
                     //Build the message
                     //Message Header
                     gOutgoingMessage.id = CS.MESSAGE_SCNN;
                     gOutgoingMessage.name = gOutgoingMessage.id;
                     gOutgoingMessage.type = CS.MESSAGE_EVENT;
-                        
+
                     //Message Sender
                     gOutgoingMessage.sender.id = CS.SERVER_ID;
                     gOutgoingMessage.sender.name = CS.SERVER_NAME;
-                        
+
                     //Message Details
                     gOutgoingMessage.gameParameters = gbs.g.gameParameters;
-                    gOutgoingMessage.gameTeam = gbs.g.gameTeam;
-                    
+                    gOutgoingMessage.gameTeams = gbs.g.gameTeams;
+
                     Broadcast(gOutgoingMessage, clients);
                     break;
                 case "CMOV":

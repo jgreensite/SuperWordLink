@@ -29,9 +29,10 @@ namespace Script
         [XmlElement] public string teamTurnId { get; set; }
         [XmlElement] public string winStatus { get; set; }
         [XmlElement] public int howManyPlaying { get; set; }
+        [XmlElement] public int howManyTeams{ get; set; }
+        [XmlElement] public int howManyCallers{ get; set; }
         [XmlElement] public int sizeOfXDim { get; set; }
         [XmlElement] public int sizeOfYDim{ get; set; }
-
         public void Save(string path)
         {
             var serializer = new XmlSerializer(typeof(GameParameters));

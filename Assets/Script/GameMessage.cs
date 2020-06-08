@@ -43,13 +43,13 @@ namespace Script
         public GameParameters gameParameters = new GameParameters();
         
         [XmlArray("GameBoardDecks")] [XmlArrayItem("GameBoardDeck")]
-        public List<GameBoardDeck> gameBoardDeck = new List<GameBoardDeck>();
+        public List<GameBoardDeck> GameBoardDecks = new List<GameBoardDeck>();
         
         [XmlArray("GameTeams")] [XmlArrayItem("GameTeam")]
-        public List<GameTeam> gameTeam = new List<GameTeam>();
+        public List<GameTeam> gameTeams = new List<GameTeam>();
         public void FindPlayer(String fplayerID, ref TeamPlayer fPlayer)
         {
-            foreach (var cntT in this.gameTeam)
+            foreach (var cntT in this.gameTeams)
             {
                 var cntP = cntT.teamPlayers.FirstOrDefault(player => player.id == fplayerID);
                 if (cntP != null)

@@ -36,16 +36,33 @@ namespace Script
         private void SetGameClient()
         {
             var client = FindObjectOfType<Client>();
+            TeamPlayer gIncomingPlayer = new TeamPlayer();
+            
+            //Find the player associated with this lineitem
+            client.gClientGame.FindPlayer(clientID, ref gIncomingPlayer);
 
-            for (var cntTeam = 0; cntTeam < client.gClientGame.gameTeam.Count; cntTeam++)
-                for (var cntPlayer = 0; cntPlayer < client.gClientGame.gameTeam[cntTeam].teamPlayers.Count; cntPlayer++)
-                if (string.Equals(client.gClientGame.gameTeam[cntTeam].teamPlayers[cntPlayer].id, client.gClientPlayer.id))
-                {
-                    //client.gClientGame.gameTeam[cntTeam].teamPlayers[cntPlayer].name = lineItemText.text;
-                    client.gClientGame.gameTeam[cntTeam].teamPlayers[cntPlayer].isPlayer = !isCaller.isOn;
-                    client.gClientGame.gameTeam[cntTeam].id = isRedTeam.isOn?CS.RED_TEAM:CS.BLUE_TEAM;
-                    //client.gClientGame.gameTeam[cntTeam].teamPlayers[cntPlayer].id = client.gClientPlayer.id;
-                }
+            //Check that the player is found
+            if (gIncomingPlayer != null)
+            {
+                //Set the player's caller status
+                gIncomingPlayer.isPlayer = !isCaller.isOn;
+
+                //Move the player to the correct team
+                //todo - REMOVE HARDCODING FOR TWO TEAM IDS
+                client.gClientGame.MovePlayerTeam(clientID, isRedTeam.isOn ? CS.RED_TEAM : CS.BLUE_TEAM);
+            }
+
+            /*
+                   for (var cntTeam = 0; cntTeam < client.gClientGame.gameTeam.Count; cntTeam++)
+                           for (var cntPlayer = 0; cntPlayer < client.gClientGame.gameTeam[cntTeam].teamPlayers.Count; cntPlayer++)
+                           if (string.Equals(client.gClientGame.gameTeam[cntTeam].teamPlayers[cntPlayer].id, client.gClientPlayer.id))
+                           {
+                               client.gClientGame.gameTeam[cntTeam].teamPlayers[cntPlayer].name = lineItemText.text;
+                               client.gClientGame.gameTeam[cntTeam].teamPlayers[cntPlayer].isPlayer = !isCaller.isOn;
+                               client.gClientGame.gameTeam[cntTeam].id = isRedTeam.isOn?CS.RED_TEAM:CS.BLUE_TEAM;
+                               client.gClientGame.gameTeam[cntTeam].teamPlayers[cntPlayer].id = client.gClientPlayer.id;
+                           }
+           */
         }
 
         public void SelectUIComponent()
@@ -60,7 +77,7 @@ namespace Script
             {
                 if (MyLobbyGroup.LobbyLineItems[cnt].isCaller.isOn && MyLobbyGroup.LobbyLineItems[cnt].isRedTeam.isOn)
                     redCallerCnt += 1;
-                if (redCallerCnt > 1)
+                if (redCallerCnt > PREFS.getPrefInt("NumCallers"))
                 {
                     MyLobbyGroup.LobbyLineItems[cnt].isCaller.isOn = false;
                     redCallerCnt--;
@@ -68,13 +85,12 @@ namespace Script
 
                 if (MyLobbyGroup.LobbyLineItems[cnt].isCaller.isOn &&
                     MyLobbyGroup.LobbyLineItems[cnt].isRedTeam.isOn == false) blueCallerCnt += 1;
-                if (blueCallerCnt > 1)
+                if (blueCallerCnt > PREFS.getPrefInt("NumCallers"))
                 {
                     MyLobbyGroup.LobbyLineItems[cnt].isCaller.isOn = false;
                     blueCallerCnt--;
                 }
             }
-
             SetGameClient();
         }
     }

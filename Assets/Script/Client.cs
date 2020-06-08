@@ -21,9 +21,9 @@ namespace Script
         private GameHandDeck gcdTemp = new GameHandDeck();
         
         //Client's Current View of
-        public Game gClientGame = new Game();
-        public GameTeam gClientTeam = new GameTeam();
-        public TeamPlayer gClientPlayer = new TeamPlayer();
+        public Game gClientGame = new Game(); //the game
+        public GameTeam gClientTeam = new GameTeam(); //the client's team
+        public TeamPlayer gClientPlayer = new TeamPlayer(); //the client's player ID
 
         //public bool isHost;
         //public bool isPlayer;
@@ -99,6 +99,9 @@ namespace Script
             var z = 0;
             Debug.Log("Client Receiving: " + data);
             int howManyPlaying =0;
+            int howManyTeams =0;
+            int howManyCallers =0;
+
             int sizeOfXDim =0;
             int sizeOfYDim =0;
             var cardID = "";
@@ -176,7 +179,7 @@ namespace Script
                     }
                         break;
                     case "SBEG":
-                        gClientGame.gameTeam.Clear();
+                        gClientGame.gameTeams.Clear();
                         for (var i = 1; i < aData.Length; i++)
                         {
                             var bData = aData[i].Split(',');
@@ -260,7 +263,7 @@ namespace Script
                         //This message sets the ClientID from the server
                         gClientPlayer.id = gIncomingMessage.receiver.id;
 
-                        foreach (var cntT in gIncomingMessage.gameTeam)
+                        foreach (var cntT in gIncomingMessage.gameTeams)
                         {
                             var fPlayer =  cntT.teamPlayers.Where(player => player.id == gClientPlayer.id);
                             if (fPlayer.FirstOrDefault() == null)
@@ -275,12 +278,17 @@ namespace Script
                         if (gClientPlayer.isHost)    
                         {
                             howManyPlaying = PREFS.getPrefInt("MinPlayers");
+                            howManyTeams = PREFS.getPrefInt("NumTeams");
+                            howManyCallers = PREFS.getPrefInt("NumCallers");
                             sizeOfXDim = PREFS.getPrefInt("GridXDim");
                             sizeOfYDim = PREFS.getPrefInt("GridZDim");
+                            
                         }
                         else
                         {
                             howManyPlaying = 0;
+                            howManyTeams = 0;
+                            howManyCallers = 0;
                             sizeOfXDim = 0;
                             sizeOfYDim = 0;
                         }
@@ -297,11 +305,14 @@ namespace Script
                         
                         //Message Details
                         gOutgoingMessage.gameParameters.howManyPlaying = howManyPlaying;
+                        gOutgoingMessage.gameParameters.howManyTeams = howManyTeams;
+                        gOutgoingMessage.gameParameters.howManyCallers = howManyCallers;
+
                         gOutgoingMessage.gameParameters.sizeOfXDim = sizeOfXDim;
                         gOutgoingMessage.gameParameters.sizeOfYDim = sizeOfYDim;
                         
-                        gOutgoingMessage.gameTeam.Clear();
-                        gOutgoingMessage.gameTeam.Add(gClientTeam);
+                        gOutgoingMessage.gameTeams.Clear();
+                        gOutgoingMessage.gameTeams.Add(gClientTeam);
                         
                         Send(gOutgoingMessage);
                         break;
@@ -309,10 +320,10 @@ namespace Script
                     case "SCNN":
 
                         gClientGame.gameParameters = gIncomingMessage.gameParameters;
-                        gClientGame.gameTeam = gIncomingMessage.gameTeam;
+                        gClientGame.gameTeams = gIncomingMessage.gameTeams;
 
                         int cntIncomingPlayers = 0;
-                        foreach (var t in gIncomingMessage.gameTeam)
+                        foreach (var t in gIncomingMessage.gameTeams)
                         foreach (var p in t.teamPlayers)
                             cntIncomingPlayers++;
 
@@ -344,14 +355,14 @@ namespace Script
             c.id = clientID;
             var tempTeamName = isRedTeam ? CS.RED_TEAM : CS.BLUE_TEAM;
             var tempTeamID = tempTeamName;
-            var fTeam = gClientGame.gameTeam.Where(team => team.id == tempTeamID);
+            var fTeam = gClientGame.gameTeams.Where(team => team.id == tempTeamID);
             if (fTeam.FirstOrDefault() == null)
             {
                 var t = new GameTeam();
                 t.name = tempTeamName;
                 t.id = tempTeamID;
                 t.teamPlayers.Add(c);
-                gClientGame.gameTeam.Add(t);
+                gClientGame.gameTeams.Add(t);
             }
             else
             {
@@ -367,7 +378,7 @@ namespace Script
         {
             var concatPlayers = "";
             //todo - Ideally use and extension linq such as more enumerable to write a simpler version of the following nested 'foreach' call
-            foreach (var cntT in gClientGame.gameTeam) foreach (var cntP in cntT.teamPlayers)
+            foreach (var cntT in gClientGame.gameTeams) foreach (var cntP in cntT.teamPlayers)
                 concatPlayers += "|"
                                  + cntP.name + ","
                                  + (cntP.isPlayer ? 1 : 0) + ","
