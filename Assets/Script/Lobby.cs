@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Script
@@ -12,8 +13,9 @@ namespace Script
         private void Start()
         {
             var client = FindObjectOfType<Client>();
-            //Create each LineItem and them to the List of LineItems
-            foreach (var tempTeam in client.gClientGame.gameTeams) foreach (var tempPlayer in tempTeam.teamPlayers)
+            //Create each LobbyLineItem and them to the List of LineItems
+            //Note the need to use ToList as players will be moved between teams inside the loop changing the collections and causing an error 
+            foreach (var tempTeam in client.gClientGame.gameTeams.ToList()) foreach (var tempPlayer in tempTeam.teamPlayers.ToList())
             {
                 var line = Instantiate(lobbyLineItemPrefab).GetComponent<LobbyLineItem>();
                 LobbyLineItems.Add(line);

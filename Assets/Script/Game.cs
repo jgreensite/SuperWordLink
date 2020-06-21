@@ -95,7 +95,6 @@ namespace Script
             }
 
             //if no player is found then create a new player
-            //todo - not sure why we cannot check for flplayer == null but Rider says that condition will always be false
             if (fPlayer.id == null) fPlayer = new TeamPlayer();
             fPlayer.id = mplayerID;
 

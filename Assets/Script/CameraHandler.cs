@@ -45,7 +45,7 @@ namespace Script
                     break;
                 case "Caller Camera":
                     myCam.CopyFrom(playerCam);
-                    //myCam.CopyFrom((allObjectsInScene.First(x => x.name == "Player Camera").GetComponent<Camera>()));
+                    //myCam.CopyFrom((allObjectsInScene.FirstOrDefault(x => x.name == "Player Camera").GetComponent<Camera>()));
                     //cam.CopyFrom(GameObject.Find("Player Camera").GetComponent<Camera>());
                     myCam.transform.position += GameBoard.Instance.callerCardOffset;
                     myCam.transform.LookAt(GameBoard.Instance.gameBoardCaller.transform);

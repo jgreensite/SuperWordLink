@@ -373,9 +373,11 @@ namespace Script
                         var tmpTeamPlayer= new TeamPlayer
                         {
                             id = gIncomingPlayer.id,
-                            name = gIncomingPlayer.name
+                            name = gIncomingPlayer.name,
+                            isHost = gIncomingPlayer.isHost,
+                            isPlayer = gIncomingPlayer.isPlayer
                         };
-                        gbs.g.gameTeams.First(gt => gt.id == CS.NO_TEAM).teamPlayers.Add(tmpTeamPlayer);
+                        gbs.g.gameTeams.FirstOrDefault(gt => gt.id == CS.NO_TEAM).teamPlayers.Add(tmpTeamPlayer);
                     }
                     
                     //add in remaining teams, note they will have no players

@@ -369,6 +369,8 @@ namespace Script
             gOutgoingMessage.sender.name = gClientPlayer.name;
             
             //Message Details
+            gOutgoingMessage.gameParameters = null;
+            gOutgoingMessage.GameBoardDecks = null;
             gOutgoingMessage.gameTeams = gClientGame.gameTeams;
             
             Send(gOutgoingMessage);

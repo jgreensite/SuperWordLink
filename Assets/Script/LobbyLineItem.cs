@@ -26,22 +26,26 @@ namespace Script
         public void SetLobbyLineItem(GameTeam gt, TeamPlayer tp)
         
         {
+            var client = FindObjectOfType<Client>();
+            
+            //Set Default UI display for the LobbyLineItem
+            clientID = tp.id;
             lineItemText.text = tp.name;
             isCaller.isOn = !tp.isPlayer;
+            //TO DO - Remove harcoding of teams
             isRedTeam.isOn = gt.id==CS.RED_TEAM;
             isBlueTeam.isOn = !isRedTeam.isOn;
-            clientID = tp.id;
-
+            
             //Having set defaults for what to display in the UI, reflect these back in the data structures
+            //Obtain the Team ID, reading it back from the UI
             //TODO - Remove hardcoding of TEAMS
-            if (isRedTeam.isOn)
-            {
-                gt.id = CS.RED_TEAM;
-            }
-            else
-            {
-                gt.id = CS.BLUE_TEAM;
-            }
+            var tmpTeamId = (isRedTeam.isOn ? CS.RED_TEAM : (isBlueTeam.isOn ? CS.BLUE_TEAM:CS.NO_TEAM));
+
+            //Move the player to the correct team
+            client.gClientGame.MovePlayerTeam(clientID, tmpTeamId);
+
+            //Have to also set the GameClient
+            //SetGameClient();
         }
 
         private void SetGameClient()
@@ -56,24 +60,16 @@ namespace Script
             if (gIncomingPlayer != null)
             {
                 //Set the player's caller status
+                //TODO - Is this line needed?
                 gIncomingPlayer.isPlayer = !isCaller.isOn;
+                
+                //Obtain the Team ID
+                //todo - REMOVE HARDCODING FOR TWO TEAM IDS
+                var tmpTeamId = (isRedTeam.isOn ? CS.RED_TEAM : (isBlueTeam.isOn ? CS.BLUE_TEAM:CS.NO_TEAM));
 
                 //Move the player to the correct team
-                //todo - REMOVE HARDCODING FOR TWO TEAM IDS
-                client.gClientGame.MovePlayerTeam(clientID, isRedTeam.isOn ? CS.RED_TEAM : CS.BLUE_TEAM);
+                client.gClientGame.MovePlayerTeam(clientID, tmpTeamId);
             }
-
-            /*
-                   for (var cntTeam = 0; cntTeam < client.gClientGame.gameTeam.Count; cntTeam++)
-                           for (var cntPlayer = 0; cntPlayer < client.gClientGame.gameTeam[cntTeam].teamPlayers.Count; cntPlayer++)
-                           if (string.Equals(client.gClientGame.gameTeam[cntTeam].teamPlayers[cntPlayer].id, client.gClientPlayer.id))
-                           {
-                               client.gClientGame.gameTeam[cntTeam].teamPlayers[cntPlayer].name = lineItemText.text;
-                               client.gClientGame.gameTeam[cntTeam].teamPlayers[cntPlayer].isPlayer = !isCaller.isOn;
-                               client.gClientGame.gameTeam[cntTeam].id = isRedTeam.isOn?CS.RED_TEAM:CS.BLUE_TEAM;
-                               client.gClientGame.gameTeam[cntTeam].teamPlayers[cntPlayer].id = client.gClientPlayer.id;
-                           }
-           */
         }
 
         public void SelectUIComponent()
