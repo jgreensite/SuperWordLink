@@ -19,8 +19,8 @@ namespace Script
         private readonly GameHandDeck gcdBlue = new GameHandDeck();
         private readonly GameHandDeck gcdRed = new GameHandDeck();
         public int numParticipants;
-        public int GridXDim;
-        public int GridZDim;
+        //public int GridXDim;
+        //public int GridZDim;
         
         private string[] populate;
  
@@ -418,7 +418,7 @@ namespace Script
                     break;
                 case "CMOV":
                     //Currently all validation for the gameboard move is done client side
-                    gbs.Incoming(aData);
+                    gbs.Incoming(gIncomingMessage.name);
                 
                     string strValidGameboardMove = gbs.UpdateGameboardDeckCardStatus(aData[2], aData[3]) ? "1" : "0";
                 
@@ -447,10 +447,11 @@ namespace Script
                         clients
                     );
                     break;
-                case "CDIC":
+                case CS.MESSAGE_CDIC:
                     //Send message to GameBoardState, this will populate the WordList
+                    /*
                     gbs.Incoming(aData);
-                
+                                        
                     distWords = "";
                     distPopulate = "";
                     distCardID = "";
@@ -476,9 +477,58 @@ namespace Script
                                + distCardID,
                         clients
                     );
+                    */
+                    
+                    //Send message to GameBoardState, this will populate the WordList
+                    gbs.Incoming(gIncomingMessage.name);
+
+                    //Respond by telling all clients the dictionary to use
+                    //build the dictionary
+                    
+                    /*
+                    //TODO - Improve the efficiency of how you popolate the card details dictionary should really be doing this not the server
+
+                    //Cannot use FindObjectOfType in the constructor, so have to assign in here    
+                    var worddictionary = FindObjectOfType<WordDictionary>();
+                  
+                    //TODO - Rewmove hardcodng for only one gameboard
+                    var cnt = 0;
+                    var gbd = new GameBoardDeck();
+                    gbs.g.GameBoardDecks.Add(gbd);
+                    GameBoardDeck gbdFirstOrDefault = gbs.g.GameBoardDecks.FirstOrDefault();
+                    
+                    //Populate the deck
+                    foreach (var word in worddictionary.gameBoardCardData)
+                    {
+                        var card = new GameCard();
+                        card.id = word.Value.cardid;
+                        card.cardSuit = word.Value.populate;
+                        card.cardWord = word.Value.wordList;
+                        gbdFirstOrDefault.gameCards.Add(card);
+                    }
+                    
+                    */
+                    
+                    //Build the message
+                    //Message Header
+                    gOutgoingMessage.id = CS.MESSAGE_SDIC;
+                    gOutgoingMessage.name = gOutgoingMessage.id;
+                    gOutgoingMessage.type = CS.MESSAGE_REPLY;
+
+                    //Message Sender
+                    gOutgoingMessage.sender.id = CS.SERVER_ID;
+                    gOutgoingMessage.sender.name = CS.SERVER_NAME;
+
+                    //Message Details
+                    gOutgoingMessage.gameParameters = gbs.g.gameParameters;
+                    gOutgoingMessage.gameTeams = gbs.g.gameTeams;
+                    gOutgoingMessage.GameBoardDecks = gbs.g.GameBoardDecks;
+                    
+                    Broadcast(gOutgoingMessage.SaveToText().Replace(Environment.NewLine, ""), clients);
+                      
                     break;
                 case "CKEY":
-                    gbs.Incoming(aData);
+                    gbs.Incoming(gIncomingMessage.name);
                     var tmpVal = aData[2].ToUpper();
                     Broadcast(
                         "SKEY" + '|'
@@ -509,12 +559,12 @@ namespace Script
                     break;
                 case "CPCC":
                     //Send message to GameBoardState
-                    gbs.Incoming(aData);
+                    gbs.Incoming(gIncomingMessage.name);
                     Broadcast(gbs.ghd.SaveToText().Replace(Environment.NewLine, ""), clients);
                     break;
                 case "CPCU":
                     //Send message to GameBoardState
-                    gbs.Incoming(aData);
+                    gbs.Incoming(gIncomingMessage.name);
                     Broadcast(gbs.ghd.SaveToText().Replace(Environment.NewLine, ""), clients);
                     break;
             
@@ -527,17 +577,17 @@ namespace Script
                     distPopulate = "";
                     distReveal = "";
                
-                    for (z = 0; z < GridZDim; z++)
-                    for (x = 0; x < GridXDim; x++)
+                    for (z = 0; z < gbs.g.gameParameters.sizeOfYDim; z++)
+                    for (x = 0; x < gbs.g.gameParameters.sizeOfXDim; x++)
                     {
 
                         //implement additional attributes
-                        distPosX += gbs.gbd.gameCards[x + z * GridXDim].cardXPos + ",";
-                        distPosZ += gbs.gbd.gameCards[x + z * GridXDim].cardZPos + ",";
-                        distWords += gbs.gbd.gameCards[x + z * GridXDim].cardWord + ",";
-                        distPopulate += gbs.gbd.gameCards[x + z * GridXDim].cardSuit +",";
-                        distReveal += gbs.gbd.gameCards[x + z * GridXDim].cardRevealed +",";
-                        distCardID += gbs.gbd.gameCards[x + z * GridXDim].cardID + ",";
+                        distPosX += gbs.gbd.gameCards[x + z * gbs.g.gameParameters.sizeOfXDim].cardXPos + ",";
+                        distPosZ += gbs.gbd.gameCards[x + z * gbs.g.gameParameters.sizeOfXDim].cardZPos + ",";
+                        distWords += gbs.gbd.gameCards[x + z * gbs.g.gameParameters.sizeOfXDim].cardWord + ",";
+                        distPopulate += gbs.gbd.gameCards[x + z * gbs.g.gameParameters.sizeOfXDim].cardSuit +",";
+                        distReveal += gbs.gbd.gameCards[x + z * gbs.g.gameParameters.sizeOfXDim].cardRevealed +",";
+                        distCardID += gbs.gbd.gameCards[x + z * gbs.g.gameParameters.sizeOfXDim].cardID + ",";
                     }
 
                     Broadcast(
@@ -577,13 +627,13 @@ namespace Script
                 else
                     concatClients += "0" + ",";
                 
-                if (GridXDim != 0 && clients.Count == numParticipants && i == clients.Count - 1)
-                    concatClients += GridXDim.ToString() + ",";
+                if (gbs.g.gameParameters.sizeOfXDim != 0 && clients.Count == numParticipants && i == clients.Count - 1)
+                    concatClients += gbs.g.gameParameters.sizeOfXDim.ToString() + ",";
                 else
                     concatClients += "0" + ",";
                 
-                if (GridZDim != 0 && clients.Count == numParticipants && i == clients.Count - 1)
-                    concatClients += GridZDim.ToString();
+                if (gbs.g.gameParameters.sizeOfYDim != 0 && clients.Count == numParticipants && i == clients.Count - 1)
+                    concatClients += gbs.g.gameParameters.sizeOfYDim.ToString();
                 else
                     concatClients += "0";
             }

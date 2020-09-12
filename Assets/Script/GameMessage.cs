@@ -39,6 +39,9 @@ namespace Script
         [XmlElement("Receiver")]
         public Receiver receiver = new Receiver();
         
+        [XmlElement("KeyPress")]
+        public KeyPress keyPress = new KeyPress();
+        
         [XmlElement("GameParameters")]
         public GameParameters gameParameters = new GameParameters();
         
@@ -79,6 +82,13 @@ namespace Script
 
             [XmlAttribute] public String name { get; set; }
         }
+        
+        [XmlRoot("KeyPress")]
+        public class KeyPress
+        {
+            [XmlAttribute] public String value { get; set; }
+      }
+
         
         public void Save(string path)
         {

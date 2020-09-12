@@ -117,11 +117,33 @@ namespace Script
             //Get Dictionary from the server, as opposed to getting it locally
             //Only the host should make this request otherwise we'll generate too many cards as each client will request dictionary
             if (client.gClientPlayer.isHost)
+            {
+            /*
                 client.Send(
                     "CDIC" + '|'
                            + client.gClientPlayer.name
                 );
+            */
             // Get the initial set of Gamecards
+                GameMessage gOutgoingMessage = new GameMessage();
+            
+                //Build the message
+                //Message Header
+                gOutgoingMessage.id = CS.MESSAGE_CDIC;
+                gOutgoingMessage.name = gOutgoingMessage.id;
+                gOutgoingMessage.type = CS.MESSAGE_COMMAND;
+            
+                //Message Sender
+                gOutgoingMessage.sender.id = client.gClientPlayer.id;
+                gOutgoingMessage.sender.name = client.gClientPlayer.name;
+            
+                //Message Details
+                gOutgoingMessage.gameParameters = null;
+                gOutgoingMessage.GameBoardDecks = null;
+                gOutgoingMessage.gameTeams = null;
+            
+                client.Send(gOutgoingMessage);
+            }
         }
 
         private void Update()

@@ -15,6 +15,7 @@ namespace Script
         //Message Names - Client
         public const string MESSAGE_CWHO = "CWHO";
         public const string MESSAGE_CBEG = "CBEG";
+        public const string MESSAGE_CDIC = "CDIC";
         
         //Message Names - Server
         public const string SERVER_ID = "SERVER";
@@ -22,6 +23,7 @@ namespace Script
         public const string MESSAGE_SWHO = "SWHO";
         public const string MESSAGE_SCNN = "SCNN";
         public const string MESSAGE_SBEG = "SBEG";
+        public const string MESSAGE_SDIC = "SDIC";
 
         //Names of Objects
         public const string OBJ_NAME_ROOT_CARD = "Card Root";

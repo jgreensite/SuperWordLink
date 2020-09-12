@@ -18,7 +18,7 @@ namespace Script
  
         //the decks that will be used in the game
         //Server's Current View of
-        public Game gServerGame = new Game();
+        //public Game gServerGame = new Game();
         public GameBoardDeck gbd = new GameBoardDeck();
         public GameHandDeck ghd = new GameHandDeck();
 
@@ -47,6 +47,9 @@ namespace Script
             GameManager.Instance.goDontDestroyList.Add(gameObject);
             Debug.Log("Added GameState at position:" + GameManager.Instance.goDontDestroyList.Count + " to donotdestroylist");
 
+            //set-up structure of the game
+            g.GameBoardDecks.Add(gbd);
+            
             //Get Reference to Server GameObject in Unity
             _server = GetComponentInParent<Server>();
         }
@@ -143,8 +146,8 @@ namespace Script
 
         public bool UpdateHandDeckCardStatus(string cardID, string clientID)
         {
-            gridXDim = _server.GridXDim;
-            gridZDim = _server.GridZDim;
+            gridXDim = g.gameParameters.sizeOfXDim;
+            gridZDim = g.gameParameters.sizeOfYDim;
             
             string strReponse = "";
             var s = FindObjectOfType<Server>();
@@ -208,7 +211,8 @@ namespace Script
                                     string xStr = x.ToString();
                                     string zStr = z.ToString();
                                     string[] zData = {"CMOV", clientID, cardGameboardID, cardID};
-                                    Incoming(zData);
+                                    //TODO - YOU NEED TO UNCOMMENT THIS CODE AND CHANGE IT TO SYNTHESISE A NEW XML Version of CMOV
+                                    //Incoming(zData);
                                 }
 
                                 if ((cep.effectName == CS.CEP_EFFECT_RANDOM_CHANGE_CARD)
@@ -238,8 +242,8 @@ namespace Script
 
         public bool UpdateGameboardDeckCardStatus(string cardID, string clientID)
         {
-            gridXDim = _server.GridXDim;
-            gridZDim = _server.GridZDim;
+            gridXDim = g.gameParameters.sizeOfXDim;
+            gridZDim = g.gameParameters.sizeOfYDim;
 
             string strReponse = "";
             var s = FindObjectOfType<Server>();
@@ -352,8 +356,8 @@ namespace Script
 
         private string checkVictory()
         {
-            gridXDim = _server.GridXDim;
-            gridZDim = _server.GridZDim;
+            gridXDim = g.gameParameters.sizeOfXDim;
+            gridZDim = g.gameParameters.sizeOfYDim;
 
             //iterate through cards looking for a win
             var retVal = "";
@@ -445,19 +449,19 @@ namespace Script
             gc.cardRevealed = CS.CAR_REVEAL_HIDDEN;
             return gc;
         }
-        public void Incoming(string[] aData)
+        public void Incoming(string mName)
 
             //TODO - Upgrade to XML and message objects when they are available
         {
-            gridXDim = _server.GridXDim;
-            gridZDim = _server.GridZDim;
+            gridXDim = g.gameParameters.sizeOfXDim;;
+            gridZDim = g.gameParameters.sizeOfXDim;;
             
             int x = 0;
             int z = 0;
         
-            switch (aData[0])
+            switch (mName)
             {
-                case "CDIC":
+                case CS.MESSAGE_CDIC:
                     //Cannot use FindObjectOfType in the constructor, so have to assign in here    
                     var worddictionary = FindObjectOfType<WordDictionary>();
                     
@@ -498,7 +502,11 @@ namespace Script
                     for (x = 0; x < gridXDim; x++)
                     {
                         //implement additional attributes
-                        if (gbd.gameCards[x + z * gridXDim].cardID == aData[3]) gbd.gameCards[x + z * gridXDim].cardRevealed = CS.CAR_REVEAL_SHOWN;
+                        if (gbd.gameCards[x + z * gridXDim].cardID ==
+                            g.GameMessages.Last().GameBoardDecks.FirstOrDefault().gameCards.FirstOrDefault().id)
+                        {
+                            gbd.gameCards[x + z * gridXDim].cardRevealed = CS.CAR_REVEAL_SHOWN;
+                        }
                     }
                     
                     break;
@@ -514,7 +522,7 @@ namespace Script
                 case "CGFU":
                     break;
                 case "CKEY":
-                    var tmpVal = aData[2].ToUpper();
+                    var tmpVal =  g.GameMessages.Last().keyPress.value.ToUpper();
                     if (tmpVal == "R") BuildHandDeck(CS.CREATE);
                     break;
             }

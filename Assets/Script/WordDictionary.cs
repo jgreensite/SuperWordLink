@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -33,10 +34,11 @@ namespace Script
         public GameObject deathPfb;
         public GameObject civilPfb;
         private static Server _server;
+        private static GameState _gameState;
 
         //makes class a singleton
         public static WordDictionary Instance { set; get; }
-
+      
         // Use this for initialization
         private void Start()
         {
@@ -51,13 +53,14 @@ namespace Script
             
             //Get Reference to Server GameObject in Unity
             _server = GetComponentInParent<Server>();
+            _gameState = GetComponentInParent<GameState>();
         }
 
         public void buildGameboardData()
         {
             //dimension the arrays            
-            gridXDim = _server.GridXDim;
-            gridZDim = _server.GridZDim;
+            gridXDim = _gameState.g.gameParameters.sizeOfXDim;
+            gridZDim = _gameState.g.gameParameters.sizeOfYDim;
 
             gridSize = gridXDim * gridZDim;
             cardsPlayerGameBoard = new Card[gridXDim, gridZDim];
