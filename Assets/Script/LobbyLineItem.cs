@@ -50,13 +50,16 @@ namespace Script
             
             //ToggleGroup toggleTeamGroup= GetComponent<ToggleGroup>();
             //Note we are using the "name" property of the team as it's ID
-            foreach (var tempTeam in client.gClientGame.gameTeams.ToList())
+            foreach (var tempTeam in client.gClientGame.gameTeams.ToList().Select((value, i) => new { i, value }))
             {
+                var value = tempTeam.value;
+                var index = tempTeam.i;
+                
                 var toggleTeam = Instantiate(ToggleTeamPrefab.GetComponent<Toggle>());
                 ToggleTeamItems.Add(toggleTeam);
                 toggleTeam.transform.SetParent(transform, false);
-                toggleTeam.transform.Translate(toggleOffset*(ToggleTeamItems.Count-1));
-                toggleTeam.name = tempTeam.id;
+                toggleTeam.transform.Translate(toggleOffset*(tempTeam.i));
+                toggleTeam.name = tempTeam.value.id;
                 toggleTeam.group = toggleGroup;
 
                 // isRedTeam.isOn = gt.name == CS.RED_TEAM;
